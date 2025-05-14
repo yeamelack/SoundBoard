@@ -1,0 +1,32 @@
+body{
+    background-color: rgb(24, 26, 28);
+    margin: 0px;
+    margin-top: 70px;
+    margin-left: 103px;
+    margin-right: 103px;
+    
+}
+
+@media (min-width: 1920px) {
+    body{
+        margin-left: 303px;
+        margin-right: 303px;
+    }
+}
+
+@media (max-width: 1465px) and (min-width: 1707px){
+    body{
+        margin-left: 303px;
+        margin-right: 303px;
+        
+    }
+}
+
+@media (min-width: 1675px) and (max-width: 1919px) {
+    body{
+        margin-left: 250px;
+        margin-right: 250px;
+    }
+}
+
+

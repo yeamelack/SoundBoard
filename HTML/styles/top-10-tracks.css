@@ -1,0 +1,159 @@
+
+.move{
+    margin-top: 400px;
+}
+
+.charts{
+    display: grid;
+    flex-direction: row;
+    grid-template-columns: 1fr 1fr;
+    height: 800px;
+    justify-items: center;
+    align-items: center;
+    margin-left: 24px;
+    margin-right: 24px;
+    gap: 30px
+
+}
+
+
+.title{
+    color: rgb(207, 207, 207);
+    font-family: "DM Sans", sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.album-charts{
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.charts-backdrop{
+    display:grid;
+    grid-template-rows: 90px 1fr;
+    flex: 1 1;
+
+    align-items: center;
+    justify-items:left;
+    
+    /* background-color: rgb(24, 26, 28); */
+    background-color: rgb(50, 51, 54);
+   
+    height: 590px;
+    border-radius: 20px;
+    
+   
+    padding: 12px;
+    padding-top: 0px;
+    border: solid;
+    border-width: 1px;
+    
+    /* border-color: rgb(199, 198, 198); */
+    
+    width: 667.75px;
+    
+}
+
+.chart-grid{
+    /* background-color: rgb(24, 26, 28); */
+    background-color: rgb(50, 51, 54);
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr ;
+    
+    grid-template-columns:  1fr 1fr  ;
+    height: 100%;
+    border-radius: 7px;
+    grid-gap: 10px;
+    /* width: 697.75px; */
+    width: 100%;
+}
+
+.indiv-grid{
+    /* background-color: rgb(50, 51, 54); */
+    background-color: rgb(24, 26, 28);
+
+    height: 72px;
+    border-radius: 7px;
+    padding: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-items: center; 
+    flex-direction: row;
+    flex: 1 1 1 1;
+    
+
+}
+
+.img{
+    width: 80px;
+    align-items: center;
+    border-radius: 7px;
+    margin-left: 10px;
+}
+
+.rank{
+   
+    /* background-color: rgb(50, 51, 54); */
+    background-color: rgb(24, 26, 28);
+
+    font-size: 40px;
+    flex: 1;
+    color: rgb(207, 207, 207);
+    font-family: "DM Sans", sans-serif;
+    width: 35px;
+   
+    
+
+
+}
+.song-info{
+    flex: 1;
+    flex-direction: row;
+    /* background-color: rgb(249, 164, 164); */
+    margin-left: 10px;
+    align-items: center;
+    color: rgb(207, 207, 207);
+
+    
+}
+
+.song{
+    display: grid;
+    grid-row: 1fr 1fr;
+    height: 30px;
+    /* background-color: rgb(50, 51, 54); */
+    background-color: rgb(24, 26, 28);
+
+    color: rgb(207, 207, 207);
+    align-items: center;
+    font-family: "DM Sans", sans-serif;
+
+    
+}
+.artist{
+    height: 30px;
+    /* background-color: rgb(50, 51, 54); */
+    background-color: rgb(24, 26, 28);
+
+    display: grid;
+    align-items: center;
+    font-family: "DM Sans", sans-serif;
+
+}
+
+.chart-number{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.charts-left{
+    align-items: center;
+    justify-content: center;
+    display: grid
+}
+
+

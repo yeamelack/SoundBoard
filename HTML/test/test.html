@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Grids Layout</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 200vh; /* to simulate scrolling */
+        }
+
+        .grid-left {
+            background-color: #f0f0f0;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .grid-right {
+            background-color: #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+            height: 100vh;
+            position: sticky;
+            top: 20px; /* Adjust this value as needed */
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-left">
+        <!-- Content that will scroll -->
+        <p>Content here will scroll as usual.</p>
+    </div>
+    <div class="grid-right">
+        <!-- Content that stops scrolling after a certain point -->
+        <p>This content will stop scrolling after reaching a certain point.</p>
+    </div>
+</body>
+</html>
