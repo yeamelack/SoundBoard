@@ -1,0 +1,82 @@
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  border-color: rgb(101, 103, 119);
+  width: 73.52%;
+  background-color: rgb(24, 26, 28);
+  border: 1px solid rgb(101, 103, 119);
+  max-height: 450px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.suggestion-item {
+  padding: 3px;
+  height: 70px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  border-radius: 7px;
+  background-color: rgb(24, 26, 28);
+}
+
+.suggestion-item:hover {
+  background-color: rgb(101, 103, 119);
+}
+
+.search-img-container {
+  width: 70px;
+  height: 70px;
+  background-color: rgb(24, 26, 28);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.search-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.search-suggestions-titles-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  color: rgb(207, 207, 207);
+}
+
+.suggested-result-album-title {
+  background-color: rgb(24, 26, 28);
+  border-top-right-radius: 5px;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide any overflowing content */
+  text-overflow: ellipsis; /* Add "..." at the end of the truncated text */
+  padding-top: 3px;
+}
+
+.suggested-result-font {
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  padding-left: 10px;
+  font-size: 15px;
+  font-weight: 550;
+}
+
+.suggested-result-artist-name {
+  background-color: rgb(24, 26, 28);
+  border-bottom-right-radius: 5px;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide any overflowing content */
+  text-overflow: ellipsis; /* Add "..." at the end of the truncated text */
+}
+
+.suggested-result-font-artist {
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  padding-left: 10px;
+  font-size: 15px;
+  font-weight: 450;
+}
