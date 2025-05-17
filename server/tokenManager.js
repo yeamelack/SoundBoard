@@ -30,9 +30,7 @@ async function getAccessToken() {
 
 async function getAuthHeader() {
   await getAccessToken();
-  return { "Authorization": "Bearer " + accessToken};
-  
+  return { Authorization: "Bearer " + accessToken };
 }
-
 
 export default getAuthHeader;

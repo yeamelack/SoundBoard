@@ -1,9 +1,12 @@
 import express from "express";
-import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
-import getAccessToken from "./tokenManager.js";
-import { searchRequest, getDiscography, getAlbumInfo, newRelease } from './searchUtils.js';
+import {
+  searchRequest,
+  getDiscography,
+  getAlbumInfo,
+  newRelease,
+} from "./searchUtils.js";
 
 const app = express();
 app.use(cors());
@@ -30,34 +33,31 @@ app.get("/search", async (req, res) => {
 });
 
 app.get("/discography", async (req, res) => {
-    const query = req.query.q;
-    try {
-      const resJson = await getDiscography(query);
-      if (resJson.length != 0) {
-        res.status(200).send(resJson);
-      } else {
-        res.status(400).send("no results");
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal server error");
+  const query = req.query.q;
+  try {
+    const resJson = await getDiscography(query);
+    if (resJson.length != 0) {
+      res.status(200).send(resJson);
+    } else {
+      res.status(400).send("no results");
     }
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
 
-  app.get("/getAlbumInfo", async (req, res) => {
-    const query = req.query.q;
-    try {
-      const resJson = await getAlbumInfo(query);
-      if (resJson.length != 0) {
-        res.status(200).send(resJson);
-      } else {
-        res.status(400).send("no results");
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal server error");
+app.get("/getAlbumInfo", async (req, res) => {
+  const query = req.query.q;
+  try {
+    const resJson = await getAlbumInfo(query);
+    if (resJson.length != 0) {
+      res.status(200).send(resJson);
+    } else {
+      res.status(400).send("no results");
     }
-  });
-
-
-  console.log( await newRelease())
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
