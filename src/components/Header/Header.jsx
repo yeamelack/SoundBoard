@@ -6,7 +6,6 @@ import UserButton from "./UserButton.jsx";
 import SearchButton from "./SearchButton.jsx";
 import Logo from "./Logo.jsx";
 import "../../styles/Header/Header.css";
-
 import React, { useState, useEffect, useRef } from "react";
 
 function Header() {
@@ -89,13 +88,15 @@ function Header() {
           inputRef={searchInputRef}
         />
         <SearchButton />
-        {isDropdownVisible && searchResults.length > 0 && (
-          <SuggestionDropdown
-            results={searchResults}
-            onClick={handleSuggestionClick}
-            dropdownRef={dropdownRef}
-          />
-        )}
+        {isDropdownVisible &&
+          searchInput.trim().length > 0 &&
+          searchResults.length > 0 && (
+            <SuggestionDropdown
+              results={searchResults}
+              onClick={handleSuggestionClick}
+              dropdownRef={dropdownRef}
+            />
+          )}
       </div>
       <div className="right-section">
         <ChartButton />

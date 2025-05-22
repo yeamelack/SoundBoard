@@ -1,9 +1,13 @@
-import './App.css';
-import Header from './components/Header/Header';
+import "./App.css";
+import Header from "./components/Header/Header";
+import AlbumPage from "./components/Album page/AlbumPage";
 
 function App() {
-  return(
-    <Header />
+  return (
+    <div>
+      <Header/>
+      <AlbumPage />
+    </div>
   );
 }
 export default App;

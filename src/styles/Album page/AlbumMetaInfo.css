@@ -1,0 +1,25 @@
+.album-info {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(24, 26, 28);
+  text-align: center;
+  gap: 14px;
+  
+}
+
+.album-info-text {
+  margin-top: 10px;
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+}
+
+.album-info-text-point {
+  text-align: center;
+  margin-top: 8px;
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}

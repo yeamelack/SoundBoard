@@ -1,13 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import AlbumPage from "./components/Album page/AlbumPage";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// typo was: rounter → should be router
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+
+  {
+    path: "/album",
+    element: <AlbumPage />,
+  },
+
+  {
+    path: "/:artistId/album/:albumId",
+    element: <AlbumPage/>
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
