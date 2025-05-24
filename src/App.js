@@ -94,6 +94,30 @@ function App() {
     },
   ])
 
+  const [similarArtists, setSimilarArtists] = useState([
+    {
+      idx: 1,
+      artistName: "Be Nice 2 me",
+      artistPic: artistPhoto
+
+    },
+    {
+      idx: 2,
+      artistName: "Amygdala",
+      artistPic: artistPhoto
+    },
+    {
+      idx: 3,
+      artistName: "Drama",
+      artistPic: artistPhoto
+    },
+    {
+      idx: 4,
+      artistName: "Reality Surf",
+      artistPic: artistPhoto
+    },
+  ])
+
 
 
   return (
@@ -126,6 +150,7 @@ function App() {
               yourRating={5}
               popularSongs={popularSongs}
               discography={discography}
+              relatedArtists={similarArtists}
             />
           } 
         />

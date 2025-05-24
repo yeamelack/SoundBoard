@@ -7,10 +7,12 @@ import ArtistNavBar from './ArtistNavBar';
 import PopularTracks from './PopularTracks';
 import downloadImg from '../assets/icons/download.png';
 import Discography from './Discography';
+import OptionMenu from './OptionMenu';
+import SimilarArtistList from './SimilarArtistList';
 
 
 
-function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, popularSongs, discography }) {
+function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, popularSongs, discography, relatedArtists }) {
     return (
         <>
             <Header/>
@@ -40,7 +42,13 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
 
 
                     <div className='right-grid'>
-
+                        <OptionMenu/>
+                        <div class="similar-artists">
+                            Similar artists you may like
+                        </div>
+                        <div className="similar-artists-background">
+                            <SimilarArtistList relatedArtists={relatedArtists}/>
+                        </div>
                     </div>
                 </div>
                 
