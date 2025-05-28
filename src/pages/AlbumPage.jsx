@@ -1,21 +1,21 @@
-import "../../styles/Album page/AlbumPage.css";
-import Header from "../Header/Header.jsx";
+import "../styles/Album page/AlbumPage.css";
+import Header from "../components/Header/Header.jsx";
 
-import AlbumArt from "./AlbumArt.jsx";
-import AlbumTitle from "./AlbumTitle.jsx";
-import AlbumMetaInfo from "./AlbumMetaInfo.jsx";
-import ArtistButton from "./ArtistButton.jsx";
-import ArtistRatings from "./ArtistRating.jsx";
-import AlbumPageNavigationBar from "./AlbumPageNavigationBar";
-import TopTracks from "./TopTracks.jsx";
-import UsersReviews from "./UsersReviews";
-import SpotifyReviewButtons from "./SpotifyReviewButtons";
-import MoreFromSection from "./MoreFromSection";
+import AlbumArt from "../components/Album page/AlbumArt.jsx";
+import AlbumTitle from "../components/Album page/AlbumTitle.jsx";
+import AlbumMetaInfo from "../components/Album page/AlbumMetaInfo.jsx";
+import ArtistButton from "../components/Album page/ArtistButton.jsx";
+import ArtistRatings from "../components/Album page/ArtistRating.jsx";
+import AlbumPageNavigationBar from "../components/Album page/AlbumPageNavigationBar";
+import TopTracks from "../components/Album page/TopTracks.jsx";
+import UsersReviews from "../components/Album page/UsersReviews";
+import SpotifyReviewButtons from "../components/Album page/SpotifyReviewButtons";
+import MoreFromSection from "../components/Album page/MoreFromSection";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function AlbumPage() {
-  const { albumId, artistId } = useParams();
+  const {artistId, albumId } = useParams();
   const [albumInfo, setAlbumInfo] = useState("");
   const albumUrl = `http://localhost:8484/getAlbumInfo?q=${albumId}`;
 
@@ -101,7 +101,7 @@ function AlbumPage() {
               <div className="flex-text-container">
                 <AlbumTitle title={albumInfo.name} />
                 <AlbumMetaInfo
-                  type={albumInfo.album_type}
+                  type={albumInfo.album_type.charAt(0).toUpperCase() + String(albumInfo.album_type).slice(1)}
                   year={new Date(albumInfo.release_date).getFullYear()}
                   trackCount={albumInfo.total_tracks}
                 />

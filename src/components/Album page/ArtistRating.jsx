@@ -1,4 +1,4 @@
-import "../../styles/Album page/ArtistRatings.css"; 
+import "../../styles/Album page/ArtistRatings.css";
 
 function ArtistRatings({
   totalRatings = 0,
@@ -22,8 +22,8 @@ function ArtistRatings({
 
           <div className="rating-out-of-five-container">
             <div className="center-ratings">
-              <div className="rating-out-of-five">
-                <span className="slash5"> {averageRating} / 5</span>
+              <div className="total-rating">
+                <span className="slash5">{averageRating} / 5</span>
               </div>
               <div className="average-rating">Average rating</div>
             </div>
@@ -31,18 +31,18 @@ function ArtistRatings({
 
           <div className="total-rating-container">
             <div className="center-ratings">
-              <div className="rating-out-of-five">
-                <div className="user-rating">
-                  <span className="slash5"> {userRating} / 5</span>
-                </div>
-                <div className="average-rating">Your rating</div>
+              <div className="total-rating">
+                <span className="slash5">{userRating} / 5</span>
               </div>
+              <div className="average-rating">Your rating</div>
             </div>
           </div>
         </div>
 
         <div className="review-button-container">
-          <button className="review-button-artist">Review</button>
+          <button className="review-button-artist" onClick={onReviewClick}>
+            Review
+          </button>
         </div>
       </div>
     </div>

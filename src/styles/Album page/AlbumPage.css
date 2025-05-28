@@ -28,6 +28,8 @@
   margin-left: 20px;
   align-items: flex-end;
   padding-bottom: 25px;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex-text-container {
@@ -35,6 +37,8 @@
   flex-direction: column;
   background-color: rgb(24, 26, 28);
   margin-bottom: 10px;
+  justify-content: center;
+  align-content: center;
 }
 
 .ratings-flex-container {

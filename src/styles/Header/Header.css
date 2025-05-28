@@ -13,10 +13,15 @@
   left: 0;
   right: 0;
   z-index: 100;
+  
+
+  padding-left: 100px;
+  padding-right: 100px;
+
 }
 
 .left-section {
-  width: 300px;
+  width: 190px;
   flex-shrink: 0;
   min-width: 100px;
 }
@@ -24,6 +29,7 @@
 /* search section of header*/
 .middle-section {
   display: flex;
+  max-width: 730px;
   flex: 1.2;
   align-items: center;
   justify-content: center;
@@ -37,4 +43,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* padding-right: 100px; */
 }

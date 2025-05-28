@@ -1,0 +1,15 @@
+.homepage-grid {
+  display: grid;
+  grid-template-rows: 57px 1fr 1fr; /* Corrected property name */
+}
+
+.review-section {
+  background-color: red;
+  height: 200px;
+
+}
+
+.popular-this-week {
+  background-color: yellow;
+  height: 100px;
+}

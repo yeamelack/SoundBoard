@@ -1,0 +1,13 @@
+.popular-album {
+  display: flex;
+  flex-direction: column;
+}
+
+.album-img {
+  height: 158px;
+  width: 158px;
+}
+
+.img {
+
+}
