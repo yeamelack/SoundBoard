@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function AlbumPage() {
-  const {artistId, albumId } = useParams();
+  const { artistId, albumId } = useParams();
   const [albumInfo, setAlbumInfo] = useState("");
   const albumUrl = `http://localhost:8484/getAlbumInfo?q=${albumId}`;
 
@@ -37,7 +37,6 @@ function AlbumPage() {
     }
     fetchAlbums();
   }, [artistId]);
-  
 
   useEffect(() => {
     async function getAlbumData() {
@@ -101,7 +100,10 @@ function AlbumPage() {
               <div className="flex-text-container">
                 <AlbumTitle title={albumInfo.name} />
                 <AlbumMetaInfo
-                  type={albumInfo.album_type.charAt(0).toUpperCase() + String(albumInfo.album_type).slice(1)}
+                  type={
+                    albumInfo.album_type.charAt(0).toUpperCase() +
+                    String(albumInfo.album_type).slice(1)
+                  }
                   year={new Date(albumInfo.release_date).getFullYear()}
                   trackCount={albumInfo.total_tracks}
                 />

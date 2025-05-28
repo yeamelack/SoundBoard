@@ -23,11 +23,11 @@
   align-items: center;
   border-radius: 10px;
   background-color: rgb(43, 45, 46);
-  transition: background-color 0.15s, opacity .15s;
-  max-width:740px ;
+  transition: background-color 0.15s, opacity 0.15s;
+  max-width: 740px;
 }
 
-.indv-track-container{
+.indv-track-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -58,7 +58,7 @@
   text-overflow: ellipsis;
 }
 
-.track-title{
+.track-title {
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -70,10 +70,26 @@
   color: rgba(160, 161, 164, 1);
 }
 
+.show-more-button:hover,
 .tracks:hover {
   background-color: rgb(62, 64, 66);
 }
-
+.show-more-button:active,
 .tracks:active {
   opacity: 0.5;
+}
+
+.show-more-button {
+  width: 100%;
+  background-color: rgb(43, 45, 46);
+  border: 0px;
+  height: 35px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.Show-More-Text,
+.Show-Less-Text {
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
 }
