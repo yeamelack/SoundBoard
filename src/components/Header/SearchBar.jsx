@@ -1,12 +1,19 @@
 import "../../styles/Header/SearchBar.css";
 
-function SearchBar({ value, onChange, onFocus, inputRef }) {
+function SearchBar({
+  value,
+  onChange,
+  onFocus,
+  inputRef,
+  className,
+  placeholder,
+}) {
   return (
     <input
       ref={inputRef}
-      className="search-bar"
+      className={className}
       type="search"
-      placeholder="Search"
+      placeholder={placeholder}
       onChange={onChange}
       value={value}
       onFocus={onFocus}

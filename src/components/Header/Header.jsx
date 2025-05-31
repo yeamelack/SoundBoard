@@ -86,8 +86,11 @@ function Header() {
           onChange={getSearchInput}
           onFocus={handleInputFocus}
           inputRef={searchInputRef}
+          className="search-bar"
+          placeholder="Search"
         />
         <SearchButton />
+        {console.log(searchResults)}
         {isDropdownVisible &&
           searchInput.trim().length > 0 &&
           searchResults.length > 0 && (
@@ -95,6 +98,8 @@ function Header() {
               results={searchResults}
               onClick={handleSuggestionClick}
               dropdownRef={dropdownRef}
+              className="suggestions-dropdown"
+              route="album page"
             />
           )}
       </div>

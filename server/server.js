@@ -109,3 +109,20 @@ app.get("/artist", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
+
+app.get("/newrelease", async (req, res) => {
+  const query = req.query.q; // artistId
+  try {
+    const artistInfo = await newRelease(query); // renamed to avoid conflict
+    // console.log(artistInfo);
+    if (artistInfo) {
+      res.status(200).send(artistInfo); // send artist info or replace with relevant data
+    } else {
+      res.status(404).send("Artist not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});

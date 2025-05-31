@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function MoreFromSection({ artistId, albumId, artistAlbums }) {
-
-
   return (
     <div className="more-from">
       <div className="more-from-background">

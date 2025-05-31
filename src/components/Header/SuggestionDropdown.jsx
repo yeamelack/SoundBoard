@@ -2,11 +2,40 @@ import React from "react";
 import "../../styles/Header/SuggestionDropdown.css";
 import { Link } from "react-router-dom";
 
-function SuggestionDropdown({ results, onClick, dropdownRef }) {
+function SuggestionDropdown({
+  results,
+  onClick,
+  dropdownRef,
+  className,
+  route,
+  popUpOnClick,
+}) {
+  function getRoute(route, results) {
+    console.log("getRoute called with:", route, results);
+    console.log(`/${results.artists?.[0]?.id}/album/${results.id}`);
+
+    if (route === "album page") {
+      return `/${results.artists?.[0]?.id}/album/${results.id}`;
+    } else if (route === "quick review") {
+      return `/artist/${results.artists?.[0]?.id}`;
+    } else {
+      return `/unknown`;
+    }
+  }
+
   return (
-    <div ref={dropdownRef} className="suggestions-dropdown">
+    <div ref={dropdownRef} className={className}>
       {results.map((result, index) => (
-        <Link key={result.id} to={`/${result.artists[0].id}/album/${result.id}`}>
+        <Link
+          key={result.id}
+          to={getRoute(route, result)}
+          onClick={(e) => {
+            if (route === "quick review") {
+              e.preventDefault();
+              popUpOnClick(result);
+            }
+          }}
+        >
           <div
             key={index}
             className="suggestion-item"

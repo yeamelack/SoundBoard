@@ -136,20 +136,23 @@ function AlbumPage() {
             </div>
             {/* Right Side */}
             <div className="right-side">
-              {/* <div className="el"> */}
               <SpotifyReviewButtons
                 spotifyLink={albumInfo.external_urls.spotify}
               />
 
-              <div className="more-from-title">
-                More From {albumInfo.artists[0].name}
-              </div>
-              <MoreFromSection
-                artistId={albumInfo.artists[0].id}
-                albumId={albumId}
-                artistAlbums={artistAlbums}
-              />
-              {/* </div> */}
+              {artistAlbums.filter((album) => album.id !== albumId).length >
+                0 && (
+                <>
+                  <div className="more-from-title">
+                    More From {albumInfo.artists[0].name}
+                  </div>
+                  <MoreFromSection
+                    artistId={albumInfo.artists[0].id}
+                    albumId={albumId}
+                    artistAlbums={artistAlbums}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

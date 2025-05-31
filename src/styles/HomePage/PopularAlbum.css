@@ -1,13 +1,66 @@
-.popular-album {
+.album-container {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  height: 100%;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.popular-this-week-img {
+  height: 150px;
+  border-radius: 10px;
+}
+
+.album-title-artst-name-container {
   display: flex;
   flex-direction: column;
 }
 
-.album-img {
-  height: 158px;
-  width: 158px;
+.popular-this-week-album-img-container {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.img {
+.popular-this-week-album-title-container {
+  height: 30px;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.popular-this-week-artist-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+}
+
+.popular-this-week-album-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  margin-top: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popular-this-week-album-title:hover {
+  text-decoration: underline;
+}
+
+.popular-this-week-artist-name {
+  font-size: 14px;
+  color: rgb(160, 161, 164);
+  font-family: "DM Sans", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

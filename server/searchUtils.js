@@ -69,7 +69,7 @@ export async function getAlbumInfo(album_id) {
 }
 
 export async function newRelease() {
-  const endpoint = `https://api.spotify.com/v1/browse/new-releases`;
+  const endpoint = `https://api.spotify.com/v1/browse/new-releases?include_groups=market=US`;
   const headers = await getAuthHeader();
   const res = await axios.get(endpoint, { headers });
   return res.data.albums.items;
