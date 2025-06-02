@@ -33,4 +33,40 @@ async function getAuthHeader() {
   return { Authorization: "Bearer " + accessToken };
 }
 
-export default getAuthHeader;
+//Last.fm API
+let sessionKey = null;
+
+const API_KEY = process.env.LASTFM_API_KEY;
+const API_SECRET = process.env.LASTFM_API_SECRET;
+
+// Signature generator (sorted keys + shared secret)
+function getApiSignature(params) {
+  const keys = Object.keys(params).sort();
+  const baseString = keys.map((k) => `${k}${params[k]}`).join("") + API_SECRET;
+  return crypto.createHash("md5").update(baseString).digest("hex");
+}
+
+// Get session key using auth token (user must approve your app first)
+async function getSessionKey(token) {
+  if (sessionKey) return sessionKey;
+
+  const params = {
+    method: "auth.getSession",
+    api_key: API_KEY,
+    token: token,
+  };
+  const api_sig = getApiSignature(params);
+
+  const res = await axios.get("https://ws.audioscrobbler.com/2.0/", {
+    params: {
+      ...params,
+      api_sig,
+      format: "json",
+    },
+  });
+
+  sessionKey = res.data.session.key;
+  return sessionKey;
+}
+
+export default { getAuthHeader, getSessionKey };

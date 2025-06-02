@@ -10,6 +10,7 @@ function ReviewBoxSearch({
   currentSearch,
   searchResults,
   onClick,
+  className,
 }) {
   const [popUpState, setPopUpState] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -31,7 +32,10 @@ function ReviewBoxSearch({
   }, [popUpState, selectedItem]);
 
   return (
-    <div className="review-box-default-container">
+    <div
+      className={className}
+     
+    >
       <SearchBar
         className="review-box-search"
         placeholder="What have you been listening to?"

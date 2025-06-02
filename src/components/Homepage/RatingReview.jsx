@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 function RatingReview({ rating, setRating }) {
-  const [hoveredRating, setHoveredRating] = useState(0);
-
+  const [hover, setHover] = useState(0);
+  console.log(rating);
+  
   return (
     <div>
       {[1, 2, 3, 4, 5].map((star) => (
@@ -11,13 +12,22 @@ function RatingReview({ rating, setRating }) {
           className="star"
           style={{
             cursor: "pointer",
-            color: (hoveredRating || rating) >= star ? "gold" : "gray",
-            fontSize: "35px",
-            transition: "color 0.2s ease",
+            color: 
+              // If hovering on a star above current rating, use hover logic
+              hover > rating && star <= hover ? "gold" :
+              // If not hovering or hovering on rated stars, use rating logic
+              star <= rating ? "gold" : "gray",
+            fontSize: "30px",
+            opacity: hover >= rating  ? 0.7 : 1,
           }}
+          onMouseEnter={() => {
+            // Only set hover if star is above current rating
+            if (star > rating) {
+              setHover(star);
+            }
+          }}
+          onMouseLeave={() => setHover(0)}
           onClick={() => setRating(star)}
-          onMouseEnter={() => setHoveredRating(star)}
-          onMouseLeave={() => setHoveredRating(0)}
         >
           ★
         </span>
@@ -26,4 +36,4 @@ function RatingReview({ rating, setRating }) {
   );
 }
 
-export default RatingReview;
+export default RatingReview

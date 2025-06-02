@@ -5,7 +5,7 @@ import RatingReview from "./RatingReview.jsx";
 import { useState, useEffect } from "react";
 import React from "react";
 
-function ReviewBox({ result }) {
+function ReviewBox({ result, toggleVisiablity }) {
   const [rating, setRating] = useState(0);
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
 
@@ -17,6 +17,10 @@ function ReviewBox({ result }) {
 
   const closeOverlay = () => {
     setOverlayVisiablity(false);
+    setRating(0);
+    if (typeof toggleVisiablity === "function") {
+      toggleVisiablity();
+    }
   };
 
   return (

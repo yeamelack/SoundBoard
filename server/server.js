@@ -9,6 +9,7 @@ import {
   getSingles,
   getArtistsTopTracks,
   getArtistInfo,
+  getSimilarArtists,
 } from "./searchUtils.js";
 
 const app = express();
@@ -30,7 +31,7 @@ app.get("/search", async (req, res) => {
       res.status(400).send("no results");
     }
   } catch (error) {
-    console.error(error);
+    console.error(error.message); 
     res.status(500).send("Internal server error");
   }
 });
@@ -76,7 +77,7 @@ app.get("/getAlbumInfo", async (req, res) => {
       res.status(400).send("no results");
     }
   } catch (error) {
-    console.error(error);
+    console.error(error.message); 
     res.status(500).send("Internal server error");
   }
 });
@@ -89,7 +90,7 @@ app.get("/getTopTracks", async (req, res) => {
       res.status(200).send(trackNames);
     }
   } catch (error) {
-    console.error(error);
+    console.error(error.message); 
     res.status(500).send("Internal server error");
   }
 });
@@ -105,11 +106,10 @@ app.get("/artist", async (req, res) => {
       res.status(404).send("Artist not found");
     }
   } catch (error) {
-    console.error(error);
+    console.error(error.message); 
     res.status(500).send("Internal server error");
   }
 });
-
 
 app.get("/newrelease", async (req, res) => {
   const query = req.query.q; // artistId
@@ -122,7 +122,23 @@ app.get("/newrelease", async (req, res) => {
       res.status(404).send("Artist not found");
     }
   } catch (error) {
-    console.error(error);
+    console.error(error.message); 
+    res.status(500).send("Internal server error");
+  }
+});
+
+app.get("/relatedArtists", async (req, res) => {
+  const query = req.query.q; // artistId
+  try {
+    const artistInfo = await getSimilarArtists(query); // renamed to avoid conflict
+
+    if (artistInfo) {
+      res.status(200).send(artistInfo); // send artist info or replace with relevant data
+    } else {
+      res.status(404).send("Artist not found");
+    }
+  } catch (error) {
+    console.error(error.message); 
     res.status(500).send("Internal server error");
   }
 });

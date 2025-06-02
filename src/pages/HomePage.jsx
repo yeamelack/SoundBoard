@@ -33,7 +33,7 @@ function HomePage() {
       } else {
         setSearchResults([]); // Clear results when input is empty
       }
-    }, 150);
+    }, 250);
 
     return () => clearTimeout(delay);
   }, [searchInput]);
@@ -42,7 +42,7 @@ function HomePage() {
     if (typeof suggestion === "string") {
       setSearchInput(suggestion);
     } else {
-      setSearchInput(""); // fallback for things like `false`
+      setSearchInput(""); 
     }
     setSearchResults([]);
     setIsDropdownVisible(false);
@@ -88,6 +88,7 @@ function HomePage() {
           currentSearch={getSearchInput}
           searchResults={searchResults}
           onClick={handleSuggestionClick}
+          className="review-box-default-container"
         />
       </div>
 

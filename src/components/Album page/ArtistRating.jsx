@@ -1,11 +1,18 @@
+import { useState } from "react";
 import "../../styles/Album page/ArtistRatings.css";
+import ReviewBox from "../Homepage/ReviewBox";
 
 function ArtistRatings({
   totalRatings = 0,
   averageRating = 0,
   userRating = 0,
-  onReviewClick,
+  albumInfo,
 }) {
+  const [overlayVisiablity, setOverlayVisiablity] = useState(false);
+
+  const toggleVisiablity = () => {
+    setOverlayVisiablity(!overlayVisiablity);
+  };
   return (
     <div className="artist-ratings">
       <div className="artist-ratings-top"></div>
@@ -40,9 +47,17 @@ function ArtistRatings({
         </div>
 
         <div className="review-button-container">
-          <button className="review-button-artist" onClick={onReviewClick}>
+          <button className="review-button-artist" onClick={toggleVisiablity}>
             Review
           </button>
+          {overlayVisiablity && (
+            <div className="overlay">
+              <ReviewBox
+                result={albumInfo}
+                toggleVisiablity={toggleVisiablity}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

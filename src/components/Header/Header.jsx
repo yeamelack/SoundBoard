@@ -36,7 +36,7 @@ function Header() {
       } else {
         setSearchResults([]); // Clear results when input is empty
       }
-    }, 150);
+    }, 250);
 
     return () => clearTimeout(delay);
   }, [searchInput]);
@@ -90,7 +90,7 @@ function Header() {
           placeholder="Search"
         />
         <SearchButton />
-        {console.log(searchResults)}
+
         {isDropdownVisible &&
           searchInput.trim().length > 0 &&
           searchResults.length > 0 && (

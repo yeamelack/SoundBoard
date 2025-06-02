@@ -114,7 +114,7 @@ function AlbumPage() {
               </div>
             </div>
             <div className="ratings-flex-container">
-              <ArtistRatings />
+              <ArtistRatings albumInfo={albumInfo}/>
             </div>
           </div>
           {/* Navigation */}
