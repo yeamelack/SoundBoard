@@ -114,7 +114,7 @@ function AlbumPage() {
               </div>
             </div>
             <div className="ratings-flex-container">
-              <ArtistRatings albumInfo={albumInfo}/>
+              <ArtistRatings albumInfo={albumInfo} />
             </div>
           </div>
           {/* Navigation */}
@@ -138,6 +138,7 @@ function AlbumPage() {
             <div className="right-side">
               <SpotifyReviewButtons
                 spotifyLink={albumInfo.external_urls.spotify}
+                result={albumInfo}
               />
 
               {artistAlbums.filter((album) => album.id !== albumId).length >

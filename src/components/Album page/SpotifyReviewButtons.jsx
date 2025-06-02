@@ -1,11 +1,23 @@
+import { useState } from "react";
 import "../../styles/Album page/SpotifyReviewButtons.css";
+import ReviewBox from "../Homepage/ReviewBox";
 
-function SpotifyReviewButtons({ spotifyLink }) {
+function SpotifyReviewButtons({ result, spotifyLink }) {
+  const [overlayVisiablity, setOverlayVisiablity] = useState(false);
+  const toggleOverlay = () => {
+    setOverlayVisiablity(!overlayVisiablity);
+  };
   return (
     <div className="menu-options">
-      <div className="write-review-button">
+      <div className="write-review-button" onClick={toggleOverlay}>
+        {overlayVisiablity && (
+          <div className="overlay">
+            <ReviewBox result={result} />
+          </div>
+        )}
         <p className="write-review-text">Write a review</p>
       </div>
+
       <a
         className="listen-on-spotify-button"
         href={spotifyLink}
