@@ -7,23 +7,28 @@ import HomePage from "./pages/HomePage";
 import AlbumPage from "./pages/AlbumPage";
 
 
-// typo was: rounter → should be router
+import ScrollToTop from "./misc/ScrollToTop"; 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
-  },
-
-  {
-    path: "/album",
-    element: <AlbumPage />,
-  },
-
-  {
-    path: "/:artistId/album/:albumId",
-    element: <AlbumPage/>
+    element: <ScrollToTop />, 
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "album",
+        element: <AlbumPage />,
+      },
+      {
+        path: ":artistId/album/:albumId",
+        element: <AlbumPage />,
+      },
+    ],
   },
 ]);
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

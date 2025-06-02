@@ -20,6 +20,15 @@ function AlbumPage() {
   const albumUrl = `http://localhost:8484/getAlbumInfo?q=${albumId}`;
 
   const [artistAlbums, setArtistAlbums] = useState([]);
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    setFadeIn(false); // Reset fade
+    const timer = setTimeout(() => setFadeIn(true), 500); // Small delay
+    {console.log("Current fade state:", fadeIn)}
+
+    return () => clearTimeout(timer);
+  }, [albumId]);
 
   useEffect(() => {
     const url = `http://localhost:8484/albums?q=${artistId}`;
@@ -86,79 +95,81 @@ function AlbumPage() {
   }
 
   return (
-    <div>
+    <>
       <Header />
-      <div className="margin">
-        <div className="album-banner-container">
-          <div className="album-banner-rows">
-            {console.log(albumInfo)}
-            <AlbumArt
-              artLink={albumInfo.images[0].url}
-              albumName={albumInfo.name}
-            />
-            <div className="album-info-container">
-              <div className="flex-text-container">
-                <AlbumTitle title={albumInfo.name} />
-                <AlbumMetaInfo
-                  type={
-                    albumInfo.album_type.charAt(0).toUpperCase() +
-                    String(albumInfo.album_type).slice(1)
-                  }
-                  year={new Date(albumInfo.release_date).getFullYear()}
-                  trackCount={albumInfo.total_tracks}
-                />
-                <ArtistButton
-                  artistPicture={artistInfo.images[0].url}
-                  artistName={artistInfo.name}
-                />
-              </div>
-            </div>
-            <div className="ratings-flex-container">
-              <ArtistRatings albumInfo={albumInfo} />
-            </div>
-          </div>
-          {/* Navigation */}
-          <AlbumPageNavigationBar />
-          {/* Main Grid */}
-          <div className="grid-below-nav">
-            {/* Left Side */}
-            <div className="left-grid">
-              <div className="left-grid-row">
-                <div className="track-list">
-                  <p className="tracks-font">Tracklist</p>
-                  <TopTracks trackList={albumInfo.tracks} />
-                </div>
-                <div className="reviews-box">
-                  <p className="review-text">Reviews</p>
-                  <UsersReviews amountOfReviews={0} />
-                </div>
-              </div>
-            </div>
-            {/* Right Side */}
-            <div className="right-side">
-              <SpotifyReviewButtons
-                spotifyLink={albumInfo.external_urls.spotify}
-                result={albumInfo}
+      <div className={`album-page-wrapper ${fadeIn ? "fade-in" : "fade-out"}`}>
+        <div className="margin">
+          <div className="album-banner-container">
+            <div className="album-banner-rows">
+              {console.log(albumInfo)}
+              <AlbumArt
+                artLink={albumInfo.images[0].url}
+                albumName={albumInfo.name}
               />
-
-              {artistAlbums.filter((album) => album.id !== albumId).length >
-                0 && (
-                <>
-                  <div className="more-from-title">
-                    More From {albumInfo.artists[0].name}
-                  </div>
-                  <MoreFromSection
-                    artistId={albumInfo.artists[0].id}
-                    albumId={albumId}
-                    artistAlbums={artistAlbums}
+              <div className="album-info-container">
+                <div className="flex-text-container">
+                  <AlbumTitle title={albumInfo.name} />
+                  <AlbumMetaInfo
+                    type={
+                      albumInfo.album_type.charAt(0).toUpperCase() +
+                      String(albumInfo.album_type).slice(1)
+                    }
+                    year={new Date(albumInfo.release_date).getFullYear()}
+                    trackCount={albumInfo.total_tracks}
                   />
-                </>
-              )}
+                  <ArtistButton
+                    artistPicture={artistInfo.images[0].url}
+                    artistName={artistInfo.name}
+                  />
+                </div>
+              </div>
+              <div className="ratings-flex-container">
+                <ArtistRatings albumInfo={albumInfo} />
+              </div>
+            </div>
+            {/* Navigation */}
+            <AlbumPageNavigationBar />
+            {/* Main Grid */}
+            <div className="grid-below-nav">
+              {/* Left Side */}
+              <div className="left-grid">
+                <div className="left-grid-row">
+                  <div className="track-list">
+                    <p className="tracks-font">Tracklist</p>
+                    <TopTracks trackList={albumInfo.tracks} />
+                  </div>
+                  <div className="reviews-box">
+                    <p className="review-text">Reviews</p>
+                    <UsersReviews amountOfReviews={0} />
+                  </div>
+                </div>
+              </div>
+              {/* Right Side */}
+              <div className="right-side">
+                <SpotifyReviewButtons
+                  spotifyLink={albumInfo.external_urls.spotify}
+                  result={albumInfo}
+                />
+
+                {artistAlbums.filter((album) => album.id !== albumId).length >
+                  0 && (
+                  <>
+                    <div className="more-from-title">
+                      More From {albumInfo.artists[0].name}
+                    </div>
+                    <MoreFromSection
+                      artistId={albumInfo.artists[0].id}
+                      albumId={albumId}
+                      artistAlbums={artistAlbums}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

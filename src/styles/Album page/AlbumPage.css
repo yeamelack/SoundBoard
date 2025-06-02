@@ -120,3 +120,11 @@
     margin-bottom: 12px;
 }
 
+.album-page-wrapper {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.album-page-wrapper.fade-in {
+  opacity: 1;
+}

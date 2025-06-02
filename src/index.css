@@ -27,3 +27,16 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.page-wrapper {
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+}
+
+.page-wrapper.fade-in {
+  opacity: 1;
+}
+
+.page-wrapper.fade-out {
+  opacity: 0;
+}
