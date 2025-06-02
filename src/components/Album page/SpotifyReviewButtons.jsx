@@ -10,13 +10,13 @@ function SpotifyReviewButtons({ result, spotifyLink }) {
   return (
     <div className="menu-options">
       <div className="write-review-button" onClick={toggleOverlay}>
-        {overlayVisiablity && (
-          <div className="overlay">
-            <ReviewBox result={result} />
-          </div>
-        )}
         <p className="write-review-text">Write a review</p>
       </div>
+      {overlayVisiablity && (
+        <div className="overlay">
+          <ReviewBox result={result} toggleVisiablity={toggleOverlay} />
+        </div>
+      )}
 
       <a
         className="listen-on-spotify-button"
