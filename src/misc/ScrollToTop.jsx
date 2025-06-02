@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 
-export default function ScrollToTopLayout() {
+export default function  ScrollToTopLayout() {
   const location = useLocation();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     setShow(false); // Start with hidden
-    const timeout = setTimeout(() => setShow(true), 100); // Delay fade-in
+    const timeout = setTimeout(() => setShow(true), 450); // Delay fade-in
 
     // Scroll to top every route change
     window.scrollTo(0, 0);

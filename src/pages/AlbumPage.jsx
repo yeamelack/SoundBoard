@@ -24,8 +24,10 @@ function AlbumPage() {
 
   useEffect(() => {
     setFadeIn(false); // Reset fade
-    const timer = setTimeout(() => setFadeIn(true), 500); // Small delay
-    {console.log("Current fade state:", fadeIn)}
+    const timer = setTimeout(() => setFadeIn(true), 450); // Small delay
+    {
+      console.log("Current fade state:", fadeIn);
+    }
 
     return () => clearTimeout(timer);
   }, [albumId]);
@@ -91,7 +93,7 @@ function AlbumPage() {
     !albumInfo.artists[0]?.id ||
     !artistInfo?.images?.length
   ) {
-    return <div style={{ color: "white" }}>Loading album info...</div>;
+    return; //<div style={{ color: "white" }}>Loading album info...</div>
   }
 
   return (
