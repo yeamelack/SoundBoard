@@ -1,0 +1,33 @@
+.search-bar {
+  display: block;
+  width: 75%;
+  height: 40px;
+  min-width: 100px;
+  border-radius: 50px;
+  border-style: solid;
+  border-color: rgb(50, 51, 54);
+  background-color: rgb(50, 51, 54);
+  padding-left: 17px;
+  color: rgb(202, 202, 202);
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 40px;
+}
+
+/* remove x from the search bar */
+.search-bar::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-bar::placeholder {
+  color: rgb(184, 181, 181);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 550;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: rgb(101, 103, 119);
+}

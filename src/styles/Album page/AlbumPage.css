@@ -1,0 +1,122 @@
+/* AlbumPage Component Div CSS Summary */
+
+
+.margin{
+  margin-top: 100px;
+  max-width: 1200px;
+}
+/* Main Banner Layout */
+.album-banner-container {
+  display: grid;
+  grid-template-rows: 350px 52px 1fr;
+  background-color: rgb(24, 26, 28);
+  width: 100%;
+}
+
+.album-banner-rows {
+  background-color: rgb(24, 26, 28);
+  display: grid;
+  grid-template-columns: 300px 1fr 517px;
+}
+
+/* Album Info Section */
+.album-info-container {
+  display: flex;
+  background-color: rgb(24, 26, 28);
+  flex: 1 1 200px;
+  max-width: fit-content;
+  margin-left: 20px;
+  align-items: flex-end;
+  padding-bottom: 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-text-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(24, 26, 28);
+  margin-bottom: 10px;
+  justify-content: center;
+  align-content: center;
+}
+
+.ratings-flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Below Navigation Layout */
+.grid-below-nav {
+  background-color: lightgrey;
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  height: fit-content;
+  margin-bottom: 50px;
+}
+
+/* Left Side Grid */
+.left-grid {
+  background-color: rgb(24, 26, 28);
+  display: grid;
+  grid-template-rows: fit-content 1fr;
+}
+
+.left-grid-row {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.reviews-box {
+  display: grid;
+  grid-template-rows: 40px;
+  margin-top: 30px;
+  padding-right: 10px;
+}
+
+/* Right Side Grid */
+
+
+/* .right-grid {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(24, 26, 28);
+} */
+
+.right-side{
+  display: grid;
+  grid-template-rows: 200px 50px 1fr;
+  background-color: rgb(24, 26, 28);
+
+}
+
+/* .el {
+  display: grid;
+  grid-template-rows: 200px 50px 1fr;
+  position: sticky;
+  top: 30px;
+} */
+
+/* More From Section */
+.more-from-title {
+  display: grid;
+  align-items: center;
+  margin-left: 30px;
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.review-text,
+.tracks-font{
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-size: 23px;
+    margin:0;
+    margin-bottom: 12px;
+}
+

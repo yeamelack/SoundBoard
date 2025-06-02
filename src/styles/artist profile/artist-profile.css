@@ -1,0 +1,531 @@
+
+/* page grid setup */
+.artist-profile-body{
+    margin-left: 103px;
+    margin-right: 103px;
+    background-color: rgb(24, 26, 28);
+}
+
+.artist-profile-page-grid{
+    margin-top: 56px;
+    background-color: rgb(24, 26, 28);
+    height: 1300px;
+    display: grid;
+    grid-template-rows: 300px 52px 1fr;
+}
+
+/* aritst proflie and reviews */
+.artist-header{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 1fr 600px;
+}
+
+.artist-info-container{
+    margin-left: 10px;
+    display: flex;
+    background-color: rgb(24, 26, 28);
+
+    flex: 1 200px;
+    align-items: center;
+}
+
+.artist-profile-img{
+    width: 200px;
+    border-radius: 100px;
+}
+
+.artist-name-container{
+    margin-left: 40px;
+}
+
+.artist-name{
+    color: white;
+    font-family: "DM Sans", sans-serif;
+    font-size: 60px;
+    font-weight: 505;
+
+}
+
+.artist-ratings{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-rows: 100px 1fr;
+}
+
+.artist-ratings-top{
+    background-color: rgb(24, 26, 28);
+    width: 100%;
+}
+
+.artist-ratings-bottom{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+}
+
+.rating-container{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr ;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    color: rgb(207, 207, 207);
+}
+
+.total-rating{
+    background-color: rgb(24, 26, 28);
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+.user-rating,
+.rating-out-of-five{
+    background-color: rgb(24, 26, 28);
+    text-align: center;
+    margin: 10px;
+}
+
+
+
+.dark-elements{
+   color: rgb(116, 114, 114);
+   font-family: "DM Sans", sans-serif;
+   padding: 0px;
+}
+
+.rating-container-text{
+    color: rgb(207, 207, 207);
+    font-family: "DM Sans", sans-serif;
+    font-size: 18px;
+    padding: 0px;
+    margin: 10px;
+}
+
+.your-rating,
+.average-rating,
+.total-rating{
+    color: rgb(207, 207, 207);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    padding: 0px;
+    font-weight: 500;
+}
+
+
+
+.review-button-artist{
+    width: 508px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: rgb(50, 51, 54);
+    border: none;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600;
+    font-style: bold;
+    color: rgb(207, 207, 207);
+    cursor: pointer;
+    transition: background-color .15s, opacity .15s;
+    margin-left: 9px;
+}
+
+.review-button-artist:hover{
+    background-color:rgb(82, 84, 96);
+}
+
+.review-button-artist:active{
+    opacity: .5
+}
+
+.slash5{
+    font-family: "DM Sans", sans-serif;
+    color: rgb(116, 114, 114);
+    font-size: 18px;
+}
+
+.total-rating-container,
+.user-rating-container,
+.rating-out-of-five-container{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    flex-direction: column; 
+    border: solid;
+    border-left: 1px;
+    border-top: none;
+    border-bottom: none;
+    border-color: rgb(39, 38, 38);
+    align-items: center;
+    justify-items: center;
+}
+
+.total-rating-container{
+    border: none;
+    width: 201.5px;
+}
+
+.center-ratings{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+/* navbar */
+.artist-page-navbar{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 100px 150px;
+    border: solid;
+    border: 0px;
+    border-bottom-width: 1.5px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(39, 38, 38);    
+}
+
+.home-button-grid{
+    background-color: rgb(24, 26, 28);
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    align-items: center;
+    justify-items: center;
+    margin-left: 10px;
+}
+
+.button-container{
+    flex: 0 0 46px;
+    text-align: center;
+    width: 100%;
+}
+
+.home-nav-button-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+}
+
+.home-button{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    background-color: rgb(24, 26, 28);
+    border: none;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 580;
+    font-style: bold;
+    color: rgb(105, 199, 236);
+    cursor: pointer;
+    background-color:rgba(82, 84, 96, .2);
+    transition: background-color .15s, opacity .15s;
+}
+
+.discog-button{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    background-color: rgb(24, 26, 28);
+    border: none;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 580;
+    font-style: bold;
+    color: rgb(184, 181, 181);
+    cursor: pointer;
+    transition: background-color .15s, opacity .15s;
+}
+
+.discog-button:active,
+.home-button:active{
+    opacity: .5;
+}
+
+.discog-button:active,
+.home-button:hover{
+    background-color:rgb(82, 84, 96);
+}
+
+
+/* top tracks */
+.grid-below-navbar{
+    background-color: rgb(24, 26, 28);
+    display: block;
+}
+
+.left-grid{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-rows: 50px 320px 50px 1fr;
+    height: 100%;
+}
+
+.grid-below-navbar{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    margin-top: 10px;
+}
+.tracks-background{
+    background-color: rgb(43, 45, 46);
+    display: block;
+    padding: 10px;
+    height: 300px;
+    border-radius: 10px;
+    
+}
+
+.popular-tracks-grid{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(43, 45, 46);
+    border-radius: 10px;
+    cursor: pointer; 
+
+}
+
+.discography-title,
+.popular-tracks{
+    flex: 1;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.popular-track{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(43, 45, 46);
+    height: 50px;
+    align-items: center;
+    border-radius: 12px;
+    justify-content: center;
+    transition: background-color .15s, opacity 0.15s;
+
+}
+
+.left{
+    display: flex;
+    width: 40px;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(83, 81, 81);
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+}
+
+.middle{
+    display: flex;
+    flex: 1;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+.right{
+    display: flex;
+    width: 150px;
+    font-family: "DM Sans", sans-serif;
+    color: rgba(160, 161, 164, 1);
+    
+}
+
+
+.option-menu-indv-grid:hover,
+.indv-flex-box:hover,
+.popular-track:hover{
+    background-color: rgb(62, 64, 66);
+}
+
+.option-menu-indv-grid:active,
+.indv-flex-box:active,
+.popular-track:active{
+    opacity: .5;
+}
+
+
+.right-grid{
+    background-color: rgb(24, 26, 28);
+    padding-left: 30px;
+}
+
+/* similar-artist */
+.similar-artists{
+    font-family: "DM Sans", sans-serif;
+    color: rgba(160, 161, 164, 1);
+    font-size: 20px;
+    font-weight: 500px;
+    color: rgb(207, 207, 207);
+    margin-bottom: 10px;
+}
+
+.similar-artists-background{
+    background-color: rgb(43, 45, 46);
+    border-radius: 10px;
+    height: 456px;
+    display: block;
+    border-radius: 10px;
+}
+
+.flex-box-container{
+    background-color: rgb(43, 45, 46);    
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.indv-flex-box{
+    background-color: rgb(43, 45, 46);    
+    height: 76px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer; 
+}
+
+.similar-artist-pic{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+}
+
+.artist-pic{
+    height: 60px;
+    border-radius: 39px;
+}
+
+.similar-artist-name{
+    display: flex;
+    flex: 1;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    align-items: center;
+}
+
+/* options buttons */
+.option-menu{
+    background-color: rgb(43, 45, 46);    
+    height: 133.32px;
+    border-radius: 10px;
+    display: block;
+    padding: 5px;
+    margin-bottom: 30px;
+    margin-top: 5px;
+    height: 100px;    
+}
+
+.option-menu-grid{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 100px;
+}
+
+.option-menu-indv-grid{
+    background-color: rgb(43, 45, 46);   
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .15s, opacity .15s;
+    cursor: pointer; 
+}
+
+.option-menu-font{
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 550;
+}
+
+
+.discography-grid-container{
+    background-color: rgb(43, 45, 46);  
+    height:  440px;
+    border-radius: 10px;
+}
+
+.discography-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    background-color: rgb(43, 45, 46);  
+    border-radius: 10px;
+    height: 460px;
+}
+
+.indv-discography-grid{
+    height: 220px;
+    display: grid;
+    grid-template-rows: 185px 30px;
+    margin: 5px;
+    margin-bottom: 0px;
+}
+
+.background-discography{
+    background-color: rgb(43, 45, 46);  
+    border-radius: 10px;
+}
+
+.img-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+}
+
+.discog-img {
+    height: 170px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-width: 0; 
+    border-style: solid; 
+    border-color: transparent; 
+    transition: border-width 0.15s ease, border-color 0.3s ease, border-radius .3s ease;
+    cursor: pointer; 
+}
+
+.discog-img:hover {
+    border-width: 5px; 
+    border-color: rgba(143, 147, 165, 0.5);
+    border-radius: 10px;
+}
+
+.discog-album-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 550;
+    font-size: 12px;
+    cursor: pointer;
+    transition: text-decoration 0.15s;
+}
+
+.discog-album-title:hover{
+    text-decoration: underline;
+}
+
+.discog-album-artist{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
