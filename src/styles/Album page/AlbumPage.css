@@ -1,9 +1,17 @@
 /* AlbumPage Component Div CSS Summary */
 
+.album-page-wrapper {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+}
 
-.margin{
+.margin {
   margin-top: 100px;
-  max-width: 1200px;
+  max-width: 1270px;
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
 }
 /* Main Banner Layout */
 .album-banner-container {
@@ -53,6 +61,7 @@
   grid-template-columns: 1fr 500px;
   height: fit-content;
   margin-bottom: 50px;
+  width: 100%;
 }
 
 /* Left Side Grid */
@@ -78,18 +87,17 @@
 
 /* Right Side Grid */
 
-
 /* .right-grid {
   display: flex;
   flex-direction: row;
   background-color: rgb(24, 26, 28);
 } */
 
-.right-side{
+.right-side {
   display: grid;
   grid-template-rows: 200px 50px 1fr;
   background-color: rgb(24, 26, 28);
-
+  width: 100%;
 }
 
 /* .el {
@@ -112,12 +120,12 @@
 }
 
 .review-text,
-.tracks-font{
-    font-family: "DM Sans", sans-serif;
-    color: rgb(207, 207, 207);
-    font-size: 23px;
-    margin:0;
-    margin-bottom: 12px;
+.tracks-font {
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-size: 23px;
+  margin: 0;
+  margin-bottom: 12px;
 }
 
 .album-page-wrapper {

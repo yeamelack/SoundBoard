@@ -12,15 +12,14 @@ code {
     monospace;
 }
 
-html,
-body {
+html {
   background-color: rgb(24, 26, 28);
   margin: 0;
   padding: 0;
   height: 100%;
   max-width: 100%;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 6.80%;
+  margin-right: 6.8%;
 }
 
 a {

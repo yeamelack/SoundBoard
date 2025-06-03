@@ -26,6 +26,7 @@ function SpotifyReviewButtons({ result, spotifyLink }) {
       >
         <p className="listen-on-spotify-button">Listen on Spotify</p>
       </a>
+      
     </div>
   );
 }
