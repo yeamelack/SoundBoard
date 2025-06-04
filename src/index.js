@@ -5,13 +5,13 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AlbumPage from "./pages/AlbumPage";
+import UserPage from "./pages/UserProfile";
 
-
-import ScrollToTop from "./misc/ScrollToTop"; 
+import ScrollToTop from "./misc/ScrollToTop";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ScrollToTop />, 
+    element: <ScrollToTop />,
     children: [
       {
         index: true,
@@ -27,12 +27,11 @@ const router = createBrowserRouter([
       },
       {
         path: ":username",
-        element: <AlbumPage />,
+        element: <UserPage />,
       },
     ],
   },
 ]);
-
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

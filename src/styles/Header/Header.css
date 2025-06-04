@@ -13,17 +13,14 @@
   left: 0;
   right: 0;
   z-index: 100;
-
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 6.8%;
+  padding-right: 6.8%;
 }
 
 .left-section {
   width: 190px;
   flex-shrink: 0;
   min-width: 100px;
-
-  
 }
 
 /* search section of header*/
@@ -45,3 +42,4 @@
   justify-content: center;
   /* padding-right: 100px; */
 }
+
