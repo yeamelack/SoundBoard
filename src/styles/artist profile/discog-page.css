@@ -205,3 +205,50 @@
 .discography-page .indv-grid-box:empty {
     display: none;
 }
+
+
+.scrollable-album-row-container {
+    border-radius: 10px;                /* Rounded corners */
+    padding: 10px;                      /* Inner spacing */
+    margin: 20px 24px;   
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    background-color: rgb(50, 51, 54);
+
+    height: fit-content;       /* Makes sure container fits content */
+    max-height: 300px; 
+  }
+  
+  .discography-scroll-grid {
+    display: flex;
+    gap: 12px;
+    height: fit-content;        /* Ensures no unwanted vertical stretch */
+    align-items: flex-start;
+  }
+  
+  /* optional styling for Album container */
+  .discography-scroll-grid > * {
+    flex: 0 0 auto;
+  }
+  
+
+  .discography-page .discog-album-title{
+    font-family: "DM Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(207, 207, 207);
+    margin-top: 8px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal; /* allow wrapping */
+    width: 100%;
+    display: block;
+
+  }
+
+  .discography-page .discog-album-title-wrapper {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }

@@ -15,7 +15,7 @@ const Album = ({ imageSrc, title, artist, variant = "default" }) => {
             />
           </div>
     
-          <div className={isDiscography ? "discog-album-title" : ""}>
+          <div className={isDiscography ? "discog-album-title-wrapper" : ""}>
             <p className={isDiscography ? "discog-album-title" : "album-title"}>{title}</p>
             {!isDiscography && <p className="album-title">{artist}</p>}
           </div>

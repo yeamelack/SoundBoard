@@ -11,6 +11,7 @@ import OptionMenu from '../components/artist profile/OptionMenu';
 import SimilarArtistList from '../components/artist profile/SimilarArtistList';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import DiscographyScroll from '../components/artist profile/DiscographyScroll';
 
 
 
@@ -144,7 +145,7 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
                       </div>
                   </div>
                     </>
-                  ) : null}
+                  ) : <DiscographyScroll discography={artistAlbums}/>}
 
                   
                   
