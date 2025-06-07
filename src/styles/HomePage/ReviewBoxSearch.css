@@ -1,0 +1,32 @@
+.review-box-default-container {
+  background-color: rgb(43, 45, 46);
+  height: fit-content;
+  border-radius: 10px;
+  padding: 10px;
+  width: 711px;
+  position: relative;
+}
+
+.review-box-search {
+  width: 100%;
+  height: 35px;
+  max-width: 730px;
+  border-radius: 5px;
+  background-color: rgb(50, 51, 54);
+  border: 2px solid transparent;
+  outline: none;
+  transition: border-color 0.2s ease;
+  color: rgb(202, 202, 202);
+  padding-left: 7px;
+}
+.review-box-search::placeholder {
+  color: rgb(202, 202, 202);
+}
+
+.review-box-search:focus {
+  border-color: rgb(101, 103, 119);
+}
+.review-box-search::-webkit-search-cancel-button {
+  display: none;
+}
+

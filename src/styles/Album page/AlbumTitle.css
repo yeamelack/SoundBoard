@@ -1,0 +1,14 @@
+.album-name-text {
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 50px;
+}
+
+.album-title-text {
+  margin: 0px;
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 50px;
+}

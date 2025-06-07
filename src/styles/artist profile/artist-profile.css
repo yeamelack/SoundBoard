@@ -1,0 +1,535 @@
+
+/* page grid setup */
+.artist-profile-page .artist-profile-body{
+    margin-left: 103px;
+    margin-right: 103px;
+    background-color: rgb(24, 26, 28);
+}
+
+.artist-profile-page .artist-profile-page-grid{
+    margin-top: 56px;
+    background-color: rgb(24, 26, 28);
+    height: 1300px;
+    display: grid;
+    grid-template-rows: 300px 52px 1fr;
+}
+
+/* aritst proflie and reviews */
+.artist-profile-page .artist-header{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 1fr 600px;
+}
+
+.artist-profile-page .artist-info-container{
+    margin-left: 10px;
+    display: flex;
+    background-color: rgb(24, 26, 28);
+
+    flex: 1 200px;
+    align-items: center;
+}
+
+.artist-profile-page .artist-profile-img{
+    width: 200px;
+    border-radius: 100px;
+}
+
+.artist-profile-page .artist-name-container{
+    margin-left: 40px;
+}
+
+.artist-profile-page .artist-name{
+    color: white;
+    font-family: "DM Sans", sans-serif;
+    font-size: 60px;
+    font-weight: 505;
+
+}
+
+.artist-profile-page .artist-ratings{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-rows: 100px 1fr;
+}
+
+.artist-profile-page .artist-ratings-top{
+    background-color: rgb(24, 26, 28);
+    width: 100%;
+}
+
+.artist-profile-page .artist-ratings-bottom{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+}
+
+.artist-profile-page .rating-container{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr ;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    color: rgb(207, 207, 207);
+}
+
+.artist-profile-page .total-rating{
+    background-color: rgb(24, 26, 28);
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+.artist-profile-page .user-rating,
+.artist-profile-page .rating-out-of-five{
+    background-color: rgb(24, 26, 28);
+    text-align: center;
+    margin: 10px;
+}
+
+
+
+.artist-profile-page .dark-elements{
+   color: rgb(116, 114, 114);
+   font-family: "DM Sans", sans-serif;
+   padding: 0px;
+}
+
+.artist-profile-page .rating-container-text{
+    color: rgb(207, 207, 207);
+    font-family: "DM Sans", sans-serif;
+    font-size: 18px;
+    padding: 0px;
+    margin: 10px;
+}
+
+.artist-profile-page .your-rating,
+.artist-profile-page .average-rating,
+.artist-profile-page .total-rating{
+    color: rgb(207, 207, 207);
+    font-family: "DM Sans", sans-serif;
+    font-size: 15px;
+    padding: 0px;
+    font-weight: 500;
+}
+
+
+
+.artist-profile-page .review-button-artist{
+    width: 508px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: rgb(50, 51, 54);
+    border: none;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600;
+    font-style: bold;
+    color: rgb(207, 207, 207);
+    cursor: pointer;
+    transition: background-color .15s, opacity .15s;
+    margin-left: 9px;
+}
+
+.artist-profile-page .review-button-artist:hover{
+    background-color:rgb(82, 84, 96);
+}
+
+.artist-profile-page .review-button-artist:active{
+    opacity: .5
+}
+
+.artist-profile-page .slash5{
+    font-family: "DM Sans", sans-serif;
+    color: rgb(116, 114, 114);
+    font-size: 18px;
+}
+
+.artist-profile-page .total-rating-container,
+.artist-profile-page .user-rating-container,
+.artist-profile-page .rating-out-of-five-container{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    flex-direction: column; 
+    border: solid;
+    border-left: 1px;
+    border-top: none;
+    border-bottom: none;
+    border-color: rgb(39, 38, 38);
+    align-items: center;
+    justify-items: center;
+}
+
+.artist-profile-page .total-rating-container{
+    border: none;
+    width: 201.5px;
+}
+
+.artist-profile-page .center-ratings{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+}
+
+/* navbar */
+.artist-profile-page .artist-page-navbar{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 100px 150px;
+    border: solid;
+    border: 0px;
+    border-bottom-width: 1.5px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(39, 38, 38);    
+}
+
+.artist-profile-page .home-button-grid{
+    background-color: rgb(24, 26, 28);
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    align-items: center;
+    justify-items: center;
+    margin-left: 10px;
+}
+
+.artist-profile-page .button-container{
+    flex: 0 0 46px;
+    text-align: center;
+    width: 100%;
+}
+
+.artist-profile-page .home-nav-button-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+}
+
+.artist-profile-page .home-button{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    background-color: rgb(24, 26, 28);
+    border: none;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 580;
+    font-style: bold;
+    color: rgb(105, 199, 236);
+    cursor: pointer;
+    background-color:rgba(82, 84, 96, .2);
+    transition: background-color .15s, opacity .15s;
+}
+
+.artist-profile-page .discog-button{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    background-color: rgb(24, 26, 28);
+    border: none;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 580;
+    font-style: bold;
+    color: rgb(184, 181, 181);
+    cursor: pointer;
+    transition: background-color .15s, opacity .15s;
+}
+
+.artist-profile-page .discog-button:active,
+.artist-profile-page .home-button:active{
+    opacity: .5;
+}
+
+.artist-profile-page .discog-button:active,
+.artist-profile-page .home-button:hover{
+    background-color:rgb(82, 84, 96);
+}
+
+
+/* top tracks */
+.artist-profile-page .grid-below-navbar{
+    background-color: rgb(24, 26, 28);
+    display: block;
+
+    gap: 24px;
+}
+
+.artist-profile-page .left-grid{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-rows: 50px 320px 50px 1fr;
+    height: 100%;
+
+}
+
+.artist-profile-page .grid-below-navbar{
+    background-color: rgb(24, 26, 28);
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    margin-top: 10px;
+}
+.artist-profile-page .tracks-background{
+    background-color: rgb(43, 45, 46);
+    display: block;
+    padding: 10px;
+    height: 300px;
+    border-radius: 10px;
+    
+}
+
+.artist-profile-page .popular-tracks-grid{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(43, 45, 46);
+    border-radius: 10px;
+    cursor: pointer; 
+
+
+}
+
+.artist-profile-page .discography-title,
+.artist-profile-page .popular-tracks{
+    flex: 1;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.artist-profile-page .popular-track{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(43, 45, 46);
+    height: 50px;
+    align-items: center;
+    border-radius: 12px;
+    justify-content: center;
+    transition: background-color .15s, opacity 0.15s;
+
+}
+
+.artist-profile-page .left{
+    display: flex;
+    width: 40px;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(83, 81, 81);
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+}
+
+.artist-profile-page .middle{
+    display: flex;
+    flex: 1;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+.artist-profile-page .right{
+    display: flex;
+    width: 150px;
+    font-family: "DM Sans", sans-serif;
+    color: rgba(160, 161, 164, 1);
+    
+}
+
+
+.artist-profile-page .option-menu-indv-grid:hover,
+.artist-profile-page .indv-flex-box:hover,
+.artist-profile-page .popular-track:hover{
+    background-color: rgb(62, 64, 66);
+}
+
+.artist-profile-page .option-menu-indv-grid:active,
+.artist-profile-page .indv-flex-box:active,
+.artist-profile-page .popular-track:active{
+    opacity: .5;
+}
+
+
+.artist-profile-page .right-grid{
+    background-color: rgb(24, 26, 28);
+    padding-left: 30px;
+}
+
+/* similar-artist */
+.artist-profile-page .similar-artists{
+    font-family: "DM Sans", sans-serif;
+    color: rgba(160, 161, 164, 1);
+    font-size: 20px;
+    font-weight: 500px;
+    color: rgb(207, 207, 207);
+    margin-bottom: 10px;
+}
+
+.artist-profile-page .similar-artists-background{
+    background-color: rgb(43, 45, 46);
+    border-radius: 10px;
+    height: 456px;
+    display: block;
+    border-radius: 10px;
+}
+
+.artist-profile-page .flex-box-container{
+    background-color: rgb(43, 45, 46);    
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.artist-profile-page .indv-flex-box{
+    background-color: rgb(43, 45, 46);    
+    height: 76px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer; 
+}
+
+.artist-profile-page .similar-artist-pic{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+}
+
+.artist-profile-page .artist-pic{
+    height: 60px;
+    border-radius: 39px;
+}
+
+.artist-profile-page .similar-artist-name{
+    display: flex;
+    flex: 1;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    align-items: center;
+}
+
+/* options buttons */
+.artist-profile-page .option-menu{
+    background-color: rgb(43, 45, 46);    
+    height: 133.32px;
+    border-radius: 10px;
+    display: block;
+    padding: 5px;
+    margin-bottom: 30px;
+    margin-top: 5px;
+    height: 100px;    
+}
+
+.artist-profile-page .option-menu-grid{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 100px;
+}
+
+.artist-profile-page .option-menu-indv-grid{
+    background-color: rgb(43, 45, 46);   
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .15s, opacity .15s;
+    cursor: pointer; 
+}
+
+.artist-profile-page .option-menu-font{
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 550;
+}
+
+
+.artist-profile-page .discography-grid-container{
+    background-color: rgb(43, 45, 46);  
+    height:  440px;
+    border-radius: 10px;
+}
+
+.artist-profile-page .discography-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    background-color: rgb(43, 45, 46);  
+    border-radius: 10px;
+    height: 460px;
+}
+
+.artist-profile-page .indv-discography-grid{
+    height: 220px;
+    display: grid;
+    grid-template-rows: 185px 30px;
+    margin: 5px;
+    margin-bottom: 0px;
+}
+
+.artist-profile-page .background-discography{
+    background-color: rgb(43, 45, 46);  
+    border-radius: 10px;
+}
+
+.artist-profile-page .img-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+}
+
+.artist-profile-page .discog-img {
+    height: 170px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-width: 0; 
+    border-style: solid; 
+    border-color: transparent; 
+    transition: border-width 0.15s ease, border-color 0.3s ease, border-radius .3s ease;
+    cursor: pointer; 
+}
+
+.artist-profile-page .discog-img:hover {
+    border-width: 5px; 
+    border-color: rgba(143, 147, 165, 0.5);
+    border-radius: 10px;
+}
+
+.artist-profile-page .discog-album-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 550;
+    font-size: 12px;
+    cursor: pointer;
+    transition: text-decoration 0.15s;
+}
+
+.artist-profile-page .discog-album-title:hover{
+    text-decoration: underline;
+}
+
+.artist-profile-page .discog-album-artist{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
