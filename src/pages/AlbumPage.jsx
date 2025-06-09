@@ -99,7 +99,7 @@ function AlbumPage() {
   return (
     <>
       <Header />
-      <div className={`album-page-wrapper ${fadeIn ? "fade-in" : "fade-out"}` }>
+      <div className={`album-page-wrapper ${fadeIn ? "fade-in" : "fade-out"}`}>
         <div className="margin">
           <div className="album-banner-container">
             <div className="album-banner-rows">

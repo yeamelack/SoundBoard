@@ -1,21 +1,25 @@
 .user-profile-container {
   display: grid;
   grid-template-rows: 57px 1fr;
-  background-color: red;
+  background-color: rgb(24, 26, 28);
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
+  width: 1270px;
+  margin: 0 auto; /* center the page */
 }
 
 .user-profile-base-grid {
   display: grid;
-  grid-template-rows: 265px 57px 1fr;
+  grid-template-rows: 265px 47px 1fr;
   height: 1000px; /*UPDATE THIS*/
   margin-top: 57px;
-  background-color: antiquewhite;
+  background-color: rgb(24, 26, 28);
+  justify-content: center;
+  width: 1270px;
 }
 
 .user-information-container {
-  background-color: rgb(100, 100, 242);
+  background-color: rgb(24, 26, 28);
   margin-top: 15px;
   display: grid;
   grid-template-columns: 650px 1fr;
@@ -69,7 +73,7 @@
 }
 
 .user-stats-left-grid {
-  border-right: 2px solid rgb(0, 255, 4); /* Set width, style, and color */
+  border-right: 2px solid rgb(39, 38, 38); /* Set width, style, and color */
 }
 
 .user-rates-given,
@@ -77,6 +81,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.user-rates-given-style,
+.user-reviews,
+.rating-text,
+.reviews-text {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 580;
+  font-style: bold;
+  color: rgb(184, 181, 181);
 }
 
 .reviews-text-container,
@@ -91,16 +105,76 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: rgb(27, 194, 194);
-  margin-top: 7px;
+  background-color: rgb(24, 26, 28);
+  margin-top: 15px;
 }
 
 .edit-profile-button-container {
   width: 75%;
-  background-color: blue;
+  background-color: rgb(24, 26, 28);
 }
 
 .edit-profile-button {
   width: 100%;
-  height:40px; /*adjust for smaller screen (30px)*/
+  height: 40px; /*adjust for smaller screen (30px)*/
+  border-radius: 10px;
+  background-color: rgb(50, 51, 54);
+  border: none;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  color: rgb(207, 207, 207);
+  cursor: pointer;
+  transition: background-color 0.15s, opacity 0.15s;
+}
+
+/*navbar container*/
+.user-profile-nav-bar-container {
+  background-color: goldenrod;
+}
+
+.user-profile-flex-box {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(24, 26, 28);
+  height: 100%;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 2px solid rgb(39, 38, 38); /* Set width, style, and color */
+}
+
+.home-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(24, 26, 28);
+  height: 100%;
+  width: 7%;
+  border-radius: 10px;
+}
+/* 
+.user-profile-home-button {
+  width: 100%;
+  height: 100%;
+  border: none; /* optional: remove default border 
+  border-radius: 10px; /* optional: match container if you want rounded corners
+} */
+
+/*bottom of user profile*/
+.homepage-content-container {
+  margin-top: 30px;
+  background-color: rgb(24, 26, 28);
+  display: grid;
+  grid-template-rows: 40px 1fr;
+}
+
+.recent-activity-title-container {
+  margin: 10px;
+}
+
+.recent-activity-title {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 580;
+  font-style: bold;
+  color: rgb(184, 181, 181);
+  font-size: 30px;
 }

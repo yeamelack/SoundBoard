@@ -6,15 +6,19 @@
   border-radius: 10px;
   border-bottom: solid;
   border-color: rgb(39, 38, 38);
+  height: fit-content;
+
 }
 
 .indv-review-container {
-  display: grid;
-  grid-template-rows: 100px 50px 50px 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .reviews-container:last-child {
   border-bottom: none;
+  
 }
 
 .user-info {
@@ -68,6 +72,7 @@
   font-family: "DM Sans", sans-serif;
   margin: 0;
   font-weight: 300;
+  height: 30px;
 }
 
 .title {
@@ -82,4 +87,10 @@
 .no-review-text {
   color: rgb(238, 236, 236);
   font-family: "DM Sans", sans-serif;
+}
+
+.user-review{
+  color: rgb(238, 236, 236);
+  padding-left: 10px;
+  height: fit-content;
 }

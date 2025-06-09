@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
-import { useLocation, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 
-export default function  ScrollToTopLayout() {
+function ScrollToTop() {
   const location = useLocation();
-  const [show, setShow] = useState(false);
+  const disableFadePaths = ["/settings", /^\/[^/]+$/]; // disable on `/settings` and `/:username`
+
+  const shouldFade = !disableFadePaths.some((path) =>
+    path instanceof RegExp
+      ? path.test(location.pathname)
+      : location.pathname === path
+  );
 
   useEffect(() => {
-    setShow(false); // Start with hidden
-    const timeout = setTimeout(() => setShow(true), 450); // Delay fade-in
-
-    // Scroll to top every route change
     window.scrollTo(0, 0);
-
-    return () => clearTimeout(timeout); // Clean up
   }, [location.pathname]);
 
   return (
-    <div className={`page-wrapper ${show ? "fade-in" : "fade-out"}`}>
+    <div className={`page-wrapper ${shouldFade ? "fade-in" : "no-fade"}`}>
       <Outlet />
     </div>
   );
 }
+
+export default ScrollToTop;

@@ -1,6 +1,6 @@
 import "../../styles/Album page/UsersReviews.css";
 
-function UsersReviews({ amountOfReviews }) {
+function UsersReviews({ username, date, rating, review, profilePic, amountOfReviews }) {
   if (amountOfReviews === 0) {
     return (
       <div className="no-reviews">
@@ -18,25 +18,26 @@ function UsersReviews({ amountOfReviews }) {
               <div className="user-img">
                 <img
                   className="user-img-in-review"
-                  src="artist-profile/ab6761610000e5eb43633ee607e147dfd024a198.jpeg"
+                  src={profilePic}
                   alt="User"
                 />
               </div>
               <div className="users-review-info">
                 <div className="users-name">
-                  <p className="users-name-font">Reviewed by</p>
-                  <p className="name">Name</p>
+                  <p className="users-name-font">Reviewed by </p>
+                  <p className="name"> {username}</p>
                 </div>
-                <p className="date">listened on 3 oct 2024</p>
+                <p className="date"> {date}</p>
+                <div className="stars">{rating}</div>
               </div>
             </div>
             <div className="title-container">
               <p className="title">Best Album EVER</p>
             </div>
-            <div className="stars">stars</div>
+
             <div className="text-Review">
               <p className="user-review">
-                The Flag is Raised... (review content here)
+                {review}
               </p>
             </div>
           </div>

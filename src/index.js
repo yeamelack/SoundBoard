@@ -6,6 +6,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AlbumPage from "./pages/AlbumPage";
 import UserPage from "./pages/UserProfile";
+import UserRating from "./pages/UserRating";
+import EditProfile from "./pages/EditProfile";
+
 
 import ScrollToTop from "./misc/ScrollToTop";
 const router = createBrowserRouter([
@@ -29,7 +32,18 @@ const router = createBrowserRouter([
         path: ":username",
         element: <UserPage />,
       },
+
+      {
+        path: ":username/:ratingid",
+        element: <UserRating />,
+      },
+
+      {
+        path: "/settings",
+        element: <EditProfile />,
+      },
     ],
+
   },
 ]);
 

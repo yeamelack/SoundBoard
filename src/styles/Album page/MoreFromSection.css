@@ -22,7 +22,7 @@
   width: 440px;
 }
 
-.more-from{
+.more-from {
   background-color: rgb(43, 45, 46);
   margin-left: 30px;
   margin-right: 30px;
@@ -50,7 +50,7 @@
   border-radius: 10px;
   align-items: center;
   width: 440px;
-  transition: background-color 0.15s, opacity .15s;
+  transition: background-color 0.15s, opacity 0.15s;
 }
 
 .img-container-more-from {
@@ -87,9 +87,9 @@
   font-weight: 100;
   font-size: 13px;
 }
-.grid-inside-indv:active{
-  opacity: .5;
+.grid-inside-indv:active {
+  opacity: 0.5;
 }
-.grid-inside-indv:hover{
+.grid-inside-indv:hover {
   background-color: rgb(62, 64, 66);
 }

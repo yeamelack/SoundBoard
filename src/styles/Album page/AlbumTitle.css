@@ -11,4 +11,8 @@
   font-family: "DM Sans", sans-serif;
   font-weight: 600;
   font-size: 50px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
 }
