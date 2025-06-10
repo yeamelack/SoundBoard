@@ -1,8 +1,8 @@
 .user-button-container {
   display: grid;
-  width: 120px;
-  justify-content: center;
-  align-items: center;
+  min-width: 40px;
+  justify-content: end;
+
 }
 
 .user-button {
@@ -35,4 +35,20 @@
 
 .user-button:active {
   opacity: 0.5;
+}
+
+.user-icon-auth0-user-icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.user-icon-default-user-icon {
+  width: 20px;
+  height: 20px;
+  background-color: aqua;
+}
+.user-icon-default-user-icon {
+  border: 2px dashed gray;
+  opacity: 0.6;
 }

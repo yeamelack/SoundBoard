@@ -21,6 +21,7 @@ function AlbumPage() {
 
   const [artistAlbums, setArtistAlbums] = useState([]);
   const [fadeIn, setFadeIn] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
 
   useEffect(() => {
     setFadeIn(false); // Reset fade
@@ -93,7 +94,7 @@ function AlbumPage() {
     !albumInfo.artists[0]?.id ||
     !artistInfo?.images?.length
   ) {
-    return; //<div style={{ color: "white" }}>Loading album info...</div>
+    return;
   }
 
   return (
@@ -129,45 +130,87 @@ function AlbumPage() {
                 <ArtistRatings albumInfo={albumInfo} />
               </div>
             </div>
+
             {/* Navigation */}
-            <AlbumPageNavigationBar />
-            {/* Main Grid */}
-            <div className="grid-below-nav">
-              {/* Left Side */}
-              <div className="left-grid">
-                <div className="left-grid-row">
-                  <div className="track-list">
-                    <p className="tracks-font">Tracklist</p>
-                    <TopTracks trackList={albumInfo.tracks} />
-                  </div>
-                  <div className="reviews-box">
-                    <p className="review-text">Reviews</p>
-                    <UsersReviews amountOfReviews={0} />
+            <AlbumPageNavigationBar
+              setShowReviews={setShowReviews}
+              showReviews={showReviews}
+            />
+
+            {/* Main Grid or Review Section */}
+            {showReviews ? (
+              <div className="grid-below-nav">
+                {/* Left Side: Reviews */}
+                <div className="left-grid">
+                  <div className="left-grid-row">
+                    <div className="review-page-section">
+                      <UsersReviews amountOfReviews={0} />
+                      {/* Optional: Add your review form here */}
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* Right Side */}
-              <div className="right-side">
-                <SpotifyReviewButtons
-                  spotifyLink={albumInfo.external_urls.spotify}
-                  result={albumInfo}
-                />
 
-                {artistAlbums.filter((album) => album.id !== albumId).length >
-                  0 && (
-                  <>
-                    <div className="more-from-title">
-                      More From {albumInfo.artists[0].name}
-                    </div>
-                    <MoreFromSection
-                      artistId={albumInfo.artists[0].id}
-                      albumId={albumId}
-                      artistAlbums={artistAlbums}
-                    />
-                  </>
-                )}
+                {/* Right Side stays the same */}
+                <div className="right-side">
+                  <SpotifyReviewButtons
+                    spotifyLink={albumInfo.external_urls.spotify}
+                    result={albumInfo}
+                  />
+
+                  {artistAlbums.filter((album) => album.id !== albumId).length >
+                    0 && (
+                    <>
+                      <div className="more-from-title">
+                        More From {albumInfo.artists[0].name}
+                      </div>
+                      <MoreFromSection
+                        artistId={albumInfo.artists[0].id}
+                        albumId={albumId}
+                        artistAlbums={artistAlbums}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="grid-below-nav">
+                {/* Left Side: Tracklist */}
+                <div className="left-grid">
+                  <div className="left-grid-row">
+                    <div className="track-list">
+                      <p className="tracks-font">Tracklist</p>
+                      <TopTracks trackList={albumInfo.tracks} />
+                    </div>
+                    <div className="reviews-box">
+                      <p className="review-text">Reviews</p>
+                      <UsersReviews amountOfReviews={0} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Side stays the same */}
+                <div className="right-side">
+                  <SpotifyReviewButtons
+                    spotifyLink={albumInfo.external_urls.spotify}
+                    result={albumInfo}
+                  />
+
+                  {artistAlbums.filter((album) => album.id !== albumId).length >
+                    0 && (
+                    <>
+                      <div className="more-from-title">
+                        More From {albumInfo.artists[0].name}
+                      </div>
+                      <MoreFromSection
+                        artistId={albumInfo.artists[0].id}
+                        albumId={albumId}
+                        artistAlbums={artistAlbums}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

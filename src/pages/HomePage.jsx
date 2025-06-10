@@ -1,11 +1,13 @@
 import Header from "../components/Header/Header";
 import "../styles/HomePage/HomePage.css";
 import PopularThisWeek from "../components/Homepage/PopularThisWeek.jsx";
-import ReviewBox from "../components/Homepage/ReviewBox.jsx";
 import ReviewBoxSearch from "../components/Homepage/ReviewBoxSearch.jsx";
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function HomePage() {
+  const { isAuthenticated } = useAuth0();
+
   //capture user search input
   const [searchInput, setSearchInput] = useState("");
 
@@ -42,7 +44,7 @@ function HomePage() {
     if (typeof suggestion === "string") {
       setSearchInput(suggestion);
     } else {
-      setSearchInput(""); 
+      setSearchInput("");
     }
     setSearchResults([]);
     setIsDropdownVisible(false);
@@ -82,15 +84,17 @@ function HomePage() {
         <Header />
       </div>
 
-      <div className="quick-search-homepage">
-        <ReviewBoxSearch
-          searchInput={searchInput}
-          currentSearch={getSearchInput}
-          searchResults={searchResults}
-          onClick={handleSuggestionClick}
-          className="review-box-default-container"
-        />
-      </div>
+      {isAuthenticated && (
+        <div className="quick-search-homepage">
+          <ReviewBoxSearch
+            searchInput={searchInput}
+            currentSearch={getSearchInput}
+            searchResults={searchResults}
+            onClick={handleSuggestionClick}
+            className="review-box-default-container"
+          />
+        </div>
+      )}
 
       <div className="popular-this-week">
         <PopularThisWeek />

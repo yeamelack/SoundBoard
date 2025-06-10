@@ -8,7 +8,7 @@
 
 .margin {
   margin-top: 100px;
-  max-width: 1270px;
+  min-width: 1270px;
   display: flex;
   justify-content: center; /* horizontal center */
   align-items: center; /* vertical center */
@@ -135,4 +135,8 @@
 
 .album-page-wrapper.fade-in {
   opacity: 1;
+}
+
+.review-page-section{
+  margin-top: 15px;
 }

@@ -1,14 +1,20 @@
+import "../../styles/Header/Header.css";
 import SuggestionDropdown from "../Header/SuggestionDropdown.jsx";
 import SearchBar from "../Header/SearchBar.jsx";
-import ChartButton from "../Header/ChartButton.jsx";
 import ReviewButton from "./ReviewButton.jsx";
 import UserButton from "./UserButton.jsx";
 import SearchButton from "./SearchButton.jsx";
 import Logo from "./Logo.jsx";
-import "../../styles/Header/Header.css";
+import LogoutButton from "./LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
 import React, { useState, useEffect, useRef } from "react";
+import LoginButton from "./LoginButton.jsx";
+import { Link } from "react-router-dom";
+
 
 function Header() {
+  const { isAuthenticated } = useAuth0();
+
   //capture user search input
   const [searchInput, setSearchInput] = useState("");
 
@@ -77,9 +83,13 @@ function Header() {
 
   return (
     <div className="header">
-      <div className="left-section">
-        <Logo />
-      </div>
+      <Link to="/">
+        {" "}
+        <div className="left-section">
+          <Logo />
+        </div>
+      </Link>
+
       <div className="middle-section">
         <SearchBar
           value={searchInput}
@@ -103,10 +113,22 @@ function Header() {
             />
           )}
       </div>
-      <div className="right-section">
-        <ChartButton />
-        <ReviewButton />
-        <UserButton />
+      <div
+        className={
+          isAuthenticated
+            ? "right-section-logged-in"
+            : "right-section-logged-out"
+        }
+      >
+        {isAuthenticated ? (
+          <>
+            <LogoutButton />
+            <ReviewButton />
+            <UserButton />
+          </>
+        ) : (
+          <LoginButton />
+        )}{" "}
       </div>
     </div>
   );

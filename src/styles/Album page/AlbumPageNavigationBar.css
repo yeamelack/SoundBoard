@@ -1,7 +1,7 @@
 .artist-page-navbar {
   background-color: rgb(24, 26, 28);
   display: grid;
-  grid-template-columns: 100px 150px;
+  grid-template-columns: 100px 100px;
   border: solid;
   border: 0px;
   border-bottom-width: 1.5px;
@@ -43,8 +43,8 @@
   font-style: bold;
   cursor: pointer;
   transition: background-color 0.15s, opacity 0.15s;
-  background-color: rgba(82, 84, 96, 0.2);
-  color: rgb(105, 199, 236);
+  color: rgb(184, 181, 181);
+  background-color: rgb(24, 26, 28);
 }
 
 .review-nav-button {
@@ -71,4 +71,9 @@
 .review-nav-button:active,
 .home-nav-button:active {
   opacity: 0.5;
+}
+
+.active-tab {
+  background-color: rgba(82, 84, 96, 0.2) !important;
+  color: rgb(105, 199, 236) !important;
 }

@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import {
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const {
   searchRequest,
   getAlbumInfo,
   newRelease,
@@ -10,12 +10,16 @@ import {
   getArtistsTopTracks,
   getArtistInfo,
   getSimilarArtists,
-} from "./searchUtils.js";
+} = require("./searchUtils.js");
+
+
 
 const app = express();
 app.use(cors());
 dotenv.config();
 const port = 8484;
+
+
 
 app.listen(port, () =>
   console.log(`Server running on http://localhost:${port}`)

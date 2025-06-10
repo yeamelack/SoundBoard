@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../../styles/Album page/ArtistRatings.css";
 import ReviewBox from "../Homepage/ReviewBox";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function ArtistRatings({
   totalRatings = 0,
@@ -9,10 +10,16 @@ function ArtistRatings({
   albumInfo,
 }) {
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
+  const { isAuthenticated,loginWithPopup } = useAuth0();
 
-  const toggleVisiablity = () => {
-    setOverlayVisiablity(!overlayVisiablity);
+  const handleClick = () => {
+    if (isAuthenticated) {
+      setOverlayVisiablity(!overlayVisiablity);
+    } else {
+      loginWithPopup();
+    }
   };
+
   return (
     <div className="artist-ratings">
       <div className="artist-ratings-top"></div>
@@ -47,14 +54,23 @@ function ArtistRatings({
         </div>
 
         <div className="review-button-container">
-          <button className="review-button-artist" onClick={toggleVisiablity}>
-            Review
+          <button
+            className="review-button-artist"
+            onClick={handleClick}
+            style={{
+              cursor: "pointer",
+              opacity: isAuthenticated ? 1 : 0.8,
+            }}
+          >
+            <span className="artist-rating-review-text">
+              {isAuthenticated ? "Review" : "Login to write a review"}{" "}
+            </span>
           </button>
           {overlayVisiablity && (
             <div className="overlay">
               <ReviewBox
                 result={albumInfo}
-                toggleVisiablity={toggleVisiablity}
+                toggleVisiablity={handleClick}
               />
             </div>
           )}

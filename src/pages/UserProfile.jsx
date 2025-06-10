@@ -1,4 +1,6 @@
 import "../styles/UserProfile/he.css";
+import userIcon from "../assets/icons/user-icon.svg";
+import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header/Header.jsx";
 import RecentActivity from "../components/UserProfile/RecentActivity.jsx";
 import RecentActivityAlbums from "../components/UserProfile/RecentActivityAlbums.jsx";
@@ -6,6 +8,14 @@ import { Link, useParams } from "react-router-dom";
 
 function UserProfile() {
   const { userId } = useParams();
+  const { user, isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!isAuthenticated) {
+    return <Link to="/" />;
+  }
+  console.log("User picture URL:", user.picture);
 
   return (
     <div className="page-grid">
@@ -18,14 +28,18 @@ function UserProfile() {
             <div className="user-profile-flex">
               <img
                 className="user-profile-picture"
-                src="https://preview.redd.it/drake-the-type-of-dumbass-to-think-corporate-forced-memes-v0-hnq1fxtyh41e1.jpg?width=176&format=pjpg&auto=webp&s=7a98915b8dc9d1b17512fb362ce262fd74106534"
-                alt=""
+                src={user.picture.replace("96-c", "500-c") || userIcon}
+                alt={`${user.name}'s Profile Picture`}
+                onError={(e) => {
+                  e.target.onerror = null; // prevent infinite loop in case userIcon also fails
+                  e.target.src = userIcon;
+                }}
               />
             </div>
           </div>
 
           <div className="user-profile-username-container">
-            <span className="username">Yeamelack</span>
+            <span className="username">{user.name}</span>
           </div>
         </div>
         <div className="user-profile-stats-container">
@@ -49,7 +63,7 @@ function UserProfile() {
               </div>
             </div>
           </div>
-          <Link to={`/settings`} key={userId}>
+          <Link to={"/settings"} key={userId}>
             <div className="grid-under-user-rating">
               <div className="edit-profile-button-container">
                 <button className="edit-profile-button">Edit Profile</button>
@@ -62,7 +76,7 @@ function UserProfile() {
       <div>
         <div className="user-profile-nav-bar-container">
           <div className="home-button-container">
-            <button className="user-profile-home-button">home</button>
+            <button className="user-profile-home-button">Home</button>
           </div>
         </div>
       </div>

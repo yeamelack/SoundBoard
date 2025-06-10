@@ -87,6 +87,7 @@
 .no-review-text {
   color: rgb(238, 236, 236);
   font-family: "DM Sans", sans-serif;
+  font-weight: 500;
 }
 
 .user-review{
