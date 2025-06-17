@@ -66,6 +66,7 @@ root.render(
       clientId="gdWf1kjjKnYySAdB8h2XyKRAPZ7P8uQw"
       authorizationParams={{
         redirect_uri: window.location.origin,
+        audience: "https://soundboardmusic/api",
       }}
     >
       <RouterProvider router={router} />
