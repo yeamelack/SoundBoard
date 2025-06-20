@@ -1,12 +1,14 @@
 import axios from "axios";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path:"../.env" }); 
+
 
 let accessToken = null;
 let tokenExpiresAt = 0;
 
 async function getAccessToken() {
   const now = Date.now();
+
 
   if (!accessToken || now > tokenExpiresAt) {
     const res = await axios.post(
@@ -18,7 +20,9 @@ async function getAccessToken() {
           Authorization:
             "Basic " +
             Buffer.from(
-              process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET
+              process.env.SPOTIFY_CLIENT_ID +
+                ":" +
+                process.env.SPOTIFY_CLIENT_SECRET
             ).toString("base64"),
         },
       }

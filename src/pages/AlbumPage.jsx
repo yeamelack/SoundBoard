@@ -139,7 +139,7 @@ function AlbumPage() {
           coverart: json.images[0].url,
           releasedate: json.release_date,
           tracks: json.tracks,
-          type: json.type,
+          type: json.album_type,
         });
 
         //Insert into Supabase
@@ -152,7 +152,7 @@ function AlbumPage() {
             coverart: json.images[0].url,
             releasedate: json.release_date,
             tracks: json.tracks,
-            type: json.type,
+            type: json.album_type,
           },
         ]);
 
