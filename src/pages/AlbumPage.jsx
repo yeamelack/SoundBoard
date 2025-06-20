@@ -13,11 +13,12 @@ import SpotifyReviewButtons from "../components/Album page/SpotifyReviewButtons"
 import MoreFromSection from "../components/Album page/MoreFromSection";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import supabase from "../supabase/supabaseClient";
 
 function AlbumPage() {
   const { artistId, albumId } = useParams();
-  const [albumInfo, setAlbumInfo] = useState("");
-  const albumUrl = `http://localhost:8484/getAlbumInfo?q=${albumId}`;
+  const [albumInfo, setAlbumInfo] = useState(null);
+  const [artistInfo, setArtistInfo] = useState(null);
 
   const [artistAlbums, setArtistAlbums] = useState([]);
   const [fadeIn, setFadeIn] = useState(false);
@@ -25,11 +26,9 @@ function AlbumPage() {
 
   useEffect(() => {
     setFadeIn(false); // Reset fade
-    const timer = setTimeout(() => setFadeIn(true), 450); // Small delay
-    {
-      console.log("Current fade state:", fadeIn);
-    }
+    const timer = setTimeout(() => setFadeIn(true), 450);
 
+    console.log("Current fade state:", fadeIn);
     return () => clearTimeout(timer);
   }, [albumId]);
 
@@ -51,50 +50,129 @@ function AlbumPage() {
   }, [artistId]);
 
   useEffect(() => {
-    async function getAlbumData() {
+    const getArtistInfo = async () => {
       try {
-        const response = await fetch(albumUrl);
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
+        const { data, error } = await supabase
+          .from("artists")
+          .select("*")
+          .eq("artistid", artistId)
+          .single();
+
+        if (data) {
+          setArtistInfo({
+            artistName: data.artistName,
+            artistid: data.artistid,
+            profilepic: data.profilepic,
+          });
+        } else if (!data) {
+          const response = await fetch(
+            `http://localhost:8484/artist?q=${artistId}`
+          );
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+          const json = await response.json();
+          setArtistInfo({
+            artistid: json.id,
+            artistName: json.name,
+            profilepic: json.images[0].url,
+          });
+
+          const { error: insertError } = await supabase.from("artists").insert([
+            {
+              artistid: json.id,
+              artistName: json.name,
+              profilepic: json.images[0].url,
+            },
+          ]);
+          if (insertError) {
+            console.error("Error inserting album:", insertError.message);
+          }
         }
-
-        const json = await response.json();
-        setAlbumInfo(json);
       } catch (error) {
-        console.error(error.message);
+        console.error("Error in getArtistInfo:", error.message);
       }
-    }
-    getAlbumData();
-  }, [albumUrl]);
-
-  const [artistInfo, setArtistInfo] = useState([]);
-  const artistUrl = `http://localhost:8484/artist?q=${artistId}`;
-
-  useEffect(() => {
-    async function getArtistInfo() {
-      try {
-        const response = await fetch(artistUrl);
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-        }
-
-        const json = await response.json();
-        setArtistInfo(json);
-      } catch (error) {
-        console.error(error.message);
-      }
-    }
+    };
     getArtistInfo();
-  }, [artistUrl]);
+  }, [artistId]);
+
+  //album info
+  useEffect(() => {
+    const fetchAndMaybeInsertAlbum = async () => {
+      try {
+        // Check if album exists in DB
+        const { data, error } = await supabase
+          .from("music")
+          .select("*")
+          .eq("albumid", albumId)
+          .single();
+
+        if (data) {
+          setAlbumInfo({
+            albumid: data.albumid,
+            title: data.title,
+            releasedate: data.releasedate,
+            spotifylink: data.spotifylink,
+            coverart: data.coverart,
+            artistid: data.artistid,
+            tracks: data.tracks,
+            type: data.type,
+          });
+
+          return;
+        }
+
+        //Fetch from external API if not in DB
+        const response = await fetch(
+          `http://localhost:8484/getAlbumInfo?q=${albumId}`
+        );
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        setAlbumInfo({
+          albumid: json.id,
+          artistid: json.artists[0].id,
+          title: json.name,
+          spotifylink: json.external_urls.spotify,
+          coverart: json.images[0].url,
+          releasedate: json.release_date,
+          tracks: json.tracks,
+          type: json.type,
+        });
+
+        //Insert into Supabase
+        const { error: insertError } = await supabase.from("music").insert([
+          {
+            albumid: json.id,
+            artistid: json.artists[0].id,
+            title: json.name,
+            spotifylink: json.external_urls.spotify,
+            coverart: json.images[0].url,
+            releasedate: json.release_date,
+            tracks: json.tracks,
+            type: json.type,
+          },
+        ]);
+
+        if (insertError) {
+          console.error("Error inserting album:", insertError.message);
+        }
+      } catch (error) {
+        console.error("Error in fetchAndMaybeInsertAlbum:", error.message);
+      }
+    };
+    fetchAndMaybeInsertAlbum();
+  }, [albumId]);
 
   if (
     !albumInfo ||
-    !albumInfo.images?.length ||
-    !albumInfo.artists?.length ||
-    !albumInfo.artists[0]?.id ||
-    !artistInfo?.images?.length
+    !albumInfo.coverart ||
+    !artistInfo ||
+    !artistInfo.artistid
   ) {
-    return;
+    return <div className="loading-message">Loading...</div>;
   }
 
   return (
@@ -104,25 +182,24 @@ function AlbumPage() {
         <div className="margin">
           <div className="album-banner-container">
             <div className="album-banner-rows">
-              {console.log(albumInfo)}
               <AlbumArt
-                artLink={albumInfo.images[0].url}
-                albumName={albumInfo.name}
+                artLink={albumInfo.coverart}
+                albumName={albumInfo.title}
               />
               <div className="album-info-container">
                 <div className="flex-text-container">
-                  <AlbumTitle title={albumInfo.name} />
+                  <AlbumTitle title={albumInfo.title} />
                   <AlbumMetaInfo
                     type={
-                      albumInfo.album_type.charAt(0).toUpperCase() +
-                      String(albumInfo.album_type).slice(1)
+                      albumInfo.type.charAt(0).toUpperCase() +
+                      String(albumInfo.type).slice(1)
                     }
-                    year={new Date(albumInfo.release_date).getFullYear()}
-                    trackCount={albumInfo.total_tracks}
+                    year={new Intl.DateTimeFormat("en-US").format(new Date(albumInfo.releasedate))}
+                    trackCount={albumInfo?.tracks.total}
                   />
                   <ArtistButton
-                    artistPicture={artistInfo.images[0].url}
-                    artistName={artistInfo.name}
+                    artistPicture={artistInfo.profilepic} //consistent with Supabase
+                    artistName={artistInfo.artistName}
                   />
                 </div>
               </div>
@@ -153,7 +230,7 @@ function AlbumPage() {
                 {/* Right Side stays the same */}
                 <div className="right-side">
                   <SpotifyReviewButtons
-                    spotifyLink={albumInfo.external_urls.spotify}
+                    spotifyLink={albumInfo?.spotify}
                     result={albumInfo}
                   />
 
@@ -161,10 +238,10 @@ function AlbumPage() {
                     0 && (
                     <>
                       <div className="more-from-title">
-                        More From {albumInfo.artists[0].name}
+                        More From {artistInfo.artistName}
                       </div>
                       <MoreFromSection
-                        artistId={albumInfo.artists[0].id}
+                        artistId={artistInfo.artistid}
                         albumId={albumId}
                         artistAlbums={artistAlbums}
                       />
@@ -191,7 +268,7 @@ function AlbumPage() {
                 {/* Right Side stays the same */}
                 <div className="right-side">
                   <SpotifyReviewButtons
-                    spotifyLink={albumInfo.external_urls.spotify}
+                    spotifyLink={albumInfo.spotifylink}
                     result={albumInfo}
                   />
 
@@ -199,10 +276,10 @@ function AlbumPage() {
                     0 && (
                     <>
                       <div className="more-from-title">
-                        More From {albumInfo.artists[0].name}
+                        More From {artistInfo.artistName}
                       </div>
                       <MoreFromSection
-                        artistId={albumInfo.artists[0].id}
+                        artistId={artistInfo.artistid}
                         albumId={albumId}
                         artistAlbums={artistAlbums}
                       />

@@ -10,52 +10,10 @@ import EditProfile from "./pages/EditProfile";
 import ScrollToTop from "./misc/ScrollToTop";
 import reportWebVitals from "./reportWebVitals";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import App from "./App";
 
 import { Auth0Provider } from "@auth0/auth0-react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <ScrollToTop />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: ":artistId/album/:albumId",
-        element: <AlbumPage />,
-      },
-      {
-        path: ":username",
-        element: (
-          <ProtectedRoute>
-            <UserPage />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: ":username/:ratingid",
-        element: (
-          <ProtectedRoute>
-            <UserRating />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: "/settings",
-        element: (
-          <ProtectedRoute>
-            <EditProfile />
-          </ProtectedRoute>
-        ),
-      },
-    ],
-  },
-]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -69,7 +27,7 @@ root.render(
         audience: "https://soundboardmusic/api",
       }}
     >
-      <RouterProvider router={router} />
+      <App />
     </Auth0Provider>
   </React.StrictMode>
 );

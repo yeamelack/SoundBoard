@@ -198,7 +198,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; /*set to 5 for smaller screens*/
   border-radius: 10px;
-  gap: 8px;
+  gap: 20px; /*8*/
 }
 
 .indv-recent-activity {

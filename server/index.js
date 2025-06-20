@@ -17,7 +17,7 @@ app.get("/api/protected", checkJwt, (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = 4343;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

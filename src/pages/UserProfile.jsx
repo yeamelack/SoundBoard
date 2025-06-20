@@ -15,8 +15,7 @@ function UserProfile() {
   if (!isAuthenticated) {
     return <Link to="/" />;
   }
-  console.log("User picture URL:", user.picture);
-
+  
   return (
     <div className="page-grid">
       <div>
@@ -90,35 +89,36 @@ function UserProfile() {
             <div className="recent-activity-container">
               <div className="recent-activity">
                 <RecentActivityAlbums
-                  title="pop"
+                  title="DeBÍ TiRAR MáS FOToS"
                   rating="11"
                   imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
                 />
                 <RecentActivityAlbums
-                  title="pop"
+                  title="DeBÍ TiRAR MáS FOToS"
                   rating="11"
                   imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
                 />
                 <RecentActivityAlbums
-                  title="pop"
+                  title="DeBÍ TiRAR MáS FOToS"
                   rating="11"
                   imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
                 />
                 <RecentActivityAlbums
-                  title="pop"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />
-                <RecentActivityAlbums
-                  title="pop"
+                  title="DeBÍ TiRAR MáS FOToS"
                   rating="11"
                   imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
                 />{" "}
                 <RecentActivityAlbums
-                  title="pop"
+                  title="DeBÍ TiRAR MáS FOToS"
                   rating="11"
                   imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
                 />
+                <RecentActivityAlbums
+                  title="DeBÍ TiRAR MáS FOToS"
+                  rating="11"
+                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
+                />
+                
               </div>
             </div>
           </div>

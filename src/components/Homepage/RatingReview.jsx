@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 function RatingReview({ rating, setRating }) {
   const [hover, setHover] = useState(0);
-  console.log(rating);
   
   return (
     <div>

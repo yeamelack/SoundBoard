@@ -5,6 +5,8 @@ import ReviewBoxSearch from "../components/Homepage/ReviewBoxSearch.jsx";
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
+import supabase from "../supabase/supabaseClient";
+
 function HomePage() {
   const { isAuthenticated } = useAuth0();
 
