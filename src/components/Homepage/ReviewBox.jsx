@@ -9,12 +9,13 @@ import React from "react";
 import supabase from "../../supabase/supabaseClient";
 
 function ReviewBox({ result, toggleVisiablity }) {
+  console.log(result);
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
 
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [title, setTitle] = useState("");
-  const [formError, setFormError] = useState(null);
+  const [artistInfo, setArtistInfo] = useState(null);
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -26,43 +27,28 @@ function ReviewBox({ result, toggleVisiablity }) {
     setTitle(event.target.value);
   };
 
-  const submitReview = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    const getArtistInfo = async () => {
+      const { data, error } = await supabase
+        .from("artists")
+        .select("*")
+        .eq("artistid", result.artistid)
+        .single();
 
-    if (!review || !title || !rating) {
-      setFormError("Please fill in all the required fields");
-      return;
-    }
+        console.log(data)
 
-    const dateObj = new Date();         // or Date.parse(...)
-    const formattedDate = dateObj.toISOString();
-
-    const reviewData = {
-      userid: user.sub,
-      albumid: result.id,
-      reviewbody: review,
-      reviewtitle: title,
-      date: formattedDate,
-      starrating: rating,
+      if (data) {
+        setArtistInfo({
+          artistName: data.artistName,
+          artistid: data.artistid,
+          profilepic: data.profilepic,
+        });
+      }
     };
 
-    console.log("Submitting review:", reviewData);
-
-    const { data, error } = await supabase
-      .from("musicreviews")
-      .insert([reviewData]);
-
-    if (error) {
-      console.error("Supabase insert error:", error);
-      setFormError("Database error: " + error.message);
-      return;
-    }
-
-    if (data) {
-      setFormError(null);
-      setOverlayVisiablity(false); 
-    }
-  };
+    getArtistInfo();
+    console.log(artistInfo);
+  }, [result]);
 
   useEffect(() => {
     if (result) {
@@ -77,6 +63,7 @@ function ReviewBox({ result, toggleVisiablity }) {
       toggleVisiablity();
     }
   };
+  if (!artistInfo) return <div>Loading artist info...</div>;
 
   return (
     <>
@@ -89,21 +76,21 @@ function ReviewBox({ result, toggleVisiablity }) {
                   <div className="review-box-album-img-container">
                     <img
                       className="review-box-album-img"
-                      src={result.images[0].url}
-                      alt={`${result.name} album cover.`}
+                      src={result.coverart}
+                      alt={`${result.title} album cover.`}
                     />
                   </div>
 
                   <div className="review-box-album-title-artist-container">
                     <div className="review-box-album-title-text-container">
                       <span className="review-box-album-title-text">
-                        {result.name}
+                        {result.title}
                       </span>
                     </div>
 
                     <div className="review-box-artist-name-text-container">
                       <span className="review-box-artist-name-text">
-                        {result.artists[0].name}
+                        {artistInfo.artistName}
                       </span>
                     </div>
                   </div>
@@ -141,9 +128,7 @@ function ReviewBox({ result, toggleVisiablity }) {
               </div>
 
               <div className="review-box-sumbit-button-container">
-                <button className="review-submit-button" onClick={submitReview}>
-                  Submit
-                </button>
+                <button className="review-submit-button">Submit</button>
               </div>
             </div>
           </form>

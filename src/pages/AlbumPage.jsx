@@ -19,7 +19,6 @@ function AlbumPage() {
   const { artistId, albumId } = useParams();
   const [albumInfo, setAlbumInfo] = useState(null);
   const [artistInfo, setArtistInfo] = useState(null);
-
   const [artistAlbums, setArtistAlbums] = useState([]);
   const [fadeIn, setFadeIn] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
@@ -34,7 +33,7 @@ function AlbumPage() {
 
   useEffect(() => {
     const url = `http://localhost:8484/albums?q=${artistId}`;
-    async function fetchAlbums() {
+    async function fetchAlbums() { 
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -175,6 +174,10 @@ function AlbumPage() {
     return <div className="loading-message">Loading...</div>;
   }
 
+
+  console.log("albumInfo:", albumInfo);
+console.log("albumInfo.tracks:", albumInfo?.tracks);
+
   return (
     <>
       <Header />
@@ -198,7 +201,7 @@ function AlbumPage() {
                     trackCount={albumInfo?.tracks.total}
                   />
                   <ArtistButton
-                    artistPicture={artistInfo.profilepic} //consistent with Supabase
+                    artistPicture={artistInfo.profilepic} 
                     artistName={artistInfo.artistName}
                   />
                 </div>
@@ -222,7 +225,6 @@ function AlbumPage() {
                   <div className="left-grid-row">
                     <div className="review-page-section">
                       <UsersReviews amountOfReviews={0} />
-                      {/* Optional: Add your review form here */}
                     </div>
                   </div>
                 </div>

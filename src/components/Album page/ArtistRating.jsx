@@ -10,7 +10,7 @@ function ArtistRatings({
   albumInfo,
 }) {
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
-  const { isAuthenticated,loginWithPopup } = useAuth0();
+  const { isAuthenticated, loginWithPopup } = useAuth0();
 
   const handleClick = () => {
     if (isAuthenticated) {
@@ -68,10 +68,7 @@ function ArtistRatings({
           </button>
           {overlayVisiablity && (
             <div className="overlay">
-              <ReviewBox
-                result={albumInfo}
-                toggleVisiablity={handleClick}
-              />
+              <ReviewBox result={albumInfo} toggleVisiablity={handleClick} />
             </div>
           )}
         </div>

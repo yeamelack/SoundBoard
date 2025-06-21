@@ -16,10 +16,13 @@ function ReviewBoxSearch({
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handlePopUp = (result) => {
-    setSelectedItem(result);
+    setSelectedItem({
+      artistid: result.artists[0].id,
+      title: result.name,
+      coverart: result.images[0].url,
+    });
     setPopUpState(true);
   };
-
   const closePopUp = () => {
     setSelectedItem(null);
     setPopUpState(false);
@@ -32,10 +35,7 @@ function ReviewBoxSearch({
   }, [popUpState, selectedItem]);
 
   return (
-    <div
-      className={className}
-     
-    >
+    <div className={className}>
       <SearchBar
         className="review-box-search"
         placeholder="What have you been listening to?"
