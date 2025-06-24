@@ -20,6 +20,7 @@ function ReviewBoxSearch({
       artistid: result.artists[0].id,
       title: result.name,
       coverart: result.images[0].url,
+      albumid: result.id,
     });
     setPopUpState(true);
   };

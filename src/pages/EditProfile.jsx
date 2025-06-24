@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/Edit profile/EditProfile.css";
 import Header from "../components/Header/Header.jsx";
+import ProfileUploader from "../components/Edit profile/ProfileUploader";
 
 function EditProfile() {
   const { user } = useAuth0();
@@ -27,8 +28,9 @@ function EditProfile() {
 
         {isSocialLogin ? (
           <div className="password-disabled-message">
-            <p>Password changes are managed by Google. 
-              <a 
+            <p>
+              Password changes are managed by Google.
+              <a
                 href="https://myaccount.google.com/security"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -57,12 +59,7 @@ function EditProfile() {
 
       <div className="profile-picture-section">
         <span className="setting-header">Profile Picture</span>
-        <input
-          type="file"
-          accept="image/*"
-          className="change-profile-pic-input"
-        />
-        <button className="save-button">Save</button>
+        <ProfileUploader user={user}/>
       </div>
     </div>
   );

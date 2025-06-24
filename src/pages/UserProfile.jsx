@@ -5,17 +5,49 @@ import Header from "../components/Header/Header.jsx";
 import RecentActivity from "../components/UserProfile/RecentActivity.jsx";
 import RecentActivityAlbums from "../components/UserProfile/RecentActivityAlbums.jsx";
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import supabase from "../supabase/supabaseClient";
+import StaticStarRating from "../components/StarRating/StaticStarRating";
 
 function UserProfile() {
   const { userId } = useParams();
   const { user, isAuthenticated, isLoading } = useAuth0();
+
+  const [userProfilePicture, setUserProfilePicture] = useState("");
+
+  useEffect(() => {
+    const getProfilePicture = async () => {
+      const { data, error } = await supabase
+        .from("users")
+        .select("avatar")
+        .eq("userid", user.sub)
+        .single();
+
+      if (error) {
+        console.error("fetch error:", error);
+        return;
+      }
+
+      const { data: image, error: imageError } = await supabase.storage
+        .from("avatars")
+        .getPublicUrl(data.avatar);
+
+      if (imageError) {
+        console.error(imageError);
+      } else {
+        setUserProfilePicture(image);
+      }
+    };
+
+    getProfilePicture();
+  }, [user.sub]);
 
   if (isLoading) return <div>Loading...</div>;
 
   if (!isAuthenticated) {
     return <Link to="/" />;
   }
-  
+
   return (
     <div className="page-grid">
       <div>
@@ -27,10 +59,10 @@ function UserProfile() {
             <div className="user-profile-flex">
               <img
                 className="user-profile-picture"
-                src={user.picture.replace("96-c", "500-c") || userIcon}
+                src={userProfilePicture.publicUrl || userIcon}
                 alt={`${user.name}'s Profile Picture`}
                 onError={(e) => {
-                  e.target.onerror = null; // prevent infinite loop in case userIcon also fails
+                  e.target.onerror = null;
                   e.target.src = userIcon;
                 }}
               />
@@ -86,41 +118,7 @@ function UserProfile() {
             <span className="recent-activity-title">Recent Activity</span>
           </div>
           <div className="e">
-            <div className="recent-activity-container">
-              <div className="recent-activity">
-                <RecentActivityAlbums
-                  title="DeBÍ TiRAR MáS FOToS"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />
-                <RecentActivityAlbums
-                  title="DeBÍ TiRAR MáS FOToS"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />
-                <RecentActivityAlbums
-                  title="DeBÍ TiRAR MáS FOToS"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />
-                <RecentActivityAlbums
-                  title="DeBÍ TiRAR MáS FOToS"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />{" "}
-                <RecentActivityAlbums
-                  title="DeBÍ TiRAR MáS FOToS"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />
-                <RecentActivityAlbums
-                  title="DeBÍ TiRAR MáS FOToS"
-                  rating="11"
-                  imgLink="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-                />
-                
-              </div>
-            </div>
+            <RecentActivity />
           </div>
         </div>
       </div>

@@ -13,12 +13,10 @@ const {
 } = require("./searchUtils.js");
 
 
-
 const app = express();
 app.use(cors());
 dotenv.config();
 const port = 8484;
-
 
 
 app.listen(port, () =>

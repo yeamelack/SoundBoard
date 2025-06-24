@@ -27,6 +27,8 @@
   width: 100%;
   height: 100%;
   border-radius: 100%;
+  object-fit: cover;
+
 }
 
 .user-profile-username-container {
@@ -134,10 +136,12 @@
   display: flex;
   flex-direction: row;
   background-color: rgb(24, 26, 28);
-
   align-items: center;
-
   border-bottom: 2px solid rgb(39, 38, 38);
+
+  width: 100%;
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
 }
 
 .home-button-container {

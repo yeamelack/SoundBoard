@@ -1,4 +1,5 @@
 import "../../styles/UserProfile/RecentActivityAlbums.css";
+import StaticStarRating from "../../components/StarRating/StaticStarRating";
 
 function RecentActivityAlbums({ imgLink, title, rating }) {
   return (
@@ -14,7 +15,9 @@ function RecentActivityAlbums({ imgLink, title, rating }) {
         <span className="recent-activity-album-name">{title}</span>
       </div>
       <div className="recent-activity-user-rating-container">
-        <span className="recent-activity-user-rating">{rating}</span>
+        <span className="recent-activity-user-rating">
+          <StaticStarRating rating={rating} />
+        </span>
       </div>
     </div>
   );
