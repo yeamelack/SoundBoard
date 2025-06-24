@@ -12,6 +12,7 @@ import SimilarArtistList from '../components/artist profile/SimilarArtistList';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DiscographyScroll from '../components/artist profile/DiscographyScroll';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -26,6 +27,9 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
     const [popularTracks, setPopularTracks] = useState([]);
     const [relatedArtists, setRelatedArtists] = useState([]);
     const [selectedTab, setSelectedTab] = useState("home");
+
+    const [artistSingles, setArtistSingles] = useState([]);
+
 
 
 
@@ -95,12 +99,33 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
       
         fetchRelatedArtists();
       }, [artistId]);
+
+      useEffect(() => {
+        async function fetchSingles() {
+          try {
+
+            const res = await fetch(`http://localhost:8484/singles?q=${artistId}`);
+            if (!res.ok) throw new Error("Failed to fetch singles");
+            const singles = await res.json();
+            console.log("Fetched singles:", singles);
+            setArtistSingles(singles);
+          } catch (error) {
+            console.error("Error fetching singles:", error);
+          }
+        }
+      
+        fetchSingles();
+      }, [artistId]);
       
       
+    const navigate = useNavigate();
+    const goToHomePage = () => {
+      navigate(`/`);
+    };  
 
     if (!artistData) return <div style={{ color: "white" }}>Loading artist info...</div>;
         
-        
+    
     return (
         <>
             <Header/>
@@ -110,7 +135,7 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
                       <ArtistInfo artistImg={artistData.images[0].url} name={artistData.name}/>
                       <ArtistRating totalRatings={totalRatings} avgRating={avgRating} yourRating={yourRating}/>
                   </div>
-                  <ArtistNavBar setSelectedTab={setSelectedTab}/>
+                  <ArtistNavBar setSelectedTab={setSelectedTab} onClick={goToHomePage}/>
 
 
                   {selectedTab !== "discography" ? (
@@ -130,10 +155,6 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
                           </div>
 
                       </div>
-
-
-
-
                       <div className='artist-right-grid'>
                           <OptionMenu/>
                           <div class="similar-artists">
@@ -145,7 +166,11 @@ function ArtistProfile({ artistImg, name, totalRatings, avgRating, yourRating, p
                       </div>
                   </div>
                     </>
-                  ) : <DiscographyScroll discography={artistAlbums}/>}
+                  ) : <>
+                          <DiscographyScroll artistId={artistId} discography={artistAlbums}/>
+                          <DiscographyScroll artistId={artistId} discography={artistSingles}/>
+                      </>
+                        }
 
                   
                   

@@ -38,6 +38,49 @@ export async function searchRequest(query) {
   return updatedAlbums;
 }
 
+export async function fullSearchRequest(query) {
+  const endpoint = `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+    query
+  )}&type=album&market=US`;
+  const headers = await tokenManager.getAuthHeader();
+
+  const searchRes = await axios.get(endpoint, { headers });
+  const albums = searchRes.data.albums.items;
+
+  const updatedAlbums = [];
+
+  for (const album of albums) {
+    try {
+      const albumRes = await axios.get(
+        `https://api.spotify.com/v1/albums/${album.id}`,
+        { headers }
+      );
+      const hasExplicit = albumRes.data.tracks.items.some(
+        (track) => track.explicit
+      );
+
+      // Add a new property to indicate explicit content
+      album.isExplicit = hasExplicit;
+
+      updatedAlbums.push(album);
+    } catch (err) {
+      console.error(`Error checking album ${album.id}:`, err.message);
+      album.isExplicit = false;
+      updatedAlbums.push(album);
+    }
+  }
+
+  return updatedAlbums;
+}
+
+
+
+
+
+
+
+
+
 async function getArtistId(query) {
   const endpoint = `https://api.spotify.com/v1/search?q=${query}&type=artist&market=US&limit=1`;
   const headers = await tokenManager.getAuthHeader();
@@ -148,4 +191,6 @@ export default {
   getArtistsTopTracks,
   searchRequest,
   getSimilarArtists,
+  getSingles,
+  fullSearchRequest
 };

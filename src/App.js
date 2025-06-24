@@ -2,6 +2,7 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import AlbumPage from "./pages/AlbumPage";
 import ArtistProfile from "./pages/ArtistProfile";
+import ResultsPage from "./pages/ResultsPage";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Header/>
       <AlbumPage />
       <ArtistProfile />
+      <ResultsPage/>
     </div>
   );
 }

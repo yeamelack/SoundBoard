@@ -10,6 +10,7 @@ import {
   getArtistsTopTracks,
   getArtistInfo,
   getSimilarArtists,
+  fullSearchRequest
 } from "./searchUtils.js";
 
 const app = express();
@@ -29,6 +30,21 @@ app.get("/search", async (req, res) => {
       res.status(200).send(resJson);
     } else {
       res.status(400).send("no results");
+    }
+  } catch (error) {
+    console.error(error.message); 
+    res.status(500).send("Internal server error");
+  }
+});
+
+app.get("/result", async (req, res) => {
+  const query = req.query.q;
+  try {
+    const resJson = await fullSearchRequest(query);
+    if (resJson.length != 0) {
+      res.status(200).send(resJson);
+    } else {
+      res.status(400).send("no fullt results");
     }
   } catch (error) {
     console.error(error.message); 

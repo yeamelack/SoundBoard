@@ -1,0 +1,30 @@
+.results-grid-container {
+    background-color: rgb(50, 51, 54);
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.results-grid-container2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 20px;
+    background-color: rgb(50, 51, 54);
+    border-radius: 10px;
+  }
+  .page-content {
+    margin-top: 60px; /* equal to header height */
+  }
+  .popular-tracks{
+    flex: 1;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    font-family: "DM Sans", sans-serif;
+    color: rgb(207, 207, 207);
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10px;
+}

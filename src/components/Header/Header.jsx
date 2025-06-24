@@ -8,6 +8,8 @@ import Logo from "./Logo.jsx";
 import "../../styles/Header/Header.css";
 import React, { useState, useEffect, useRef } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 function Header() {
   //capture user search input
   const [searchInput, setSearchInput] = useState("");
@@ -75,6 +77,17 @@ function Header() {
     }
   };
 
+  const navigate = useNavigate(); 
+
+  const goToResults = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (searchInput.trim() !== "") {
+        navigate("/results", { state: { query: searchInput } });
+      }
+    }
+  };
+  
   return (
     <div className="header">
       <div className="left-section">
@@ -85,6 +98,7 @@ function Header() {
           value={searchInput}
           onChange={getSearchInput}
           onFocus={handleInputFocus}
+          onKeyDown={(e) => goToResults(e)}
           inputRef={searchInputRef}
           className="search-bar"
           placeholder="Search"

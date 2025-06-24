@@ -9,9 +9,10 @@
 .artist-profile-page .artist-profile-page-grid{
     margin-top: 56px;
     background-color: rgb(24, 26, 28);
-    height: 1300px;
+    /* height: 1300px; */
     display: grid;
-    grid-template-rows: 300px 52px 1fr;
+    /* grid-template-rows: 300px 52px 1fr; */
+    grid-template-rows: auto auto auto;
 }
 
 /* aritst proflie and reviews */
@@ -474,11 +475,17 @@
 }
 
 .artist-profile-page .indv-discography-grid{
-    height: 220px;
+    /* height: 220px;
     display: grid;
     grid-template-rows: 185px 30px;
     margin: 5px;
-    margin-bottom: 0px;
+    margin-bottom: 0px; */
+
+    display: grid;
+    grid-template-rows: auto auto;
+    width: 200px;
+    height: 250px; /* make square */
+    margin: 0 5px;
 }
 
 .artist-profile-page .background-discography{
@@ -521,6 +528,18 @@
     font-size: 12px;
     cursor: pointer;
     transition: text-decoration 0.15s;
+
+    /* font-family: "DM Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(207, 207, 207);
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal; */
+
 }
 
 .artist-profile-page .discog-album-title:hover{

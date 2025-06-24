@@ -9,6 +9,7 @@ import UserPage from "./pages/UserProfile";
 import ArtistProfile from "./pages/ArtistProfile";
 
 import ScrollToTop from "./misc/ScrollToTop";
+import ResultsPage from "./pages/ResultsPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/artist/:artistId",
         element: <ArtistProfile/>
+      },
+      {
+        path: "/results",
+        element: <ResultsPage/>
       }
     ],
   },

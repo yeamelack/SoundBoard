@@ -7,6 +7,7 @@ function SearchBar({
   inputRef,
   className,
   placeholder,
+  onKeyDown
 }) {
   return (
     <input
@@ -15,6 +16,7 @@ function SearchBar({
       type="search"
       placeholder={placeholder}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       value={value}
       onFocus={onFocus}
     />
