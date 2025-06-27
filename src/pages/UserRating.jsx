@@ -1,31 +1,107 @@
 import "../styles/UserRating page/UserRating.css";
 import Header from "../components/Header/Header.jsx";
 import AlbumMetaInfo from "../components/Album page/AlbumMetaInfo.jsx";
-import AlbumTitle from "../components/Album page/AlbumTitle.jsx";
 import ArtistButton from "../components/Album page/ArtistButton.jsx";
 import UsersReviews from "../components/Album page/UsersReviews";
+import supabase from "../supabase/supabaseClient";
+import { useAuth0 } from "@auth0/auth0-react";
+import { data, useLocation, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function UserRating() {
+  const location = useLocation();
+  const album = location.state?.album;
+  const { user } = useAuth0();
+  const [artistInfo, setArtistInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [userProfilePicture, setUserProfilePicture] = useState(null);
+
+  useEffect(() => {
+    const getArtistInfo = async () => {
+      const { data, error } = await supabase
+        .from("artists")
+        .select("*")
+        .eq("artistid", album.artistid)
+        .single();
+      if (error) {
+        console.error("artist fetch error", error);
+      } else {
+        setArtistInfo(data);
+      }
+    };
+
+    const getUserInfo = async () => {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("userid", album.userid)
+        .single();
+
+      if (error) {
+        console.error("user fetch error", error);
+        return;
+      }
+
+      setUserInfo(data);
+
+      // Now fetch the profile picture using data.avatar
+      const { data: image, error: imageError } = await supabase.storage
+        .from("avatars")
+        .getPublicUrl(data.avatar);
+
+      if (imageError) {
+        console.error("image fetch error", imageError);
+      } else {
+        setUserProfilePicture(image);
+      }
+    };
+
+    if (album?.artistid && album?.userid) {
+      getArtistInfo();
+      getUserInfo();
+    }
+  }, [album]);
+
+  if (!artistInfo || !userInfo || !userProfilePicture) {
+    return <div className="loading-message">Loading...</div>;
+  }
+
   return (
     <div className="UserRating-page-grid">
       <div>
         <Header />
       </div>
-      <div className="album-meta-data-container">
-        <div className="img-container">
-          <img
-            className="user-rating-album-img"
-            src="https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411"
-            alt=""
-          />
+      <div className="rating-page-banner">
+        <div className="rating-page-album-art-container">
+          <Link to={`/${album.artistid}/album/${album.albumid}`}>
+            <img
+              className="rating-page-album-art"
+              src={album.coverart}
+              alt={`${album.title} album cover`}
+            />
+          </Link>
         </div>
-        <div className="user-rating-album-meta-data">
-          <div className="user-rating-album-title-container">
-            <AlbumTitle title="DeBÍ TiRAR MáS FOToS" />
+
+        <div className="album-meta-data-section">
+          <div>
+            <span className="rated-album-title">{album.title}</span>
           </div>
-          <AlbumMetaInfo type="album" year="2025" trackCount="10" />
-          <div className="artist-button-in-user-rating">
-            <ArtistButton artistName="drake" />
+          <div className="album-meta-data">
+            <AlbumMetaInfo
+              type={
+                album.type.charAt(0).toUpperCase() + String(album.type).slice(1)
+              }
+              year={new Intl.DateTimeFormat("en-US").format(
+                new Date(album.releasedate)
+              )}
+              trackCount={album.tracks.total}
+            />
+          </div>
+          <div className="artist-page-button">
+            <ArtistButton
+              artistPicture={artistInfo.profilepic}
+              artistName={artistInfo.artistName}
+            />
           </div>
         </div>
       </div>
@@ -33,25 +109,23 @@ function UserRating() {
       <div className="album-rating-user-review-container">
         <div className="user-rating-review">
           <UsersReviews
-            username=" Yeamelack"
+            username={userInfo.username}
             date="1/1/2021"
-            rating="4.5"
-            review="personally i think so. admittedly i've never been big bladee fan and have only listened to probably a quarter of his discography so take this with a grain of salt. this project is in my opinion his most intriguing, memorable, and entertaining listen. the production on this thing is off the damn walls and all the features (my favorite being black kray) absolutely deliver. despite its 30 track run time, it surprisingly never feels dull or drug out and holds my attention WAY more than his other projects have for me. i'm a much bigger fan of bladee when he doesn't have the super atmospheric and crazy auto tuned vocals which i've been accustomed to with all of the previous projects i've heard from him. i've gotta admit with this album and his collaboration tape with yung lean from just a few weeks ago, bladee is definitely starting to grow on me and make me tilt my opinion on him.
-
-add
-"
-            profilePic=""
+            rating={album.starrating}
+            title={album.reviewtitle}
+            review={album.reviewbody}
+            profilePic={userProfilePicture.publicUrl}
           />
         </div>
         <div className="user-rating-bottom-right">
-          <div className="delete-review-button">
-            <span>Delete review</span>
-          </div>
           <div className="edit-review-button">
             <span>Edit review</span>
           </div>
           <div className="rate-this-album-button">
-            <span>Rate this album</span>
+            <span>Rate this album again</span>
+          </div>
+          <div className="delete-review-button">
+            <span>Delete review</span>
           </div>
         </div>
       </div>

@@ -5,8 +5,11 @@ import AlbumPage from "./pages/AlbumPage";
 import UserPage from "./pages/UserProfile";
 import UserRating from "./pages/UserRating";
 import EditProfile from "./pages/EditProfile";
+import RatingPage from "./archive/RatingPage/RatingPage";
+import Header from "./components/Header/Header";
 import ScrollToTop from "./misc/ScrollToTop";
 import ProtectedRoute from "./auth/ProtectedRoute";
+
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -36,6 +39,7 @@ function App() {
         const { error: insertError } = await supabase.from("users").insert([
           {
             userid: user.sub,
+            username: user.name,
             numberofrating: 0,
             numberofreviews: 0,
           },
@@ -77,11 +81,9 @@ function App() {
           ),
         },
         {
-          path: ":username/:ratingid",
+          path: ":username/rating/:ratingid",
           element: (
-            <ProtectedRoute>
               <UserRating />
-            </ProtectedRoute>
           ),
         },
         {
@@ -89,6 +91,14 @@ function App() {
           element: (
             <ProtectedRoute>
               <EditProfile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/rating/:id",
+          element: (
+            <ProtectedRoute>
+              <RatingPage />
             </ProtectedRoute>
           ),
         },

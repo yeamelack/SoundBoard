@@ -2,8 +2,8 @@
   background-color: rgb(24, 26, 28);
   display: grid;
   grid-template-rows: 1fr;
-  justify-content: center;
-  align-self: center;
+  /* justify-content: center;
+  align-self: center; */
   margin-top: 40px;
 }
 

@@ -4,6 +4,7 @@
   background-color: rgb(24, 26, 28);
   align-items: center;
   gap: 14px;
+  height: 35px;
 }
 
 .album-info-text {

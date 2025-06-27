@@ -41,14 +41,16 @@
 
 .album-rating-user-review-container {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 2fr 1fr;
   height: auto;
+  margin-top: 50px;
 }
 
 .user-rating-review {
   height: 100%;
   background-color: rgb(24, 26, 28);
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  margin-right: 10px;
 }
 .artist-button-in-user-rating {
   border-bottom: 2px solid rgb(39, 38, 38);
@@ -56,7 +58,6 @@
 
 .user-rating-bottom-right {
   background-color: rgb(24, 26, 28);
-  margin-top: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -64,52 +65,7 @@
 
 .delete-review-button {
   height: 40px;
-  width: 70%;
-  background-color: rgb(43, 45, 46);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-family: "DM Sans", sans-serif;
-  color: rgb(207, 207, 207);
-  font-weight: 550;
-  margin: 0;
-
-  transition: background-color 0.2s, opacity 0.2s;
-
-  cursor: pointer;
-}
-
-.edit-review-button {
-  height: 40px;
-  width: 70%;
-  background-color: rgb(43, 45, 46);
-  border-top: 2px solid rgb(39, 38, 38);
-  border-bottom: 2px solid rgb(39, 38, 38);
-  border-left: none;
-  border-right: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-family: "DM Sans", sans-serif;
-  color: rgb(207, 207, 207);
-  font-weight: 550;
-  margin: 0;
-
-  transition: background-color 0.2s, opacity 0.2s;
-
-  cursor: pointer;
-}
-
-.rate-this-album-button {
-  height: 40px;
-  width: 70%;
+  width: 80%;
   background-color: rgb(43, 45, 46);
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -129,6 +85,53 @@
   cursor: pointer;
 }
 
+.edit-review-button {
+  height: 40px;
+  width: 80%;
+  background-color: rgb(43, 45, 46);
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  margin: 0;
+
+  transition: background-color 0.2s, opacity 0.2s;
+
+  cursor: pointer;
+}
+
+.rate-this-album-button {
+  height: 40px;
+  width: 80%;
+
+  background-color: rgb(43, 45, 46);
+
+  border-top: 2px solid rgb(39, 38, 38);
+  border-bottom: 2px solid rgb(39, 38, 38);
+  border-left: none;
+  border-right: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  margin: 0;
+
+  transition: background-color 0.2s, opacity 0.2s;
+  cursor: pointer;
+}
+
 .rate-this-album-button:hover,
 .edit-review-button:hover,
 .delete-review-button:hover {
@@ -139,4 +142,80 @@
 .edit-review-button:active,
 .delete-review-button:active {
   opacity: 0.5;
+}
+
+.rating-page-grid {
+  display: grid;
+  grid-template-rows: 57px 270px 1fr;
+}
+
+.rating-page-banner {
+  display: grid;
+  grid-template-columns: 225px 1fr;
+  background-color: transparent;
+  height: 225px;
+  margin-top: 50px;
+}
+
+.rating-page-album-art-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* vertical: align to bottom */
+  align-items: flex-start; /* horizontal: align to left */
+  height: 224px;
+  transition: border-color 0.3s ease;
+}
+
+.rating-page-album-art {
+  height: 220px;
+  border-radius: 10px;
+  align-self: baseline;
+  border: 4px solid transparent; /* always takes up space */
+  transition: border 0.3s ease;
+}
+
+.rating-page-album-art:hover {
+  border: 4px solid rgba(0, 153, 245, 0.5);
+}
+
+.album-meta-data-section {
+  display: grid;
+  grid-template-rows: 1fr 50px 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 220px;
+  border-bottom: 1px solid rgb(39, 38, 38);
+  margin-left: 25px;
+}
+
+.album-meta-data {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(24, 26, 28);
+  align-items: center;
+  gap: 14px;
+  height: 20px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.artist-page-button {
+  height: 60px;
+}
+
+.rating-page-review-information {
+  background-color: aqua;
+  height: 100%;
+}
+
+.rated-album-title {
+  margin: 0px;
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 35px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

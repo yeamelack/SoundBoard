@@ -1,18 +1,20 @@
-.album-name-text {
+.album-name-container {
   color: rgb(207, 207, 207);
   font-family: "DM Sans", sans-serif;
   font-weight: 600;
-  font-size: 50px;
+  font-size: clamp(20px, 5vw, 50px); /* scales with viewport width */
+  max-height: 212px;
+  overflow: hidden;
 }
 
 .album-title-text {
-  margin: 0px;
+  margin: 0;
   color: rgb(207, 207, 207);
   font-family: "DM Sans", sans-serif;
   font-weight: 600;
-  font-size: 50px;
-  text-overflow: ellipsis;
+  font-size: inherit;
   overflow: hidden;
-  text-overflow: ellipsis;
-
+  display: -webkit-box;
+  -webkit-line-clamp: 3;       /* number of lines to show before cutting off */
+  -webkit-box-orient: vertical;
 }

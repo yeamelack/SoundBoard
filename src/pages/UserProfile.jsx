@@ -1,4 +1,4 @@
-import "../styles/UserProfile/he.css";
+import "../styles/UserProfile/UserProfile.css";
 import userIcon from "../assets/icons/user-icon.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header/Header.jsx";
@@ -81,7 +81,7 @@ function UserProfile() {
                   <span className="user-rates-given-style">0</span>
                 </div>
                 <div className="rating-text-container">
-                  <span className="rating-text">Rating</span>
+                  <span className="rating-text">Ratings</span>
                 </div>
               </div>
               <div className="user-stats-right-grid">
@@ -94,13 +94,13 @@ function UserProfile() {
               </div>
             </div>
           </div>
-          <Link to={"/settings"} key={userId}>
-            <div className="grid-under-user-rating">
-              <div className="edit-profile-button-container">
+          <div className="grid-under-user-rating">
+            <div className="edit-profile-button-container">
+              <Link to={"/settings"} key={userId}>
                 <button className="edit-profile-button">Edit Profile</button>
-              </div>
+              </Link>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
 

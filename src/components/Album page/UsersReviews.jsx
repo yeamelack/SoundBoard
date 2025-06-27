@@ -1,6 +1,16 @@
 import "../../styles/Album page/UsersReviews.css";
+import StaticStarRating from "../StarRating/StaticStarRating";
+import { Link } from "react-router-dom";
 
-function UsersReviews({ username, date, rating, review, profilePic, amountOfReviews }) {
+function UsersReviews({
+  username,
+  date,
+  rating,
+  title,
+  review,
+  profilePic,
+  amountOfReviews,
+}) {
   if (amountOfReviews === 0) {
     return (
       <div className="no-reviews">
@@ -9,6 +19,7 @@ function UsersReviews({ username, date, rating, review, profilePic, amountOfRevi
     );
   }
 
+
   return (
     <div className="reviews-background">
       {[...Array(amountOfReviews)].map((_, i) => (
@@ -16,30 +27,45 @@ function UsersReviews({ username, date, rating, review, profilePic, amountOfRevi
           <div className="indv-review-container">
             <div className="user-info">
               <div className="user-img">
-                <img
-                  className="user-img-in-review"
-                  src={profilePic}
-                  alt="User"
-                />
+                <Link to={`/${username}`}>
+                  <img
+                    className="user-img-in-review"
+                    src={profilePic}
+                    alt="User profile picture"
+                  />
+                </Link>
               </div>
-              <div className="users-review-info">
-                <div className="users-name">
-                  <p className="users-name-font">Reviewed by </p>
-                  <p className="name"> {username}</p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <div className="users-review-info">
+                  <div className="users-name">
+                    <p className="users-name-font">
+                      Reviewed by <span className="name">{username}</span>
+                    </p>
+                  </div>
+                  <p className="date"> {date}</p>
+                  <div className="stars">
+                    <StaticStarRating rating={rating} />
+                  </div>
                 </div>
-                <p className="date"> {date}</p>
-                <div className="stars">{rating}</div>
               </div>
             </div>
-            <div className="title-container">
-              <p className="title">Best Album EVER</p>
-            </div>
+            {title && (
+              <div className="title-container">
+                <p className="title">{title}</p>
+              </div>
+            )}
 
-            <div className="text-Review">
-              <p className="user-review">
-                {review}
-              </p>
-            </div>
+            {review && (
+              <div className="text-Review">
+                <p className="user-review">{review}</p>
+              </div>
+            )}
           </div>
         </div>
       ))}

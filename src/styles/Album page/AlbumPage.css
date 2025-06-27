@@ -25,26 +25,29 @@
   background-color: rgb(24, 26, 28);
   display: grid;
   grid-template-columns: 300px 1fr 517px;
+  height: 300px;
 }
 
 /* Album Info Section */
 .album-info-container {
   display: flex;
+  flex-direction: row; /* default direction: left-to-right */
+  justify-content: flex-start; /* horizontal alignment: left */
+  align-items: flex-end; /* vertical alignment: bottom */
+
+  max-height: 300px;
   background-color: rgb(24, 26, 28);
   flex: 1 1 200px;
   max-width: fit-content;
   margin-left: 20px;
-  align-items: flex-end;
-  padding-bottom: 25px;
-  justify-content: center;
-  align-items: center;
+  padding-bottom: 50px; /* optional: extra space at bottom */
 }
 
 .flex-text-container {
   display: flex;
   flex-direction: column;
   background-color: rgb(24, 26, 28);
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   justify-content: center;
   align-content: center;
 }
@@ -52,6 +55,7 @@
 .ratings-flex-container {
   display: flex;
   justify-content: center;
+  padding-bottom: 50px;
 }
 
 /* Below Navigation Layout */
@@ -137,6 +141,10 @@
   opacity: 1;
 }
 
-.review-page-section{
+.review-page-section {
   margin-top: 15px;
+}
+
+.album-title-container {
+  max-height: 212px;
 }

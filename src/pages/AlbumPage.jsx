@@ -33,7 +33,7 @@ function AlbumPage() {
 
   useEffect(() => {
     const url = `http://localhost:8484/albums?q=${artistId}`;
-    async function fetchAlbums() { 
+    async function fetchAlbums() {
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -174,9 +174,8 @@ function AlbumPage() {
     return <div className="loading-message">Loading...</div>;
   }
 
-
   console.log("albumInfo:", albumInfo);
-console.log("albumInfo.tracks:", albumInfo?.tracks);
+  console.log("albumInfo.tracks:", albumInfo?.tracks);
 
   return (
     <>
@@ -191,17 +190,23 @@ console.log("albumInfo.tracks:", albumInfo?.tracks);
               />
               <div className="album-info-container">
                 <div className="flex-text-container">
-                  <AlbumTitle title={albumInfo.title} />
-                  <AlbumMetaInfo
-                    type={
-                      albumInfo.type.charAt(0).toUpperCase() +
-                      String(albumInfo.type).slice(1)
-                    }
-                    year={new Intl.DateTimeFormat("en-US").format(new Date(albumInfo.releasedate))}
-                    trackCount={albumInfo?.tracks.total}
-                  />
+                  <div className="album-title-container">
+                    <AlbumTitle title={albumInfo.title} />
+                  </div>
+                  <div className="album-info">
+                    <AlbumMetaInfo
+                      type={
+                        albumInfo.type.charAt(0).toUpperCase() +
+                        String(albumInfo.type).slice(1)
+                      }
+                      year={new Intl.DateTimeFormat("en-US").format(
+                        new Date(albumInfo.releasedate)
+                      )}
+                      trackCount={albumInfo?.tracks.total}
+                    />
+                  </div>
                   <ArtistButton
-                    artistPicture={artistInfo.profilepic} 
+                    artistPicture={artistInfo.profilepic}
                     artistName={artistInfo.artistName}
                   />
                 </div>

@@ -21,6 +21,7 @@
   border-radius: 10px;
   transition: border 0.15s;
   cursor: pointer;
+  transition: border 0.3s ease;
 }
 
 .recent-activity-img:hover {
@@ -36,7 +37,7 @@
   justify-content: center;
 } */
 
-.recent-activity-user-rating-container{
+.recent-activity-user-rating-container {
   width: 100%;
 }
 
@@ -48,6 +49,11 @@
   white-space: nowrap;
   padding-left: 10px;
   padding-right: 10px;
-font-size: 14px;
-font-weight: 550;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.recent-activity-album-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
