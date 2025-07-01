@@ -2,10 +2,10 @@ import "../styles/UserRating page/UserRating.css";
 import Header from "../components/Header/Header.jsx";
 import AlbumMetaInfo from "../components/Album page/AlbumMetaInfo.jsx";
 import ArtistButton from "../components/Album page/ArtistButton.jsx";
-import UsersReviews from "../components/Album page/UsersReviews";
+import IndividualReview from "../components/UserRating/IndividualReview";
 import supabase from "../supabase/supabaseClient";
 import { useAuth0 } from "@auth0/auth0-react";
-import { data, useLocation, Link } from "react-router-dom";
+import { data, useLocation, Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function UserRating() {
@@ -15,6 +15,8 @@ function UserRating() {
   const [artistInfo, setArtistInfo] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userProfilePicture, setUserProfilePicture] = useState(null);
+
+  const [review, setReview] = useState();
 
   useEffect(() => {
     const getArtistInfo = async () => {
@@ -62,10 +64,13 @@ function UserRating() {
     }
   }, [album]);
 
+  // console.log(artistInfo, userInfo, userProfilePicture);
+
   if (!artistInfo || !userInfo || !userProfilePicture) {
     return <div className="loading-message">Loading...</div>;
   }
 
+  console.log(album);
   return (
     <div className="UserRating-page-grid">
       <div>
@@ -108,9 +113,9 @@ function UserRating() {
 
       <div className="album-rating-user-review-container">
         <div className="user-rating-review">
-          <UsersReviews
+          <IndividualReview
             username={userInfo.username}
-            date="1/1/2021"
+            date={new Date(album.date).toISOString().split("T")[0]}
             rating={album.starrating}
             title={album.reviewtitle}
             review={album.reviewbody}

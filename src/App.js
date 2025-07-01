@@ -82,9 +82,7 @@ function App() {
         },
         {
           path: ":username/rating/:ratingid",
-          element: (
-              <UserRating />
-          ),
+          element: <UserRating />,
         },
         {
           path: "/settings",

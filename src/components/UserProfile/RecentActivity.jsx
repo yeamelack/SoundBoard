@@ -17,7 +17,7 @@ function RecentActivity() {
         .eq("userid", user.sub);
 
       if (reviews && !reviewError) {
-        const reversedReviews = reviews.reverse().slice(0, 7);
+        const reversedReviews = reviews.reverse().slice(0, 6);
 
         const combined = await Promise.all(
           reversedReviews.map(async (review) => {
@@ -31,6 +31,7 @@ function RecentActivity() {
 
             return {
               ...musicData,
+              date: review.date,
               starrating: review.starrating,
               reviewtitle: review.reviewtitle,
               reviewbody: review.reviewbody,
@@ -48,6 +49,10 @@ function RecentActivity() {
       fetchRecentAlbums();
     }
   }, [user?.sub]);
+
+  if (!combinedData) {
+    return <div> loading</div>;
+  }
   return (
     <div className="recent-activity-container">
       <div className="recent-activity">

@@ -3,11 +3,9 @@ import userIcon from "../assets/icons/user-icon.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header/Header.jsx";
 import RecentActivity from "../components/UserProfile/RecentActivity.jsx";
-import RecentActivityAlbums from "../components/UserProfile/RecentActivityAlbums.jsx";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import supabase from "../supabase/supabaseClient";
-import StaticStarRating from "../components/StarRating/StaticStarRating";
 
 function UserProfile() {
   const { userId } = useParams();
@@ -47,6 +45,7 @@ function UserProfile() {
   if (!isAuthenticated) {
     return <Link to="/" />;
   }
+
 
   return (
     <div className="page-grid">

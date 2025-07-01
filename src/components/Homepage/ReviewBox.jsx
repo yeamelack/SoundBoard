@@ -3,7 +3,6 @@ import CancelButton from "../../assets/icons/cancel-button.svg";
 import { useAuth0 } from "@auth0/auth0-react";
 import StarRating from "../StarRating/StarRating";
 
-import RatingReview from "./RatingReview.jsx";
 import { useState, useEffect } from "react";
 import React from "react";
 import supabase from "../../supabase/supabaseClient";
@@ -15,6 +14,8 @@ function ReviewBox({ result, toggleVisiablity }) {
   const [review, setReview] = useState("");
   const [title, setTitle] = useState("");
   const [artistInfo, setArtistInfo] = useState(null);
+  const [refreshCount, setRefreshCount] = useState(0);
+
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -60,8 +61,21 @@ function ReviewBox({ result, toggleVisiablity }) {
     }
   };
   if (!artistInfo) return <div>Loading artist info...</div>;
+  
 
   const submitReview = async () => {
+    const hasRating = rating !== null;
+    const hasTitle = title.length !== 0;
+    const hasReview = review.length !== 0;
+
+    const validSubmission =
+      (hasRating && !hasTitle && !hasReview) ||
+      (hasRating && hasTitle && hasReview);
+
+    if (!validSubmission) {
+      return alert("Please enter a rating, or a title WITH a review.");
+    }
+
     const { error } = await supabase.from("musicreviews").insert({
       userid: user.sub,
       albumid: result.albumid,
@@ -74,6 +88,7 @@ function ReviewBox({ result, toggleVisiablity }) {
     if (!error) {
       setOverlayVisiablity();
       closeOverlay();
+      setRefreshCount(prev => prev + 1);
     }
   };
 
@@ -149,5 +164,5 @@ function ReviewBox({ result, toggleVisiablity }) {
     </>
   );
 }
-
+  
 export default ReviewBox;

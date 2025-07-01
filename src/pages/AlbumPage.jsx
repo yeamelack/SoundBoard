@@ -13,15 +13,19 @@ import SpotifyReviewButtons from "../components/Album page/SpotifyReviewButtons"
 import MoreFromSection from "../components/Album page/MoreFromSection";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import supabase from "../supabase/supabaseClient";
 
 function AlbumPage() {
+  const { user } = useAuth0();
   const { artistId, albumId } = useParams();
   const [albumInfo, setAlbumInfo] = useState(null);
   const [artistInfo, setArtistInfo] = useState(null);
   const [artistAlbums, setArtistAlbums] = useState([]);
   const [fadeIn, setFadeIn] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
+
+  // const [hasBeenRated, setHasBeenRated] = useState(false);
 
   useEffect(() => {
     setFadeIn(false); // Reset fade
@@ -174,9 +178,6 @@ function AlbumPage() {
     return <div className="loading-message">Loading...</div>;
   }
 
-  console.log("albumInfo:", albumInfo);
-  console.log("albumInfo.tracks:", albumInfo?.tracks);
-
   return (
     <>
       <Header />
@@ -229,7 +230,7 @@ function AlbumPage() {
                 <div className="left-grid">
                   <div className="left-grid-row">
                     <div className="review-page-section">
-                      <UsersReviews amountOfReviews={0} />
+                      <UsersReviews albumId={albumId} />
                     </div>
                   </div>
                 </div>
@@ -267,7 +268,7 @@ function AlbumPage() {
                     </div>
                     <div className="reviews-box">
                       <p className="review-text">Reviews</p>
-                      <UsersReviews amountOfReviews={0} />
+                      <UsersReviews albumId={albumId} limit={3} />
                     </div>
                   </div>
                 </div>

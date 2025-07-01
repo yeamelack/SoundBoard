@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
-  border-radius: 10px;
   border-bottom: solid;
   border-color: rgb(39, 38, 38);
   height: fit-content;
@@ -15,8 +14,15 @@
   gap: 5px;
 }
 
+.reviews-container:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
 .reviews-container:last-child {
   border-bottom: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .user-info {
@@ -40,7 +46,6 @@
   aspect-ratio: 1/1;
   object-fit: cover;
   transition: border 0.3s ease;
-
 }
 
 .user-img-in-review:hover {
@@ -84,7 +89,7 @@
   display: flex;
   align-items: center;
 }
-.title-container{
+.title-container {
   height: 25px;
 }
 
@@ -96,8 +101,6 @@
   font-weight: 550;
   font-size: 20px;
 }
-
-
 
 .no-review-text {
   color: rgb(238, 236, 236);
