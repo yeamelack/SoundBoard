@@ -5,10 +5,10 @@ import AlbumPage from "./pages/AlbumPage";
 import UserPage from "./pages/UserProfile";
 import UserRating from "./pages/UserRating";
 import EditProfile from "./pages/EditProfile";
-import RatingPage from "./archive/RatingPage/RatingPage";
 import Header from "./components/Header/Header";
 import ScrollToTop from "./misc/ScrollToTop";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import { ClickProvider } from "./misc/ClickContext"; // or wherever your ClickContext is
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -92,21 +92,17 @@ function App() {
             </ProtectedRoute>
           ),
         },
-        {
-          path: "/rating/:id",
-          element: (
-            <ProtectedRoute>
-              <RatingPage />
-            </ProtectedRoute>
-          ),
-        },
       ],
     },
   ]);
 
   if (isLoading) return <div>Loading...</div>;
 
-  return <RouterProvider router={router} />;
+  return (
+    <ClickProvider>
+      <RouterProvider router={router} />
+    </ClickProvider>
+  );
 }
 
 export default App;

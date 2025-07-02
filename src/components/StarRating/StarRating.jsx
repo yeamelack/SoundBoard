@@ -21,7 +21,7 @@ const StarRating = ({ currentRating, onRatingChange }) => {
           <label
             htmlFor={`star${value}`}
             className={Number.isInteger(value) ? "full" : "half"}
-            title={value === 5 ? "Awesome" : ""}
+            title={value === 5 ? "Awesome" : `${value} stars`}
           ></label>
         </React.Fragment>
       ))}

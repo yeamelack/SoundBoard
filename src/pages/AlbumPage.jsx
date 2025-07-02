@@ -1,6 +1,5 @@
 import "../styles/Album page/AlbumPage.css";
 import Header from "../components/Header/Header.jsx";
-
 import AlbumArt from "../components/Album page/AlbumArt.jsx";
 import AlbumTitle from "../components/Album page/AlbumTitle.jsx";
 import AlbumMetaInfo from "../components/Album page/AlbumMetaInfo.jsx";
@@ -15,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import supabase from "../supabase/supabaseClient";
+import { useClickContext } from "../misc/ClickContext";
 
 function AlbumPage() {
   const { user } = useAuth0();
@@ -24,9 +24,9 @@ function AlbumPage() {
   const [artistAlbums, setArtistAlbums] = useState([]);
   const [fadeIn, setFadeIn] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
+  const { clicked, setClicked } = useClickContext();
 
-  // const [hasBeenRated, setHasBeenRated] = useState(false);
-
+  
   useEffect(() => {
     setFadeIn(false); // Reset fade
     const timer = setTimeout(() => setFadeIn(true), 450);
@@ -230,7 +230,7 @@ function AlbumPage() {
                 <div className="left-grid">
                   <div className="left-grid-row">
                     <div className="review-page-section">
-                      <UsersReviews albumId={albumId} />
+                      <UsersReviews albumId={albumId} clicked={clicked} />
                     </div>
                   </div>
                 </div>
@@ -268,7 +268,12 @@ function AlbumPage() {
                     </div>
                     <div className="reviews-box">
                       <p className="review-text">Reviews</p>
-                      <UsersReviews albumId={albumId} limit={3} />
+                      <UsersReviews
+                        albumId={albumId}
+                        limit={3}
+                        clicked={clicked}
+                        setClicked={setClicked}
+                      />
                     </div>
                   </div>
                 </div>

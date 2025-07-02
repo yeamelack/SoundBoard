@@ -6,26 +6,30 @@ import StarRating from "../StarRating/StarRating";
 import { useState, useEffect } from "react";
 import React from "react";
 import supabase from "../../supabase/supabaseClient";
+import { useClickContext } from "../../misc/ClickContext";
 
-function ReviewBox({ result, toggleVisiablity }) {
+function ReviewBox({
+  result,
+  toggleVisiablity,
+  starrating = 0,
+  currentTitle = "",
+  reviewbody = "",
+  reviewId = -1,
+  setEditedStars,
+}) {
+  const isEditing = !!(currentTitle || reviewbody || starrating);
+
+  const { setClicked } = useClickContext();
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
-
-  const [rating, setRating] = useState(null);
-  const [review, setReview] = useState("");
-  const [title, setTitle] = useState("");
+  const [rating, setRating] = useState(starrating || 0);
+  const [review, setReview] = useState(reviewbody || "");
+  const [title, setTitle] = useState(currentTitle || "");
   const [artistInfo, setArtistInfo] = useState(null);
-  const [refreshCount, setRefreshCount] = useState(0);
-
 
   const { user, isAuthenticated } = useAuth0();
 
-  const getReviewInput = (event) => {
-    setReview(event.target.value);
-  };
-
-  const getTitleInput = (event) => {
-    setTitle(event.target.value);
-  };
+  const getReviewInput = (event) => setReview(event.target.value);
+  const getTitleInput = (event) => setTitle(event.target.value);
 
   useEffect(() => {
     const getArtistInfo = async () => {
@@ -53,6 +57,13 @@ function ReviewBox({ result, toggleVisiablity }) {
     }
   }, [result]);
 
+  // Resync state if props change (useful when switching to "edit mode")
+  useEffect(() => {
+    setRating(starrating || 0);
+    setTitle(currentTitle || "");
+    setReview(reviewbody || "");
+  }, [starrating, currentTitle, reviewbody]);
+
   const closeOverlay = () => {
     setOverlayVisiablity(false);
     setRating(0);
@@ -60,13 +71,11 @@ function ReviewBox({ result, toggleVisiablity }) {
       toggleVisiablity();
     }
   };
-  if (!artistInfo) return <div>Loading artist info...</div>;
-  
 
   const submitReview = async () => {
     const hasRating = rating !== null;
-    const hasTitle = title.length !== 0;
-    const hasReview = review.length !== 0;
+    const hasTitle = title.trim().length !== 0;
+    const hasReview = review.trim().length !== 0;
 
     const validSubmission =
       (hasRating && !hasTitle && !hasReview) ||
@@ -76,21 +85,46 @@ function ReviewBox({ result, toggleVisiablity }) {
       return alert("Please enter a rating, or a title WITH a review.");
     }
 
-    const { error } = await supabase.from("musicreviews").insert({
-      userid: user.sub,
-      albumid: result.albumid,
-      reviewbody: review,
-      reviewtitle: title,
-      date: new Date().toISOString(),
-      starrating: rating,
-    });
+    if (reviewId !== -1) {
+      setEditedStars(rating);
+      const { error: updateError } = await supabase
+        .from("musicreviews")
+        .update({
+          reviewbody: review,
+          reviewtitle: title,
+          starrating: rating,
+          date: new Date().toISOString(),
+        })
+        .eq("albumreviewid", reviewId);
 
-    if (!error) {
-      setOverlayVisiablity();
-      closeOverlay();
-      setRefreshCount(prev => prev + 1);
+      if (updateError) {
+        console.error("Error updating review:", updateError);
+        return;
+      }
+    } else {
+      // Insert new review
+      const { error: insertError } = await supabase
+        .from("musicreviews")
+        .insert({
+          userid: user.sub,
+          albumid: result.albumid,
+          reviewbody: review,
+          reviewtitle: title,
+          date: new Date().toISOString(),
+          starrating: rating,
+        });
+
+      if (insertError) {
+        console.error("Error inserting review:", insertError);
+        return;
+      }
     }
+
+    closeOverlay();
+    setClicked(false);
   };
+
+  if (!artistInfo) return <div>Loading artist info...</div>;
 
   return (
     <>
@@ -141,7 +175,8 @@ function ReviewBox({ result, toggleVisiablity }) {
                   className="title-textbox"
                   placeholder="Add a title"
                   onChange={getTitleInput}
-                ></textarea>
+                  value={title}
+                />
               </div>
 
               <div className="review-text-container">
@@ -149,13 +184,20 @@ function ReviewBox({ result, toggleVisiablity }) {
                   className="review-textbox"
                   placeholder="Add a review"
                   onChange={getReviewInput}
-                ></textarea>
+                  value={review}
+                />
               </div>
             </div>
 
             <div className="review-box-sumbit-button-container">
-              <button className="review-submit-button" onClick={submitReview}>
-                Submit
+              <button
+                className="review-submit-button"
+                onClick={() => {
+                  setClicked(true);
+                  submitReview();
+                }}
+              >
+                {isEditing ? "Update" : "Submit"}
               </button>
             </div>
           </div>
@@ -164,5 +206,5 @@ function ReviewBox({ result, toggleVisiablity }) {
     </>
   );
 }
-  
+
 export default ReviewBox;

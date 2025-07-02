@@ -3,55 +3,69 @@ import StaticStarRating from "../StarRating/StaticStarRating";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import supabase from "../../supabase/supabaseClient";
-import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useClickContext } from "../../misc/ClickContext";
 
-function UsersReviews({ limit, albumId}) {
-
-  const { user } = useAuth0();
+function UsersReviews({ limit, albumId, clicked }) {
+  const { user, isAuthenticated } = useAuth0();
   const [reviews, setReviews] = useState([]);
-  
+
   useEffect(() => {
-    const getReviews = async () => {
-      const { data, error } = await supabase
+    const getReviewsWithUserInfo = async () => {
+      const { data: reviews, error: reviewError } = await supabase
         .from("musicreviews")
         .select("*")
         .eq("albumid", albumId)
         .limit(limit)
         .order("date", { ascending: false });
 
-      if (!error) {
-        setReviews(data ?? []);
-      } else {
-        console.error("error fetching reviews: ", error);
+      if (reviewError) {
+        console.error("error fetching reviews: ", reviewError);
+        return;
       }
+
+      const enrichedReviews = await Promise.all(
+        (reviews ?? []).map(async (review) => {
+          const { data: user, error: userError } = await supabase
+            .from("users")
+            .select("username, avatar")
+            .eq("userid", review.userid)
+            .maybeSingle();
+
+          if (userError) {
+            console.error(
+              `Error fetching user for userid ${review.userid}`,
+              userError
+            );
+          }
+
+          let avatarUrl = null;
+
+          if (user?.avatar) {
+            const { data: storageData } = supabase.storage
+              .from("avatars")
+              .getPublicUrl(user.avatar);
+
+            avatarUrl = storageData?.publicUrl ?? null;
+          }
+
+          return {
+            ...review,
+            user: {
+              username: user?.username ?? "Unknown",
+              avatarUrl,
+            },
+          };
+        })
+      );
+
+      setReviews(enrichedReviews);
     };
 
     if (albumId) {
-      getReviews();
+      getReviewsWithUserInfo();
     }
-  }, [albumId]);
-
-  // console.log(reviews);
-
-  const [profilePic, setProfilePic] = useState(null);
-  useEffect(() => {
-    const getUserProfilePic = async () => {
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("userid", user.sub)
-        .single();
-      if (data) {
-        const { data: image } = supabase.storage
-          .from("avatars")
-          .getPublicUrl(data.avatar);
-
-        setProfilePic(image.publicUrl);
-      }
-    };
-    getUserProfilePic();
-  }, [albumId]);
+  }, [albumId, clicked]);
 
   if (reviews.length === 0) {
     return (
@@ -68,10 +82,10 @@ function UsersReviews({ limit, albumId}) {
           <div className="indv-review-container">
             <div className="user-info">
               <div className="user-img">
-                <Link to={`/${user.name}`}>
+                <Link to={`/${review.user.username}`}>
                   <img
                     className="user-img-in-review"
-                    src={profilePic}
+                    src={review.user.avatarUrl}
                     alt="User profile picture"
                   />
                 </Link>
@@ -86,7 +100,8 @@ function UsersReviews({ limit, albumId}) {
                 <div className="users-review-info">
                   <div className="users-name">
                     <p className="users-name-font">
-                      Reviewed by <span className="name">{user.name}</span>
+                      Reviewed by{" "}
+                      <span className="name">{review.user.username}</span>
                     </p>
                   </div>
                   <p className="date"> {review.date}</p>

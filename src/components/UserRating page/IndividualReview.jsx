@@ -1,6 +1,8 @@
 import "../../styles/Album page/UsersReviews.css";
 import StaticStarRating from "../StarRating/StaticStarRating";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useClickContext } from "../../misc/ClickContext";
 
 function IndividualReview({
   username,
@@ -11,6 +13,11 @@ function IndividualReview({
   profilePic,
   amountOfReviews,
 }) {
+  const { clicked } = useClickContext();
+  useEffect(() => {
+    console.log("clicked indiv");
+  }, [clicked]);
+
   if (amountOfReviews === 0) {
     return (
       <div className="no-reviews">

@@ -4,17 +4,20 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import supabase from "../../supabase/supabaseClient";
+import { useClickContext } from "../../misc/ClickContext";
+import StarRating from "../StarRating/StarRating";
 
 function ArtistRatings({ userRating, albumInfo }) {
   const { user } = useAuth0();
+  const { clicked } = useClickContext();
+
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
   const [reviewJson, setReviewJson] = useState(null);
+  const [editedStarReview, setUpdatedStarReview] = useState(0);
   const { isAuthenticated, loginWithPopup } = useAuth0();
-  const { artistId, albumId } = useParams();
-
-  
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = () => {
     if (isAuthenticated) {
@@ -30,49 +33,64 @@ function ArtistRatings({ userRating, albumInfo }) {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchEverything = async () => {
-      const albumid = albumInfo?.albumid;
-      if (!albumid) return;
+  const fetchEverything = async () => {
+    const albumid = albumInfo?.albumid;
+    if (!albumid) return;
 
-      // Fetch average rating
-      const { data: avg, error: avgError } = await supabase.rpc(
-        "get_album_average_rating",
-        { album_id_input: albumid }
-      );
+    // Fetch average rating
+    const { data: avg, error: avgError } = await supabase.rpc(
+      "get_album_average_rating",
+      { album_id_input: albumid }
+    );
 
-      if (avgError) console.error(avgError);
-      setAverageRating(avg ?? 0); // fallback to 0
+    if (avgError) console.error(avgError);
+    setAverageRating(avg ?? 0);
 
-      // Fetch total ratings
-      const { count, error: countError } = await supabase
+    // Fetch total ratings
+    const { count, error: countError } = await supabase
+      .from("musicreviews")
+      .select("*", { count: "exact", head: true })
+      .eq("albumid", albumid);
+
+    if (countError) console.error(countError);
+    setTotalRatings(count ?? 0);
+
+    // Fetch user review
+    if (user?.sub) {
+      const { data: userReview, error: userError } = await supabase
         .from("musicreviews")
-        .select("*", { count: "exact", head: true })
-        .eq("albumid", albumid);
+        .select("*")
+        .eq("userid", user.sub)
+        .eq("albumid", albumid)
+        .order("date", { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-      if (countError) console.error(countError);
-      setTotalRatings(count ?? 0);
+      if (userError) console.error(userError);
+      setReviewJson(userReview);
+    }
 
-      // Fetch user review
-      if (user?.sub) {
-        const { data: userReview, error: userError } = await supabase
-          .from("musicreviews")
-          .select("*")
-          .eq("userid", user.sub)
-          .eq("albumid", albumid)
-          .order("date", { ascending: false })
-          .limit(1)
-          .maybeSingle();
+    setIsLoading(false);
+  };
 
-        if (userError) console.error(userError);
-        setReviewJson(userReview); // may be null, that's fine
-      }
-
-      setIsLoading(false); // All fetches done
-    };
-
+  useEffect(() => {
     fetchEverything();
-  }, [albumInfo, user]);
+  }, [albumInfo, clicked, editedStarReview, user]);
+
+  useEffect(() => {
+    const updateUserReview = async () => {
+      const { data, error } = await supabase
+        .from("musicreviews")
+        .update({ starrating: editedStarReview })
+        .eq("albumreviewid", reviewJson?.albumreviewid);
+      if (error) {
+        console.error("error updating edited review", error);
+      } else {
+        fetchEverything();
+      }
+    };
+    updateUserReview();
+  }, [editedStarReview]);
 
   if (isLoading) {
     return <div>loading</div>;
@@ -115,15 +133,42 @@ function ArtistRatings({ userRating, albumInfo }) {
 
         <div className="review-button-container">
           <button
-            className="review-button-artist"
+            className={`review-button-artist ${
+              isHovered && reviewJson && isAuthenticated
+                ? "reviewed-hover"
+                : reviewJson && isAuthenticated
+                ? "has-reviewed"
+                : "hasnt-reviewed"
+            }`}
             onClick={handleClick}
             style={{
               cursor: "pointer",
               opacity: isAuthenticated ? 1 : 0.8,
             }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            <span className="artist-rating-review-text">
-              {isAuthenticated ? "Review" : "Login to write a review"}{" "}
+            <span
+              className={`artist-rating-review-text ${
+                reviewJson && isAuthenticated && isHovered
+                  ? "stars-centered-hovered"
+                  : isAuthenticated &&
+                    reviewJson &&
+                    "authenicated-and-reviewed-text-color"
+              }`}
+            >
+              {reviewJson && isAuthenticated && isHovered ? (
+                <StarRating
+                  currentRating={reviewJson?.starrating}
+                  onRatingChange={setUpdatedStarReview}
+                />
+              ) : reviewJson && isAuthenticated ? (
+                "Edit Review"
+              ) : isAuthenticated ? (
+                "Review"
+              ) : (
+                "Login to write a review"
+              )}
             </span>
           </button>
           {overlayVisiablity && (

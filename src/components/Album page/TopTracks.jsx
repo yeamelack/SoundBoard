@@ -1,12 +1,21 @@
 import "../../styles/Album page/TopTracks.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function TopTrack({ trackList }) {
+  const { artistId, albumId } = useParams();
+
   const [showMore, setShowMore] = useState(false);
 
+  //toggles show more
   const toggleShowMore = () => {
     setShowMore((prev) => !prev);
   };
+
+  //hides all tracklist
+  useEffect(() => {
+    setShowMore(false);
+  }, [albumId]);
 
   return (
     <div className="track-list-container">
