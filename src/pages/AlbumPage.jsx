@@ -24,13 +24,12 @@ function AlbumPage() {
   const [artistAlbums, setArtistAlbums] = useState([]);
   const [fadeIn, setFadeIn] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
-  const { clicked, setClicked } = useClickContext();
+  const [updatedReview, setUpdatedReview] = useState([]);
+  const [displayedReview, setDisplayedReviews] = useState([]); //ArtistRating to see albums displayed
 
-  
   useEffect(() => {
     setFadeIn(false); // Reset fade
     const timer = setTimeout(() => setFadeIn(true), 450);
-
     console.log("Current fade state:", fadeIn);
     return () => clearTimeout(timer);
   }, [albumId]);
@@ -71,6 +70,7 @@ function AlbumPage() {
           const response = await fetch(
             `http://localhost:8484/artist?q=${artistId}`
           );
+
           if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
           }
@@ -89,7 +89,7 @@ function AlbumPage() {
             },
           ]);
           if (insertError) {
-            console.error("Error inserting album:", insertError.message);
+            console.error("Error inserting artist:", insertError.message);
           }
         }
       } catch (error) {
@@ -121,7 +121,7 @@ function AlbumPage() {
             tracks: data.tracks,
             type: data.type,
           });
-
+          // console.log(`data FAMIA: ${data}`);
           return;
         }
 
@@ -134,18 +134,64 @@ function AlbumPage() {
         }
 
         const json = await response.json();
+    
+        let normalizedReleaseDate = json.release_date;
+
+        // Normalize if only year or year-month are provided
+        if (/^\d{4}$/.test(normalizedReleaseDate)) {
+          normalizedReleaseDate += "-01-01";
+        } else if (/^\d{4}-\d{2}$/.test(normalizedReleaseDate)) {
+          normalizedReleaseDate += "-01";
+        }
+
         setAlbumInfo({
           albumid: json.id,
           artistid: json.artists[0].id,
           title: json.name,
           spotifylink: json.external_urls.spotify,
           coverart: json.images[0].url,
-          releasedate: json.release_date,
+          releasedate: normalizedReleaseDate,
           tracks: json.tracks,
           type: json.album_type,
         });
 
-        //Insert into Supabase
+        //if theres more than one artist add the other artist to the db
+        if (json.artists.length > 1) {
+          await Promise.all(
+            json.artists.map(async (artistInfo) => {
+              try {
+                const response = await fetch(
+                  `http://localhost:8484/artist?q=${artistInfo.id}`
+                );
+
+                if (!response.ok) {
+                  throw new Error(`Fetch failed: ${response.status}`);
+                }
+
+                const artistJson = await response.json();
+
+                const { error } = await supabase.from("artists").upsert(
+                  {
+                    artistid: artistJson.id,
+                    artistName: artistJson.name,
+                    profilepic: artistJson.images?.[0]?.url ?? null,
+                  },
+                  { onConflict: "artistid" }
+                );
+
+                if (error) {
+                  console.error(
+                    `Supabase insert error for ${artistJson.name}:`,
+                    error
+                  );
+                }
+              } catch (err) {
+                console.error(`Failed to insert artist ${artistInfo.id}:`, err);
+              }
+            })
+          );
+        }
+
         const { error: insertError } = await supabase.from("music").insert([
           {
             albumid: json.id,
@@ -153,7 +199,7 @@ function AlbumPage() {
             title: json.name,
             spotifylink: json.external_urls.spotify,
             coverart: json.images[0].url,
-            releasedate: json.release_date,
+            releasedate: new Date(normalizedReleaseDate).toISOString(), // always valid timestamp
             tracks: json.tracks,
             type: json.album_type,
           },
@@ -169,6 +215,7 @@ function AlbumPage() {
     fetchAndMaybeInsertAlbum();
   }, [albumId]);
 
+  console.log(albumInfo);
   if (
     !albumInfo ||
     !albumInfo.coverart ||
@@ -213,7 +260,11 @@ function AlbumPage() {
                 </div>
               </div>
               <div className="ratings-flex-container">
-                <ArtistRatings albumInfo={albumInfo} />
+                <ArtistRatings
+                  displayedReview={displayedReview}
+                  albumInfo={albumInfo}
+                  setUpdatedReview={setUpdatedReview}
+                />
               </div>
             </div>
 
@@ -230,7 +281,11 @@ function AlbumPage() {
                 <div className="left-grid">
                   <div className="left-grid-row">
                     <div className="review-page-section">
-                      <UsersReviews albumId={albumId} clicked={clicked} />
+                      <UsersReviews
+                        albumId={albumId}
+                        setDisplayedReviews={setDisplayedReviews}
+                        updatedReview={updatedReview}
+                      />
                     </div>
                   </div>
                 </div>
@@ -271,8 +326,8 @@ function AlbumPage() {
                       <UsersReviews
                         albumId={albumId}
                         limit={3}
-                        clicked={clicked}
-                        setClicked={setClicked}
+                        setDisplayedReviews={setDisplayedReviews}
+                        updatedReview={updatedReview}
                       />
                     </div>
                   </div>

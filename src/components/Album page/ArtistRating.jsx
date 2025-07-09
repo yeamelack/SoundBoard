@@ -7,9 +7,14 @@ import supabase from "../../supabase/supabaseClient";
 import { useClickContext } from "../../misc/ClickContext";
 import StarRating from "../StarRating/StarRating";
 
-function ArtistRatings({ userRating, albumInfo }) {
+function ArtistRatings({
+  userRating,
+  albumInfo,
+  displayedReview,
+  setUpdatedReview,
+}) {
   const { user } = useAuth0();
-  const { clicked } = useClickContext();
+  const { clickInfo, setClickInfo } = useClickContext();
 
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
@@ -18,6 +23,37 @@ function ArtistRatings({ userRating, albumInfo }) {
   const [editedStarReview, setUpdatedStarReview] = useState(0);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleStarRatingClick = (newRating) => {
+    setUpdatedStarReview(newRating);
+
+    // Find the actual review object from the displayed ones
+    const displayed = displayedReview.find(
+      (review) => review.albumreviewid === reviewJson.albumreviewid
+    );
+
+    if (displayed) {
+      // Optional: delay to allow state change to propagate
+      setClickInfo({ clicked: false });
+
+      setTimeout(() => {
+        setClickInfo({
+          clicked: true,
+          source: "StarRatingUpdate",
+        });
+      }, 0);
+
+      // This should be the updated review object
+      setUpdatedReview({
+        ...displayed,
+        starrating: newRating,
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log(clickInfo);
+  }, [clickInfo]);
 
   const handleClick = () => {
     if (isAuthenticated) {
@@ -75,13 +111,25 @@ function ArtistRatings({ userRating, albumInfo }) {
 
   useEffect(() => {
     fetchEverything();
-  }, [albumInfo, clicked, editedStarReview, user]);
+  }, [albumInfo, user]);
+
+  useEffect(() => {
+    if (!clickInfo.clicked) return;
+
+    if (clickInfo.source === "ReviewBox-Submit") {
+      //timeout allows enough time for average to be recalculated
+      setTimeout(fetchEverything, 50);
+    }
+  }, [clickInfo]);
 
   useEffect(() => {
     const updateUserReview = async () => {
       const { data, error } = await supabase
         .from("musicreviews")
-        .update({ starrating: editedStarReview })
+        .update({
+          starrating: editedStarReview,
+          date: new Date().toISOString(),
+        })
         .eq("albumreviewid", reviewJson?.albumreviewid);
       if (error) {
         console.error("error updating edited review", error);
@@ -160,7 +208,7 @@ function ArtistRatings({ userRating, albumInfo }) {
               {reviewJson && isAuthenticated && isHovered ? (
                 <StarRating
                   currentRating={reviewJson?.starrating}
-                  onRatingChange={setUpdatedStarReview}
+                  onRatingChange={handleStarRatingClick}
                 />
               ) : reviewJson && isAuthenticated ? (
                 "Edit Review"

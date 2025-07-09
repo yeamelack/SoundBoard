@@ -19,7 +19,7 @@ function ReviewBox({
 }) {
   const isEditing = !!(currentTitle || reviewbody || starrating);
 
-  const { setClicked } = useClickContext();
+  const { handleClick } = useClickContext();
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
   const [rating, setRating] = useState(starrating || 0);
   const [review, setReview] = useState(reviewbody || "");
@@ -45,6 +45,7 @@ function ReviewBox({
           artistid: data.artistid,
           profilepic: data.profilepic,
         });
+        console.log(data);
       }
     };
 
@@ -73,7 +74,7 @@ function ReviewBox({
   };
 
   const submitReview = async () => {
-    const hasRating = rating !== null;
+    const hasRating = rating !== null && rating !== 0;
     const hasTitle = title.trim().length !== 0;
     const hasReview = review.trim().length !== 0;
 
@@ -82,7 +83,9 @@ function ReviewBox({
       (hasRating && hasTitle && hasReview);
 
     if (!validSubmission) {
-      return alert("Please enter a rating, or a title WITH a review.");
+      return alert(
+        "Please enter a rating, or a title WITH a review OR please enter a star rating."
+      );
     }
 
     if (reviewId !== -1) {
@@ -121,10 +124,10 @@ function ReviewBox({
     }
 
     closeOverlay();
-    setClicked(false);
+    handleClick(false);
   };
 
-  if (!artistInfo) return <div>Loading artist info...</div>;
+  if (!artistInfo) return;
 
   return (
     <>
@@ -193,7 +196,7 @@ function ReviewBox({
               <button
                 className="review-submit-button"
                 onClick={() => {
-                  setClicked(true);
+                  handleClick("ReviewBox-Submit");
                   submitReview();
                 }}
               >

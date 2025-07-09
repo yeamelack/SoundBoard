@@ -9,46 +9,58 @@ function RecentActivity() {
   const { user } = useAuth0();
   const params = useParams();
   const [combinedData, setCombinedData] = useState([]);
+
   useEffect(() => {
     const fetchRecentAlbums = async () => {
-      const { data: reviews, error: reviewError } = await supabase
+      const { data: reviews, error } = await supabase
         .from("musicreviews")
         .select("*")
-        .eq("userid", user.sub);
+        .eq("userid", user.sub)
+        .order("date", { ascending: false }) // newest first
+        .limit(6);
 
-      if (reviews && !reviewError) {
-        const reversedReviews = reviews.reverse().slice(0, 6);
-
-        const combined = await Promise.all(
-          reversedReviews.map(async (review) => {
-            const { data: musicData, error: musicError } = await supabase
-              .from("music")
-              .select("*")
-              .eq("albumid", review.albumid)
-              .single();
-
-            if (musicError || !musicData) return null;
-
-            return {
-              ...musicData,
-              date: review.date,
-              starrating: review.starrating,
-              reviewtitle: review.reviewtitle,
-              reviewbody: review.reviewbody,
-              userid: review.userid,
-              albumreviewid: review.albumreviewid,
-            };
-          })
-        );
-
-        setCombinedData(combined.filter(Boolean));
+      if (error) {
+        console.error("Error fetching reviews:", error);
+        return;
       }
+
+      const combined = await Promise.all(
+        (reviews ?? []).map(async (review) => {
+          const { data: musicData, error: musicError } = await supabase
+            .from("music")
+            .select("*")
+            .eq("albumid", review.albumid)
+            .single();
+
+          if (musicError || !musicData) {
+            console.error(
+              `Error fetching music for album ${review.albumid}`,
+              musicError
+            );
+            return null;
+          }
+
+          return {
+            ...musicData,
+            date: review.date,
+            starrating: review.starrating,
+            reviewtitle: review.reviewtitle,
+            reviewbody: review.reviewbody,
+            userid: review.userid,
+            albumreviewid: review.albumreviewid,
+          };
+        })
+      );
+
+      setCombinedData(combined.filter(Boolean));
     };
 
     if (user?.sub) {
       fetchRecentAlbums();
     }
   }, [user?.sub]);
+
+  console.log(combinedData);
 
   if (!combinedData) {
     return <div> loading</div>;

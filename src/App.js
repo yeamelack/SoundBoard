@@ -14,6 +14,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import supabase from "./supabase/supabaseClient";
+import Rating from "./pages/Rating";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -74,14 +75,14 @@ function App() {
         },
         {
           path: ":username",
-          element: (
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>
-          ),
+          element: <UserPage />,
         },
         {
-          path: ":username/rating/:ratingid",
+          path: ":username/rating/",
+          element: <Rating />,
+        },
+        {
+          path: ":username/rating/:reviewId",
           element: <UserRating />,
         },
         {

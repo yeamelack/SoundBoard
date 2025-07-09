@@ -5,10 +5,21 @@ import { useEffect, useState } from "react";
 import supabase from "../../supabase/supabaseClient";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useClickContext } from "../../misc/ClickContext";
+import { click } from "@testing-library/user-event/dist/click";
 
-function UsersReviews({ limit, albumId, clicked }) {
-  const { user, isAuthenticated } = useAuth0();
+function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
+
   const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    if (!updatedReview) return;
+
+    setReviews((prevReviews) =>
+      prevReviews.map((r) =>
+        r.albumreviewid === updatedReview.albumreviewid ? updatedReview : r
+      )
+    );
+  }, [updatedReview]);
 
   useEffect(() => {
     const getReviewsWithUserInfo = async () => {
@@ -60,12 +71,20 @@ function UsersReviews({ limit, albumId, clicked }) {
       );
 
       setReviews(enrichedReviews);
+      if (typeof setDisplayedReviews === "function") {
+        setDisplayedReviews(enrichedReviews);
+      } else {
+        console.warn(
+          "setDisplayedReviews is not a function",
+          setDisplayedReviews
+        );
+      }
     };
 
     if (albumId) {
       getReviewsWithUserInfo();
     }
-  }, [albumId, clicked]);
+  }, [albumId]);
 
   if (reviews.length === 0) {
     return (
@@ -104,7 +123,9 @@ function UsersReviews({ limit, albumId, clicked }) {
                       <span className="name">{review.user.username}</span>
                     </p>
                   </div>
-                  <p className="date"> {review.date}</p>
+                  <p className="date">
+                    {new Date(review.date).toISOString().split("T")[0]}
+                  </p>
                   <div className="stars">
                     <StaticStarRating rating={review.starrating} />
                   </div>

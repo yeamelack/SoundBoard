@@ -12,7 +12,7 @@
   min-width: 500px;
 }
 
-.overlay{
+.overlay {
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -89,7 +89,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%
+  width: 100%;
 }
 
 .review-box-sumbit-button-container {
@@ -105,7 +105,7 @@
   height: 35px;
   border-radius: 5px;
   background-color: rgb(0, 153, 245);
-  transition: 0.25s;
+  transition: opacity 0.25s, background-color 0.2s;
 }
 
 .review-submit-button {
@@ -155,7 +155,6 @@
   box-sizing: border-box;
   justify-self: center;
 }
-
 
 .review-submit-button:active,
 .cancel-button-container:active {
