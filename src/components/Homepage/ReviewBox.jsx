@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import supabase from "../../supabase/supabaseClient";
 import { useClickContext } from "../../misc/ClickContext";
+import { useUser } from "../../misc/UserContext";
 
 function ReviewBox({
   result,
@@ -18,7 +19,7 @@ function ReviewBox({
   setEditedStars,
 }) {
   const isEditing = !!(currentTitle || reviewbody || starrating);
-
+  const userInfo = useUser();
   const { handleClick } = useClickContext();
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
   const [rating, setRating] = useState(starrating || 0);
@@ -109,7 +110,7 @@ function ReviewBox({
       const { error: insertError } = await supabase
         .from("musicreviews")
         .insert({
-          userid: user.sub,
+          username: userInfo.username,
           albumid: result.albumid,
           reviewbody: review,
           reviewtitle: title,

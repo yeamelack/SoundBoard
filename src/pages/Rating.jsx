@@ -3,11 +3,12 @@ import Header from "../components/Header/Header";
 import RatedAlbums from "../components/Rating/RatedAlbums";
 import supabase from "../supabase/supabaseClient";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function Rating() {
   const { user } = useAuth0();
+  const { username } = useParams();
   const location = useLocation();
   const [reviews, setReviews] = useState(location.state || []);
 
@@ -32,7 +33,7 @@ function Rating() {
         )
       `
         )
-        .eq("userid", user.sub)
+        .eq("username", username)
         .order("date", { ascending: false });
 
       if (error) {

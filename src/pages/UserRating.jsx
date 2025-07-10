@@ -14,6 +14,8 @@ import { useClickContext } from "../misc/ClickContext";
 function UserRating() {
   const location = useLocation();
   const userAndAlbumInfo = location.state?.album; // review + user + album associated with review
+
+
   const { user, isAuthenticated } = useAuth0();
   const [artistInfo, setArtistInfo] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
@@ -26,7 +28,6 @@ function UserRating() {
   const [boxMode, setBoxMode] = useState(null); // 'edit' or 'rate'
 
   const [deleteOverlay, setDeleteOverlay] = useState(false);
-
 
   useEffect(() => {
     const fetchUserAndAlbumInfo = async () => {
@@ -55,13 +56,14 @@ function UserRating() {
         starrating: reviewData.starrating,
         reviewtitle: reviewData.reviewtitle,
         reviewbody: reviewData.reviewbody,
-        userid: reviewData.userid,
+        username: reviewData.username,
         albumreviewid: reviewData.albumreviewid,
       };
 
       setReviewInfo(combinedData);
       setEditedStars(combinedData.starrating);
 
+      console.log("combined data");
       console.log(combinedData);
     };
 
@@ -86,15 +88,16 @@ function UserRating() {
         console.error("artist fetch error", error);
       } else {
         setArtistInfo(data);
+        console.log("data");
+        console.log(data);
       }
-      console.log(data);
     };
 
     const getUserInfo = async () => {
       const { data, error } = await supabase
         .from("users")
         .select("*")
-        .eq("userid", reviewInfo.userid)
+        .eq("username", reviewInfo.username)
         .single();
 
       if (error) {
@@ -115,7 +118,8 @@ function UserRating() {
       }
     };
 
-    if (reviewInfo?.artistid && reviewInfo?.userid) {
+    //runs the querying information after review information is given
+    if (reviewInfo?.artistid && reviewInfo?.username) {
       getArtistInfo();
       getUserInfo();
     }
@@ -135,6 +139,8 @@ function UserRating() {
           reviewbody: data.reviewbody,
           reviewtitle: data.reviewtitle,
         }));
+      } else {
+        console.log("error while updating review:", error);
       }
     };
 
@@ -149,112 +155,121 @@ function UserRating() {
     }
   };
 
+  console.log("artistInfo");
+  console.log(artistInfo);
+
+  console.log("userInfo");
+  console.log(userInfo);
+
+  console.log("userProfilePicture");
+  console.log(userProfilePicture);
+
   if (!artistInfo || !userInfo || !userProfilePicture) {
     return <div className="loading-message">Loading...</div>;
   }
 
   return (
-
-      <div className="UserRating-page-grid">
-        <div>
-          <Header />
-        </div>
-        <div className="rating-page-banner">
-          <div className="rating-page-album-art-container">
-            <Link to={`/${reviewInfo.artistid}/album/${reviewInfo.albumid}`}>
-              <img
-                className="rating-page-album-art"
-                src={reviewInfo.coverart}
-                alt={`${reviewInfo.title} album cover`}
-              />
-            </Link>
-          </div>
-
-          <div className="album-meta-data-section">
-            <div>
-              <span className="rated-album-title">{reviewInfo.title}</span>
-            </div>
-            <div className="album-meta-data">
-              <AlbumMetaInfo
-                type={
-                  reviewInfo.type.charAt(0).toUpperCase() +
-                  String(reviewInfo.type).slice(1)
-                }
-                year={new Intl.DateTimeFormat("en-US").format(
-                  new Date(reviewInfo.releasedate)
-                )}
-                trackCount={reviewInfo.tracks.total}
-              />
-            </div>
-            <div className="artist-page-button">
-              <ArtistButton
-                artistPicture={artistInfo.profilepic}
-                artistName={artistInfo.artistName}
-              />
-            </div>
-          </div>
+    <div className="UserRating-page-grid">
+      <div>
+        <Header />
+      </div>
+      <div className="rating-page-banner">
+        <div className="rating-page-album-art-container">
+          <Link to={`/${reviewInfo.artistid}/album/${reviewInfo.albumid}`}>
+            <img
+              className="rating-page-album-art"
+              src={reviewInfo.coverart}
+              alt={`${reviewInfo.title} album cover`}
+            />
+          </Link>
         </div>
 
-        <div className="album-rating-user-review-container">
-          <div className="user-rating-review">
-            <IndividualReview
-              username={userInfo.username}
-              date={new Date(reviewInfo.date).toISOString().split("T")[0]}
-              rating={editedStars}
-              title={reviewInfo.reviewtitle}
-              review={reviewInfo.reviewbody}
-              profilePic={userProfilePicture.publicUrl}
+        <div className="album-meta-data-section">
+          <div>
+            <span className="rated-album-title">{reviewInfo.title}</span>
+          </div>
+          <div className="album-meta-data">
+            <AlbumMetaInfo
+              type={
+                reviewInfo.type.charAt(0).toUpperCase() +
+                String(reviewInfo.type).slice(1)
+              }
+              year={new Intl.DateTimeFormat("en-US").format(
+                new Date(reviewInfo.releasedate)
+              )}
+              trackCount={reviewInfo.tracks.total}
             />
           </div>
-          <div className="user-rating-bottom-right">
-            <button
-              onClick={() => handleClick("edit")}
-              className="edit-review-button"
-            >
-              Edit review
-            </button>
-
-            <button
-              onClick={() => handleClick("rate")}
-              className="rate-this-album-button"
-            >
-              Rate this album again
-            </button>
-
-            {overlayVisiablity && (
-              <ReviewBox
-                result={reviewInfo}
-                currentTitle={
-                  boxMode === "edit" ? reviewInfo.reviewtitle : undefined
-                }
-                reviewbody={
-                  boxMode === "edit" ? reviewInfo.reviewbody : undefined
-                }
-                starrating={boxMode === "edit" ? editedStars : undefined}
-                toggleVisiablity={setOverlayVisiablity}
-                reviewId={
-                  boxMode === "edit" ? reviewInfo.albumreviewid : undefined
-                }
-                setEditedStars={boxMode === "edit" ? setEditedStars : undefined}
-              />
-            )}
-
-            <button
-              onClick={handleDeleteOverlay}
-              className="delete-review-button"
-            >
-              Delete review
-            </button>
-
-            {deleteOverlay && (
-              <DeleteMenu
-                reviewId={reviewInfo.albumreviewid}
-                handleDeleteOverlay={handleDeleteOverlay}
-              />
-            )}
+          <div className="artist-page-button">
+            <ArtistButton
+              artistPicture={artistInfo.profilepic}
+              artistName={artistInfo.artistName}
+            />
           </div>
         </div>
       </div>
+
+      <div className="album-rating-user-review-container">
+        <div className="user-rating-review">
+          <IndividualReview
+            username={userInfo.username}
+            date={new Date(reviewInfo.date).toISOString().split("T")[0]}
+            rating={editedStars}
+            title={reviewInfo.reviewtitle}
+            review={reviewInfo.reviewbody}
+            profilePic={userProfilePicture.publicUrl}
+          />
+        </div>
+        <div className="user-rating-bottom-right">
+          <button
+            onClick={() => handleClick("edit")}
+            className="edit-review-button"
+          >
+            Edit review
+          </button>
+
+          <button
+            onClick={() => handleClick("rate")}
+            className="rate-this-album-button"
+          >
+            Rate this album again
+          </button>
+
+          {overlayVisiablity && (
+            <ReviewBox
+              result={reviewInfo}
+              currentTitle={
+                boxMode === "edit" ? reviewInfo.reviewtitle : undefined
+              }
+              reviewbody={
+                boxMode === "edit" ? reviewInfo.reviewbody : undefined
+              }
+              starrating={boxMode === "edit" ? editedStars : undefined}
+              toggleVisiablity={setOverlayVisiablity}
+              reviewId={
+                boxMode === "edit" ? reviewInfo.albumreviewid : undefined
+              }
+              setEditedStars={boxMode === "edit" ? setEditedStars : undefined}
+            />
+          )}
+
+          <button
+            onClick={handleDeleteOverlay}
+            className="delete-review-button"
+          >
+            Delete review
+          </button>
+
+          {deleteOverlay && (
+            <DeleteMenu
+              reviewId={reviewInfo.albumreviewid}
+              handleDeleteOverlay={handleDeleteOverlay}
+              username={username}
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

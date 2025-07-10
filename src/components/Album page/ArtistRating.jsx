@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import supabase from "../../supabase/supabaseClient";
 import { useClickContext } from "../../misc/ClickContext";
 import StarRating from "../StarRating/StarRating";
+import { useUser } from "../../misc/UserContext";
 
 function ArtistRatings({
   userRating,
@@ -14,6 +15,8 @@ function ArtistRatings({
   setUpdatedReview,
 }) {
   const { user } = useAuth0();
+  const userInfo = useUser();
+
   const { clickInfo, setClickInfo } = useClickContext();
 
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
@@ -96,7 +99,7 @@ function ArtistRatings({
       const { data: userReview, error: userError } = await supabase
         .from("musicreviews")
         .select("*")
-        .eq("userid", user.sub)
+        .eq("username", userInfo.username)
         .eq("albumid", albumid)
         .order("date", { ascending: false })
         .limit(1)

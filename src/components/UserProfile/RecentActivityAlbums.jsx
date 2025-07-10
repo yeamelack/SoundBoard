@@ -1,6 +1,5 @@
 import "../../styles/UserProfile/RecentActivityAlbums.css";
 import StaticStarRating from "../../components/StarRating/StaticStarRating";
-import { Link, useParams } from "react-router-dom";
 
 function RecentActivityAlbums({ imgLink, title, rating }) {
   return (

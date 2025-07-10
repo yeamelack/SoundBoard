@@ -8,7 +8,9 @@ import EditProfile from "./pages/EditProfile";
 import Header from "./components/Header/Header";
 import ScrollToTop from "./misc/ScrollToTop";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import SetupProfile from "./pages/SetupProfile";
 import { ClickProvider } from "./misc/ClickContext"; // or wherever your ClickContext is
+import { UserProvider } from "./misc/UserContext";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -21,8 +23,11 @@ function App() {
   const [dbError, setDbError] = useState(null);
 
   useEffect(() => {
-    const insertUser = async () => {
+    const checkUser = async () => {
       if (!isAuthenticated || !user) return;
+
+      // Skip check if already on setup page
+      if (window.location.pathname === "/setup") return;
 
       const { data, error } = await supabase
         .from("users")
@@ -30,34 +35,19 @@ function App() {
         .eq("userid", user.sub)
         .single();
 
-      if (error) {
-        console.error("Error checking for user:", error.message);
+      if (error && error.code !== "PGRST116") {
+        console.error("Error checking user:", error.message);
         setDbError(error);
         return;
       }
 
       if (!data) {
-        const { error: insertError } = await supabase.from("users").insert([
-          {
-            userid: user.sub,
-            username: user.name,
-            numberofrating: 0,
-            numberofreviews: 0,
-          },
-        ]);
-
-        if (insertError) {
-          console.error("Error inserting user:", insertError.message);
-          setDbError(insertError);
-        } else {
-          setDbError(null);
-        }
-      } else {
-        setDbError(null);
+        // Redirect new users to setup page
+        window.location.href = "/setup";
       }
     };
 
-    insertUser();
+    checkUser();
   }, [isAuthenticated, user]);
 
   const router = createBrowserRouter([
@@ -86,6 +76,14 @@ function App() {
           element: <UserRating />,
         },
         {
+          path: "/setup",
+          element: (
+            <ProtectedRoute>
+              <SetupProfile />
+            </ProtectedRoute>
+          ),
+        },
+        {
           path: "/settings",
           element: (
             <ProtectedRoute>
@@ -101,7 +99,9 @@ function App() {
 
   return (
     <ClickProvider>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </ClickProvider>
   );
 }

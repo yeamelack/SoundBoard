@@ -3,6 +3,7 @@ import StaticStarRating from "../StarRating/StaticStarRating";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { useClickContext } from "../../misc/ClickContext";
+import userIcon from "../../assets/icons/user-icon.svg";
 
 function IndividualReview({
   username,
@@ -25,6 +26,9 @@ function IndividualReview({
       </div>
     );
   }
+  console.log(" ");
+
+  console.log(profilePic);
 
   return (
     <div className="reviews-background">
@@ -36,7 +40,12 @@ function IndividualReview({
                 <Link to={`/${username}`}>
                   <img
                     className="user-img-in-review"
-                    src={profilePic}
+                    src={
+                      profilePic ===
+                      "https://xkwmkwcxpnqitmulvkdu.supabase.co/storage/v1/object/public/avatars/null"
+                        ? userIcon
+                        : profilePic
+                    }
                     alt="User profile picture"
                   />
                 </Link>

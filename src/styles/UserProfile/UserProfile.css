@@ -75,7 +75,8 @@
   border-right: 2px solid rgb(39, 38, 38);
 }
 
-.user-stats-left-grid:hover .user-rates-given-style {
+.user-stats-left-grid:hover:not(.not-clickable) .user-rates-given-style 
+  {
   color: rgb(105, 199, 236);
 }
 
@@ -323,4 +324,15 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+}
+
+.not-clickable {
+  /* opacity: 0.6; */
+  cursor: default;
+}
+
+.not-clickable:hover,
+.user-rates-given-style {
+  background-color: inherit; /* remove hover effect */
+  cursor: default;
 }

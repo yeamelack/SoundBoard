@@ -6,9 +6,9 @@ import supabase from "../../supabase/supabaseClient";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useClickContext } from "../../misc/ClickContext";
 import { click } from "@testing-library/user-event/dist/click";
+import userIcon from "../../assets/icons/user-icon.svg";
 
 function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
-
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
@@ -35,12 +35,15 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
         return;
       }
 
+      // console.log("reviews");
+      // console.log(reviews);
+
       const enrichedReviews = await Promise.all(
         (reviews ?? []).map(async (review) => {
           const { data: user, error: userError } = await supabase
             .from("users")
             .select("username, avatar")
-            .eq("userid", review.userid)
+            .eq("username", review.username)
             .maybeSingle();
 
           if (userError) {
@@ -93,7 +96,11 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
       </div>
     );
   }
+  console.log(reviews);
 
+  if (!reviews) {
+    return <div>loading...</div>;
+  }
   return (
     <div className="reviews-background">
       {reviews.map((review, i) => (
@@ -104,7 +111,11 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
                 <Link to={`/${review.user.username}`}>
                   <img
                     className="user-img-in-review"
-                    src={review.user.avatarUrl}
+                    src={
+                      review.user.avatarUrl === null
+                        ? userIcon
+                        : review.user.avatarUrl
+                    }
                     alt="User profile picture"
                   />
                 </Link>

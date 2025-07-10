@@ -5,16 +5,18 @@ import LoginButton from "./LoginButton";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import supabase from "../../supabase/supabaseClient";
+import { useUser } from "../../misc/UserContext";
 
 function UserButton() {
   const { user, isAuthenticated } = useAuth0();
-  const [userProfilePicture, setUserProfilePicture] = useState("");
+  const [userInfo, setUserInfo] = useState("");
+  const userLoginedInfo = useUser();
 
   useEffect(() => {
-    const getProfilePicture = async () => {
+    const getUserInformation = async () => {
       const { data, error } = await supabase
         .from("users")
-        .select("avatar")
+        .select("*")
         .eq("userid", user.sub)
         .single();
 
@@ -29,24 +31,29 @@ function UserButton() {
 
       if (imageError) {
         console.error(imageError);
-      } else {
-        setUserProfilePicture(image);
       }
+
+      setUserInfo({
+        ...data,
+        avatarUrl: image?.publicUrl || null,
+      });
     };
 
-    getProfilePicture();
+    getUserInformation();
   }, [user.sub]);
 
   return isAuthenticated ? (
-    <Link to={`/${user.name}`}>
+    <Link to={`/${userInfo.username}`} state={{ userInfo }}>
       <div className="user-button-container">
         <button className="user-button">
           <div className="user-icon-container">
             <img
               className={`user-icon-${
-                user.picture ? "auth0-user-icon" : "default-user-icon"
+                userLoginedInfo.profilePicture
+                  ? "auth0-user-icon"
+                  : "default-user-icon"
               }`}
-              src={userProfilePicture.publicUrl || user.picture || userIcon}
+              src={userLoginedInfo.profilePicture || userIcon}
               alt="User"
             />
           </div>

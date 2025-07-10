@@ -8,19 +8,21 @@ import { useEffect, useState } from "react";
 import supabase from "../supabase/supabaseClient";
 
 function UserProfile() {
-  const { userId } = useParams();
+  const { username } = useParams();
+
   const navigate = useNavigate();
 
   const { user, isAuthenticated, isLoading } = useAuth0();
+
   const [reviews, setReviews] = useState(null);
   const [userProfilePicture, setUserProfilePicture] = useState("");
 
   const location = useLocation();
-  const userAndAlbumInfo = location.state?.album; // r
+  const userInfo = location.state?.userInfo;
 
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  console.log("location state on render:", location.state);
+  console.log("location state on render:", location.userInfo);
 
   //banner for successfully deleted albums
   useEffect(() => {
@@ -40,6 +42,16 @@ function UserProfile() {
 
   useEffect(() => {
     const fetchAllUserReviews = async () => {
+      const { data: userData, error: userDataError } = await supabase
+        .from("users")
+        .select("*")
+        .eq("username", username)
+        .single();
+
+      if (userDataError) {
+        console.error("Fetching user data failed", error);
+      }
+
       const { data, error } = await supabase
         .from("musicreviews")
         .select(
@@ -55,8 +67,9 @@ function UserProfile() {
         )
       `
         )
-        .eq("userid", user.sub)
+        .eq("username", userData.username)
         .order("date", { ascending: false });
+
       if (error) {
         console.error("Fetching user rated albums failed", error);
         return;
@@ -65,14 +78,14 @@ function UserProfile() {
     };
 
     fetchAllUserReviews();
-  }, []);
+  }, [username]);
 
   useEffect(() => {
     const getProfilePicture = async () => {
       const { data, error } = await supabase
         .from("users")
         .select("avatar")
-        .eq("userid", user.sub)
+        .eq("username", username)
         .single();
 
       if (error) {
@@ -92,13 +105,11 @@ function UserProfile() {
     };
 
     getProfilePicture();
-  }, [user.sub]);
+  }, [username]);
+
+  const isClickable = reviews?.length > 0;
 
   if (isLoading || !reviews) return <div>Loading...</div>;
-
-  if (!isAuthenticated) {
-    return <Link to="/" />;
-  }
 
   return (
     <>
@@ -118,7 +129,7 @@ function UserProfile() {
                 <img
                   className="user-profile-picture"
                   src={userProfilePicture.publicUrl || userIcon}
-                  alt={`${user.name}'s Profile Picture`}
+                  alt={`${username}'s Profile Picture`}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = userIcon;
@@ -128,24 +139,46 @@ function UserProfile() {
             </div>
 
             <div className="user-profile-username-container">
-              <span className="username">{user.name}</span>
+              <span className="username">{username}</span>
             </div>
           </div>
           <div className="user-profile-stats-container">
             <div className="user-stats-container">
               <div className="user-stats">
-                <Link to={{ pathname: "rating", state: { reviews } }}>
-                  <div className="user-stats-left-grid">
+                {reviews?.length > 0 ? (
+                  <Link to={{ pathname: "rating", state: { reviews } }}>
+                    <div
+                      className={`user-stats-left-grid ${
+                        !isClickable ? "not-clickable" : ""
+                      }`}
+                    >
+                      <div className="user-rates-given">
+                        <span className="user-rates-given-style">
+                          {reviews.length}
+                        </span>
+                      </div>
+                      <div className="rating-text-container">
+                        <span className="rating-text">Ratings</span>
+                      </div>
+                    </div>
+                  </Link>
+                ) : (
+                  <div
+                    className={`user-stats-left-grid ${
+                      !isClickable ? "not-clickable" : ""
+                    }`}
+                  >
                     <div className="user-rates-given">
                       <span className="user-rates-given-style">
-                        {reviews.length}
+                        {reviews?.length ?? 0}
                       </span>
                     </div>
                     <div className="rating-text-container">
                       <span className="rating-text">Ratings</span>
                     </div>
                   </div>
-                </Link>
+                )}
+
                 <div className="user-stats-right-grid">
                   <div className="user-reviews-given">
                     <span className="user-reviews">0</span>
@@ -158,7 +191,7 @@ function UserProfile() {
             </div>
             <div className="grid-under-user-rating">
               <div className="edit-profile-button-container">
-                <Link to={"/settings"} key={userId}>
+                <Link to={"/settings"} key={username}>
                   <button className="edit-profile-button">Edit Profile</button>
                 </Link>
               </div>

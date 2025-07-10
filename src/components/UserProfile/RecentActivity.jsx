@@ -5,9 +5,13 @@ import RecentActivityAlbums from "../../components/UserProfile/RecentActivityAlb
 import "../../styles/UserProfile/RecentActivity.css";
 import { Link, useParams } from "react-router-dom";
 
+import { useUser } from "../../misc/UserContext";
+
 function RecentActivity() {
+  const username = useParams().username;
+  const userInfo = useUser();
+
   const { user } = useAuth0();
-  const params = useParams();
   const [combinedData, setCombinedData] = useState([]);
 
   useEffect(() => {
@@ -15,7 +19,7 @@ function RecentActivity() {
       const { data: reviews, error } = await supabase
         .from("musicreviews")
         .select("*")
-        .eq("userid", user.sub)
+        .eq("username", username)
         .order("date", { ascending: false }) // newest first
         .limit(6);
 
@@ -46,7 +50,7 @@ function RecentActivity() {
             starrating: review.starrating,
             reviewtitle: review.reviewtitle,
             reviewbody: review.reviewbody,
-            userid: review.userid,
+            username: review.username,
             albumreviewid: review.albumreviewid,
           };
         })
@@ -55,22 +59,27 @@ function RecentActivity() {
       setCombinedData(combined.filter(Boolean));
     };
 
-    if (user?.sub) {
+    if (username) {
       fetchRecentAlbums();
     }
-  }, [user?.sub]);
+  }, [username]);
+  console.log("combinedData");
 
   console.log(combinedData);
-
   if (!combinedData) {
-    return <div> loading</div>;
+    return <div>Loading...</div>;
   }
+
+  if (combinedData.length === 0) {
+    return <div>No albums reviewed</div>;
+  }
+
   return (
     <div className="recent-activity-container">
       <div className="recent-activity">
         {combinedData.map((album, i) => (
           <Link
-            to={`/${params.username}/rating/${album.albumreviewid}`}
+            to={`/${username}/rating/${album.albumreviewid}`}
             state={{ album }}
             key={i}
           >

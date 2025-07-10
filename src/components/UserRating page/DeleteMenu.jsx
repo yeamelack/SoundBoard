@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
-function DeleteMenu({ handleDeleteOverlay, reviewId }) {
-  const { user } = useAuth0();
+function DeleteMenu({ username, handleDeleteOverlay, reviewId }) {
   const navigate = useNavigate();
 
   const deleteReview = async () => {
@@ -19,7 +18,7 @@ function DeleteMenu({ handleDeleteOverlay, reviewId }) {
       return;
     }
 
-    navigate(`/${user.name}`, {
+    navigate(`/${username}`, {
       state: { showDeleteConfirmation: true },
     });
   };

@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import supabase from "../supabase/supabaseClient";
+
 import { useClickContext } from "../misc/ClickContext";
 
 function AlbumPage() {
@@ -134,7 +135,7 @@ function AlbumPage() {
         }
 
         const json = await response.json();
-    
+
         let normalizedReleaseDate = json.release_date;
 
         // Normalize if only year or year-month are provided

@@ -1,0 +1,122 @@
+.setup-container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  /* background-color: red; */
+  justify-items: center;
+  align-items: center;
+}
+
+.setup-menu-container {
+  height: 50%;
+  width: 30%;
+  border-radius: 10px;
+  min-width: 381px;
+  min-height: 399px;
+  background-color: rgb(28, 32, 36);
+  padding: 20px;
+  display: grid;
+  grid-template-rows: 0.7fr 2.5fr 1.3fr max-content;
+  border: 1px solid rgb(39, 38, 38);
+}
+
+.welcome-text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-text {
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 2px;
+}
+
+.image-uploader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.username-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  justify-content: center;
+  /* padding-bottom: 10px; */
+}
+
+.username-input {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  max-height: 40px;
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  background-color: rgb(50, 51, 54);
+  padding-left: 5px;
+  border: 2px solid transparent;
+}
+
+.username-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.username-input:focus {
+  outline: none;
+  border-color: rgb(101, 103, 119);
+}
+
+.submit-button-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.submit-button {
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  border: 0px;
+
+  color: rgb(255, 255, 255);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+
+  background-color: rgb(0, 153, 245);
+  cursor: pointer;
+  transition: opacity 0.25s, background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: rgb(57, 175, 248);
+}
+.submit-button:active {
+  opacity: 0.5;
+}
+
+.input-container {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0px;
+}
+
+.error-message-container {
+  flex: 0.1;
+}
+
+.error-text {
+  color: rgb(255, 35, 35);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
