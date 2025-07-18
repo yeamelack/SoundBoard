@@ -26,6 +26,9 @@ function ReviewBox({
   const [review, setReview] = useState(reviewbody || "");
   const [title, setTitle] = useState(currentTitle || "");
   const [artistInfo, setArtistInfo] = useState(null);
+  console.log("userInfo");
+
+  console.log(userInfo);
 
   const { user, isAuthenticated } = useAuth0();
 
@@ -110,12 +113,13 @@ function ReviewBox({
       const { error: insertError } = await supabase
         .from("musicreviews")
         .insert({
-          username: userInfo.username,
+          username: userInfo.userInfo.username,
           albumid: result.albumid,
           reviewbody: review,
           reviewtitle: title,
           date: new Date().toISOString(),
           starrating: rating,
+          userid: userInfo.userInfo.auth0id,
         });
 
       if (insertError) {

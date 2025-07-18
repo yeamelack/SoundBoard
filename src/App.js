@@ -11,6 +11,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import SetupProfile from "./pages/SetupProfile";
 import { ClickProvider } from "./misc/ClickContext"; // or wherever your ClickContext is
 import { UserProvider } from "./misc/UserContext";
+import UserReviews from "./pages/UserReview";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -74,6 +75,10 @@ function App() {
         {
           path: ":username/rating/:reviewId",
           element: <UserRating />,
+        },
+        {
+          path: "/:username/reviews/",
+          element: <UserReviews />,
         },
         {
           path: "/setup",

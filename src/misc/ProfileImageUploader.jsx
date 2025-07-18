@@ -1,31 +1,24 @@
 // ProfileImageUploader.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import ProfileImageUploaderStyle from "../styles/misc/ProfileImageUploader.module.css";
+import supabase from "../supabase/supabaseClient";
+import { useClickContext } from "./ClickContext";
+import { useUser } from "./UserContext";
 
-function ProfileImageUploader() {
-  const [image, setImage] = useState(null);
-
+function ProfileImageUploader({ onFileSelect, previewImage }) {
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      onFileSelect(selectedFile);
     }
   };
 
   return (
     <div className={ProfileImageUploaderStyle["profile-image-uploader"]}>
-      <label
-        htmlFor="profileUpload"
-        className={ProfileImageUploaderStyle["image-container"]}
-      >
-        {image && (
-          <img
-            src={image || "https://via.placeholder.com/150"} // default image
-            alt=""
-            className={ProfileImageUploaderStyle["profile-image"]}
-          />
+      <label htmlFor="profileUpload" className={ProfileImageUploaderStyle["image-container"]}>
+        {previewImage && (
+          <img src={previewImage} alt="" className={ProfileImageUploaderStyle["profile-image"]} />
         )}
         <div className={ProfileImageUploaderStyle["overlay"]}>
           <FaCamera className={ProfileImageUploaderStyle["camera-icon"]} />

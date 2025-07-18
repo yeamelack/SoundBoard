@@ -6,23 +6,18 @@ import RecentActivity from "../components/UserProfile/RecentActivity.jsx";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import supabase from "../supabase/supabaseClient";
+import { useUser } from "../misc/UserContext";
+import ConfirmationPopup from "../misc/ConfirmationPopup";
 
 function UserProfile() {
   const { username } = useParams();
-
   const navigate = useNavigate();
-
-  const { user, isAuthenticated, isLoading } = useAuth0();
-
+  const { isLoading } = useAuth0();
   const [reviews, setReviews] = useState(null);
   const [userProfilePicture, setUserProfilePicture] = useState("");
-
   const location = useLocation();
-  const userInfo = location.state?.userInfo;
-
   const [showConfirmation, setShowConfirmation] = useState(false);
-
-  console.log("location state on render:", location.userInfo);
+  const { userInfo } = useUser();
 
   //banner for successfully deleted albums
   useEffect(() => {
@@ -49,7 +44,7 @@ function UserProfile() {
         .single();
 
       if (userDataError) {
-        console.error("Fetching user data failed", error);
+        console.error("Fetching user data failed", userDataError);
       }
 
       const { data, error } = await supabase
@@ -107,14 +102,20 @@ function UserProfile() {
     getProfilePicture();
   }, [username]);
 
-  const isClickable = reviews?.length > 0;
+  const writtenReviews = reviews?.filter(
+    (r) => r.reviewtitle && r.reviewtitle.trim() !== ""
+  );
 
-  if (isLoading || !reviews) return <div>Loading...</div>;
+  const isRatingsClickable = reviews?.length > 0;
+  const isReviewsClickable = writtenReviews?.length > 0;
 
+  if (isLoading || !reviews || !writtenReviews) return <div>Loading...</div>;
+
+  console.log(writtenReviews);
   return (
     <>
       {showConfirmation && (
-        <div className="confirmation-popup">Review deleted successfully!</div>
+        <ConfirmationPopup message={"Review deleted successfully!"} />
       )}
 
       {/* your homepage content */}
@@ -145,11 +146,11 @@ function UserProfile() {
           <div className="user-profile-stats-container">
             <div className="user-stats-container">
               <div className="user-stats">
-                {reviews?.length > 0 ? (
+                {isRatingsClickable > 0 ? (
                   <Link to={{ pathname: "rating", state: { reviews } }}>
                     <div
                       className={`user-stats-left-grid ${
-                        !isClickable ? "not-clickable" : ""
+                        !isRatingsClickable ? "not-clickable" : ""
                       }`}
                     >
                       <div className="user-rates-given">
@@ -165,7 +166,7 @@ function UserProfile() {
                 ) : (
                   <div
                     className={`user-stats-left-grid ${
-                      !isClickable ? "not-clickable" : ""
+                      !isRatingsClickable ? "not-clickable" : ""
                     }`}
                   >
                     <div className="user-rates-given">
@@ -179,21 +180,57 @@ function UserProfile() {
                   </div>
                 )}
 
-                <div className="user-stats-right-grid">
-                  <div className="user-reviews-given">
-                    <span className="user-reviews">0</span>
+                {/*right reviews*/}
+                {console.log("Written Reviews to pass:", writtenReviews)}
+                {isReviewsClickable > 0 ? (
+                  <Link
+                    to={{
+                      pathname: `/${username}/reviews`,
+                      state: { writtenReviews },
+                    }}
+                  >
+                    <div
+                      className={`user-stats-right-grid ${
+                        !isReviewsClickable ? "not-clickable" : ""
+                      }`}
+                    >
+                      <div className="user-reviews-given">
+                        <span className="user-reviews">
+                          {writtenReviews.length}
+                        </span>
+                      </div>
+                      <div className="reviews-text-container">
+                        <span className="reviews-text">Reviews</span>
+                      </div>
+                    </div>
+                  </Link>
+                ) : (
+                  <div
+                    className={`user-stats-right-grid ${
+                      !isReviewsClickable ? "not-clickable" : ""
+                    }`}
+                  >
+                    <div className="user-reviews-given">
+                      <span className="user-reviews">
+                        {writtenReviews.length ?? 0}
+                      </span>
+                    </div>
+                    <div className="reviews-text-container">
+                      <span className="reviews-text">Reviews</span>
+                    </div>
                   </div>
-                  <div className="reviews-text-container">
-                    <span className="reviews-text">Reviews</span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="grid-under-user-rating">
               <div className="edit-profile-button-container">
-                <Link to={"/settings"} key={username}>
-                  <button className="edit-profile-button">Edit Profile</button>
-                </Link>
+                {userInfo?.username === username && (
+                  <Link to={"/settings"} key={username}>
+                    <button className="edit-profile-button">
+                      Edit Profile
+                    </button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

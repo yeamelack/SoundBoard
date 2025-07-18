@@ -63,10 +63,6 @@
   border: 2px solid transparent;
 }
 
-.username-input::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-}
 
 .username-input:focus {
   outline: none;

@@ -7,7 +7,7 @@ function AlbumPageNavigationBar({ setShowReviews, showReviews }) {
   const handleReviewClick = () => {
     setClickInfo({ clicked: false });
     setShowReviews(true);
-    setClickInfo({ clicked: true, source: "review-nav-button" }); // Add any relevant info here
+    setClickInfo({ clicked: true, source: "review-nav-button" }); 
   };
 
   return (

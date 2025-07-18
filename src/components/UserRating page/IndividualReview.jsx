@@ -79,6 +79,7 @@ function IndividualReview({
             {review && (
               <div className="text-Review">
                 <p className="user-review">{review}</p>
+
               </div>
             )}
           </div>

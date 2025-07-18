@@ -10,11 +10,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useClickContext } from "../misc/ClickContext";
+import { useUser } from "../misc/UserContext";
 
 function UserRating() {
   const location = useLocation();
   const userAndAlbumInfo = location.state?.album; // review + user + album associated with review
-
 
   const { user, isAuthenticated } = useAuth0();
   const [artistInfo, setArtistInfo] = useState(null);
@@ -28,6 +28,11 @@ function UserRating() {
   const [boxMode, setBoxMode] = useState(null); // 'edit' or 'rate'
 
   const [deleteOverlay, setDeleteOverlay] = useState(false);
+
+  const loggedInUserInfo = useUser();
+  console.log("loggedInUserInfo");
+
+  console.log(loggedInUserInfo);
 
   useEffect(() => {
     const fetchUserAndAlbumInfo = async () => {
@@ -62,9 +67,6 @@ function UserRating() {
 
       setReviewInfo(combinedData);
       setEditedStars(combinedData.starrating);
-
-      console.log("combined data");
-      console.log(combinedData);
     };
 
     fetchUserAndAlbumInfo();
@@ -155,16 +157,7 @@ function UserRating() {
     }
   };
 
-  console.log("artistInfo");
-  console.log(artistInfo);
-
-  console.log("userInfo");
-  console.log(userInfo);
-
-  console.log("userProfilePicture");
-  console.log(userProfilePicture);
-
-  if (!artistInfo || !userInfo || !userProfilePicture) {
+  if (!artistInfo || !userInfo || !userProfilePicture || !reviewInfo) {
     return <div className="loading-message">Loading...</div>;
   }
 
@@ -220,54 +213,56 @@ function UserRating() {
             profilePic={userProfilePicture.publicUrl}
           />
         </div>
-        <div className="user-rating-bottom-right">
-          <button
-            onClick={() => handleClick("edit")}
-            className="edit-review-button"
-          >
-            Edit review
-          </button>
+        {loggedInUserInfo?.userInfo?.username === reviewInfo.username && (
+          <div className="user-rating-bottom-right">
+            <button
+              onClick={() => handleClick("edit")}
+              className="edit-review-button"
+            >
+              Edit review
+            </button>
 
-          <button
-            onClick={() => handleClick("rate")}
-            className="rate-this-album-button"
-          >
-            Rate this album again
-          </button>
+            <button
+              onClick={() => handleClick("rate")}
+              className="rate-this-album-button"
+            >
+              Rate this album again
+            </button>
 
-          {overlayVisiablity && (
-            <ReviewBox
-              result={reviewInfo}
-              currentTitle={
-                boxMode === "edit" ? reviewInfo.reviewtitle : undefined
-              }
-              reviewbody={
-                boxMode === "edit" ? reviewInfo.reviewbody : undefined
-              }
-              starrating={boxMode === "edit" ? editedStars : undefined}
-              toggleVisiablity={setOverlayVisiablity}
-              reviewId={
-                boxMode === "edit" ? reviewInfo.albumreviewid : undefined
-              }
-              setEditedStars={boxMode === "edit" ? setEditedStars : undefined}
-            />
-          )}
+            {overlayVisiablity && (
+              <ReviewBox
+                result={reviewInfo}
+                currentTitle={
+                  boxMode === "edit" ? reviewInfo.reviewtitle : undefined
+                }
+                reviewbody={
+                  boxMode === "edit" ? reviewInfo.reviewbody : undefined
+                }
+                starrating={boxMode === "edit" ? editedStars : undefined}
+                toggleVisiablity={setOverlayVisiablity}
+                reviewId={
+                  boxMode === "edit" ? reviewInfo.albumreviewid : undefined
+                }
+                setEditedStars={boxMode === "edit" ? setEditedStars : undefined}
+              />
+            )}
 
-          <button
-            onClick={handleDeleteOverlay}
-            className="delete-review-button"
-          >
-            Delete review
-          </button>
+            <button
+              onClick={handleDeleteOverlay}
+              className="delete-review-button"
+            >
+              Delete review
+            </button>
 
-          {deleteOverlay && (
-            <DeleteMenu
-              reviewId={reviewInfo.albumreviewid}
-              handleDeleteOverlay={handleDeleteOverlay}
-              username={username}
-            />
-          )}
-        </div>
+            {deleteOverlay && (
+              <DeleteMenu
+                reviewId={reviewInfo.albumreviewid}
+                handleDeleteOverlay={handleDeleteOverlay}
+                username={username}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

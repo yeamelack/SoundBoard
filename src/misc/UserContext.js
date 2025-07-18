@@ -9,43 +9,47 @@ export function UserProvider({ children }) {
   const [userInfo, setUserInfo] = useState(null);
   const [userProfilePicture, setUserProfilePicture] = useState(null);
 
-  useEffect(() => {
-    console.log("Auth0 user in context:", user);
+  const fetchUserInfo = async () => {
+    if (!user) return;
 
-    const fetchUserInfo = async () => {
-      if (!user) return;
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("userid", user.sub)
+      .single();
 
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("userid", user.sub)
-        .single();
+    if (!error && data) {
+      let profilePicture = null;
 
-      console.log("Supabase user fetch result:", { data, error });
+      if (data.avatar) {
+        const { data: imageData, error: imageError } = supabase.storage
+          .from("avatars")
+          .getPublicUrl(data.avatar);
 
-      if (!error && data) {
-        setUserInfo({ username: data.username, auth0id: user.sub });
-
-        if (data.avatar) {
-          const { data: imageData, error: imageError } = supabase.storage
-            .from("avatars")
-            .getPublicUrl(data.avatar);
-
-          if (imageError) {
-            console.error("Avatar image fetch error:", imageError);
-          } else {
-            setUserProfilePicture(imageData?.publicUrl ?? null);
-          }
+        if (imageError) {
+          console.error("Avatar image fetch error:", imageError);
+        } else {
+          profilePicture = imageData?.publicUrl ?? null;
         }
       }
-    };
 
-    fetchUserInfo();
-  }, [user]);
+      setUserInfo({
+        username: data.username,
+        auth0id: user.sub,
+        profilePicturePath: data.avatar,
+        profilePicture,
+      });
+    } else {
+      console.error("Error fetching user:", error);
+    }
+  };
 
   return (
     <UserContext.Provider
-      value={{ ...userInfo, profilePicture: userProfilePicture }}
+      value={{
+        userInfo,
+        refreshUserInfo: fetchUserInfo,
+      }}
     >
       {children}
     </UserContext.Provider>

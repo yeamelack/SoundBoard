@@ -6,6 +6,11 @@
   border-bottom: solid;
   border-color: rgb(39, 38, 38);
   height: fit-content;
+  transition: all 0.25s;
+}
+
+.reviews-container:hover {
+  background-color: rgb(60, 62, 63);
 }
 
 .indv-review-container {
@@ -31,12 +36,11 @@
   height: 100px;
 }
 
-
 .user-img {
   display: flex;
   width: 104px;
   height: 104px;
-  background-color: rgb(43, 45, 46);
+  background-color: transparent;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
@@ -44,7 +48,7 @@
 
 .user-img-in-review {
   width: 100px;
-  border-radius: 50px;
+  border-radius: 10px;
   aspect-ratio: 1/1;
   object-fit: cover;
   transition: border 0.3s ease;
@@ -56,14 +60,20 @@
 
 .users-review-info {
   display: grid;
-  grid-template-rows: 25px 30px 30px;
+  grid-template-rows: 25px 25px 30px;
   justify-content: center;
   margin-left: 10px;
-  background-color: rgb(43, 45, 46);
+  background-color: transparent;
+  align-items: flex-end;
 }
 
 .users-name {
   height: 20px;
+}
+
+.users-name-container {
+  display: flex;
+  align-items: flex-end;
 }
 
 .users-name-font {
@@ -83,16 +93,23 @@
   margin: 0px;
 }
 
+.date-container {
+  display: flex;
+  align-items: flex-end;
+  /* background-color: red; */
+  height: 20px;
+}
 .date {
   color: rgb(184, 181, 181);
   font-family: "DM Sans", sans-serif;
   margin: 0;
   font-weight: 300;
-  display: flex;
-  align-items: center;
 }
 .title-container {
-  height: 25px;
+  height: 30px;
+  padding-left: 4px;
+  display: flex;
+  align-items: flex-end;
 }
 
 .title {
@@ -112,12 +129,12 @@
 
 .user-review {
   color: rgb(238, 236, 236);
-  padding-left: 10px;
+  padding-left: 4px;
   height: fit-content;
   margin-top: 0px;
 }
 
 .stars {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }

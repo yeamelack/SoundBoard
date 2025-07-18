@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import supabase from "../../supabase/supabaseClient";
+import "../../styles/Edit profile/ProfileUploader.css";
 
 function ProfileUploader({ user }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -10,27 +11,21 @@ function ProfileUploader({ user }) {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
-    console.log(`file: ${file}`);
     if (file) {
       setSelectedFile(file);
       setSaved(false);
     }
   };
-  console.log(`selected file: ${selectedFile}`);
 
   const handleSave = async () => {
     if (!selectedFile || !user?.sub) {
       return;
     }
-    console.log(user?.sub);
 
     const fileExt = selectedFile.name.split("|").pop();
     const hashUserId = btoa(user.sub).replace(/[/+=]/g, "_");
-    console.log(hashUserId);
     const filePath = `${hashUserId}/avatar.${fileExt}`;
     setUploading(true);
-
-    console.log(`file path: ${filePath}`);
 
     const { error: uploadError } = await supabase.storage
       .from("avatars")

@@ -12,12 +12,17 @@ function Rating() {
   const location = useLocation();
   const [reviews, setReviews] = useState(location.state || []);
 
+  console.log("location.state");
+
   useEffect(() => {
     if (reviews.length !== 0) {
+      console.log("aasds");
+
       return;
     }
 
     const fetchAllUserReviews = async () => {
+      console.log("aasds");
       const { data, error } = await supabase
         .from("musicreviews")
         .select(

@@ -4,13 +4,17 @@ import supabase from "../supabase/supabaseClient";
 import { useState, useEffect, setError } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useClickContext } from "../misc/ClickContext";
 
 function SetupProfile() {
+  const [file, setFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [username, setUsername] = useState();
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
   const { user } = useAuth0();
+  const { handleClick } = useClickContext();
 
   const handleUsername = (event) => {
     setUsername(event.target.value);
@@ -21,6 +25,7 @@ function SetupProfile() {
       setError("Usernames can only contain letters, numbers, and underscores.");
       return;
     }
+
     const normalizedUsername = username.toLowerCase().trim();
 
     const { data: existing } = await supabase
@@ -34,7 +39,7 @@ function SetupProfile() {
       return;
     }
 
-    const { error } = await supabase.from("users").insert([
+    const { error: insertError } = await supabase.from("users").insert([
       {
         userid: user.sub,
         username: normalizedUsername,
@@ -43,11 +48,36 @@ function SetupProfile() {
       },
     ]);
 
-    if (!error) {
-      navigate("/");
-    } else {
-      console.error("Insert failed", error);
+    if (insertError) {
+      console.error("Insert failed", insertError);
+      return;
     }
+
+    if (file) {
+      const fileExt = file.name.split(".").pop();
+      const filePath = `avatars/${normalizedUsername}-${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error("Image upload failed:", uploadError.message);
+      } else {
+        const { error: updateError } = await supabase
+          .from("users")
+          .update({ avatar: filePath })
+          .eq("userid", user.sub);
+
+        if (updateError) {
+          console.error("Failed to update avatar path:", updateError.message);
+        } else {
+          console.log("Avatar uploaded and user updated.");
+        }
+      }
+    }
+
+    navigate("/");
   };
 
   return (
@@ -60,7 +90,13 @@ function SetupProfile() {
         </div>
         <div className={SetupPageStyle["image-uploader-container"]}>
           <div>
-            <ProfileImageUploader />
+            <ProfileImageUploader
+              onFileSelect={(selectedFile) => {
+                setFile(selectedFile);
+                setPreviewImage(URL.createObjectURL(selectedFile));
+              }}
+              previewImage={previewImage}
+            />
           </div>
         </div>
 

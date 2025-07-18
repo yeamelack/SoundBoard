@@ -54,10 +54,6 @@ function ArtistRatings({
     }
   };
 
-  useEffect(() => {
-    console.log(clickInfo);
-  }, [clickInfo]);
-
   const handleClick = () => {
     if (isAuthenticated) {
       setOverlayVisiablity(!overlayVisiablity);
@@ -73,10 +69,12 @@ function ArtistRatings({
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchEverything = async () => {
+    console.log("1");
     const albumid = albumInfo?.albumid;
     if (!albumid) return;
 
-    // Fetch average rating
+    // Fetch average ratings
+    console.log("2");
     const { data: avg, error: avgError } = await supabase.rpc(
       "get_album_average_rating",
       { album_id_input: albumid }
@@ -95,7 +93,8 @@ function ArtistRatings({
     setTotalRatings(count ?? 0);
 
     // Fetch user review
-    if (user?.sub) {
+    if (user) {
+      console.log(userInfo);
       const { data: userReview, error: userError } = await supabase
         .from("musicreviews")
         .select("*")
@@ -114,7 +113,7 @@ function ArtistRatings({
 
   useEffect(() => {
     fetchEverything();
-  }, [albumInfo, user]);
+  }, [albumInfo, userInfo]);
 
   useEffect(() => {
     if (!clickInfo.clicked) return;
@@ -143,6 +142,9 @@ function ArtistRatings({
     updateUserReview();
   }, [editedStarReview]);
 
+  console.log("reviewJson");
+
+  console.log(reviewJson);
   if (isLoading) {
     return <div>loading</div>;
   }

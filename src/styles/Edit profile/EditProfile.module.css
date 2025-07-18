@@ -1,6 +1,6 @@
 .edit-profile-grid {
   display: grid;
-  grid-template-rows: 150px 1fr 1fr 1fr;
+  grid-template-rows: 150px 1fr 0.3fr 1fr;
   width: 100%;
   padding-bottom: 80px;
 }
@@ -8,8 +8,7 @@
 .profile-picture-section {
   background-color: rgb(24, 26, 28);
   display: grid;
-  grid-template-rows: 30px 1fr 1fr;
-  margin-top: 60px;
+  grid-template-rows: 40px 2fr 1fr;
 }
 
 .change-password-box {
@@ -19,11 +18,18 @@
   height: auto;
 }
 
-.change-user-name-input {
+.change-user-name-input-error,
+.change-user-name-input-no-error {
   background-color: rgb(24, 26, 28);
   display: grid;
-  grid-template-rows: 45px 55px 1fr;
   height: auto;
+}
+.change-user-name-input-no-error {
+  grid-template-rows: 45px 55px 1fr;
+}
+
+.change-user-name-input-error {
+  grid-template-rows: 45px 30px 55px 1fr;
 }
 
 .new-password-input-box {
@@ -43,7 +49,14 @@
   padding: 16px;
   background-color: rgb(50, 51, 54);
   border-radius: 10px;
-  border: 0px;
+  border: 2px solid transparent;
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+}
+
+.change-username-input-box:focus {
+  outline: none;
+  border-color: rgb(101, 103, 119);
 }
 
 .save-button {
@@ -80,4 +93,17 @@
 
 .save-button:active {
   opacity: 0.5;
+}
+
+.error-text {
+  color: rgb(255, 57, 57);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.image-upload-container {
+  height: 200px;
+  display: flex;
+  align-items: center;
 }

@@ -10,6 +10,8 @@ import userIcon from "../../assets/icons/user-icon.svg";
 
 function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
   const [reviews, setReviews] = useState([]);
+  console.log("reviews");
+  console.log(reviews);
 
   useEffect(() => {
     if (!updatedReview) return;
@@ -96,7 +98,6 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
       </div>
     );
   }
-  console.log(reviews);
 
   if (!reviews) {
     return <div>loading...</div>;
@@ -107,8 +108,8 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
         <div className="reviews-container" key={i}>
           <div className="indv-review-container">
             <div className="user-info">
-              <div className="user-img">
-                <Link to={`/${review.user.username}`}>
+              <Link to={`/${review.user.username}`}>
+                <div className="user-img">
                   <img
                     className="user-img-in-review"
                     src={
@@ -118,8 +119,8 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
                     }
                     alt="User profile picture"
                   />
-                </Link>
-              </div>
+                </div>
+              </Link>
               <div
                 style={{
                   display: "flex",
@@ -149,7 +150,7 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
               </div>
             )}
 
-            {review && (
+            {review.reviewbody && (
               <div className="text-Review">
                 <p className="user-review">{review.reviewbody}</p>
               </div>
