@@ -80,6 +80,7 @@ app.get("/getAlbumInfo", async (req, res) => {
     }
   } catch (error) {
     console.error(error.message); 
+    console.log(error.message)
     res.status(500).send("Internal server error");
   }
 });

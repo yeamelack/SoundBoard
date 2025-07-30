@@ -7,6 +7,7 @@ import supabase from "../../supabase/supabaseClient";
 import { useClickContext } from "../../misc/ClickContext";
 import StarRating from "../StarRating/StarRating";
 import { useUser } from "../../misc/UserContext";
+import useUpdateReview from "../../hooks/useUpdateReviews";
 
 function ArtistRatings({
   userRating,
@@ -15,10 +16,9 @@ function ArtistRatings({
   setUpdatedReview,
 }) {
   const { user } = useAuth0();
-  const userInfo = useUser();
-
+  const { userInfo } = useUser();
+  const updateReview = useUpdateReview();
   const { clickInfo, setClickInfo } = useClickContext();
-
   const [overlayVisiablity, setOverlayVisiablity] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
@@ -26,17 +26,17 @@ function ArtistRatings({
   const [editedStarReview, setUpdatedStarReview] = useState(0);
   const { isAuthenticated, loginWithPopup } = useAuth0();
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const handleStarRatingClick = (newRating) => {
     setUpdatedStarReview(newRating);
 
-    // Find the actual review object from the displayed ones
     const displayed = displayedReview.find(
       (review) => review.albumreviewid === reviewJson.albumreviewid
     );
 
     if (displayed) {
-      // Optional: delay to allow state change to propagate
       setClickInfo({ clicked: false });
 
       setTimeout(() => {
@@ -46,7 +46,6 @@ function ArtistRatings({
         });
       }, 0);
 
-      // This should be the updated review object
       setUpdatedReview({
         ...displayed,
         starrating: newRating,
@@ -66,35 +65,45 @@ function ArtistRatings({
     userRating = 0;
   }
 
-  const [isLoading, setIsLoading] = useState(true);
-
   const fetchEverything = async () => {
-    console.log("1");
     const albumid = albumInfo?.albumid;
+    console.log("albumid", albumid);
     if (!albumid) return;
 
     // Fetch average ratings
-    console.log("2");
-    const { data: avg, error: avgError } = await supabase.rpc(
-      "get_album_average_rating",
-      { album_id_input: albumid }
-    );
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/getMusicReview/${albumid}`
+      );
+      const json = await res.json();
+      console.log("JSON000", json);
 
-    if (avgError) console.error(avgError);
-    setAverageRating(avg ?? 0);
+      if (!res.ok) {
+        throw new Error(json.message || "Failed to fetch music reviews");
+      }
 
-    // Fetch total ratings
-    const { count, error: countError } = await supabase
-      .from("musicreviews")
-      .select("*", { count: "exact", head: true })
-      .eq("albumid", albumid);
+      const reviews = json.reviews || [];
+      const count = json.count ?? 0;
 
-    if (countError) console.error(countError);
-    setTotalRatings(count ?? 0);
+      // Calculate average rating from reviews
+      const totalRating = reviews.reduce(
+        (sum, review) => sum + (review.starrating || 0),
+        0
+      );
+      const avg = count > 0 ? totalRating / count : 0;
+      const avgRounded = Math.round(avg * 10) / 10;
 
-    // Fetch user review
+      setAverageRating(avgRounded);
+      setTotalRatings(count);
+
+      console.log("avgRounded", avgRounded);
+    } catch (error) {
+      console.error("Error fetching review data:", error.message);
+      setAverageRating(0);
+      setTotalRatings(0);
+    }
+
     if (user) {
-      console.log(userInfo);
       const { data: userReview, error: userError } = await supabase
         .from("musicreviews")
         .select("*")
@@ -104,15 +113,17 @@ function ArtistRatings({
         .limit(1)
         .maybeSingle();
 
+      console.log("userReview 10000", userReview);
       if (userError) console.error(userError);
       setReviewJson(userReview);
     }
-
     setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchEverything();
+    if (userInfo || albumInfo) {
+      fetchEverything();
+    }
   }, [albumInfo, userInfo]);
 
   useEffect(() => {
@@ -126,25 +137,22 @@ function ArtistRatings({
 
   useEffect(() => {
     const updateUserReview = async () => {
-      const { data, error } = await supabase
-        .from("musicreviews")
-        .update({
+      if (!reviewJson?.albumreviewid) return;
+
+      try {
+        await updateReview(reviewJson.albumreviewid, {
           starrating: editedStarReview,
           date: new Date().toISOString(),
-        })
-        .eq("albumreviewid", reviewJson?.albumreviewid);
-      if (error) {
-        console.error("error updating edited review", error);
-      } else {
+        });
         fetchEverything();
+      } catch (error) {
+        console.error("Error updating edited review:", error.message);
       }
     };
+
     updateUserReview();
   }, [editedStarReview]);
 
-  console.log("reviewJson");
-
-  console.log(reviewJson);
   if (isLoading) {
     return <div>loading</div>;
   }

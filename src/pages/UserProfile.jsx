@@ -115,7 +115,10 @@ function UserProfile() {
   return (
     <>
       {showConfirmation && (
-        <ConfirmationPopup message={"Review deleted successfully!"} />
+        <ConfirmationPopup
+          state={true}
+          message={"Review deleted successfully!"}
+        />
       )}
 
       {/* your homepage content */}

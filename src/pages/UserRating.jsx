@@ -30,9 +30,6 @@ function UserRating() {
   const [deleteOverlay, setDeleteOverlay] = useState(false);
 
   const loggedInUserInfo = useUser();
-  console.log("loggedInUserInfo");
-
-  console.log(loggedInUserInfo);
 
   useEffect(() => {
     const fetchUserAndAlbumInfo = async () => {
@@ -40,33 +37,18 @@ function UserRating() {
 
       const { data: reviewData, error: reviewError } = await supabase
         .from("musicreviews")
-        .select("*")
+        .select("*, music(*)")
         .eq("albumreviewid", reviewId)
         .single();
 
-      const { data: albumData, error: albumError } = await supabase
-        .from("music")
-        .select("*")
-        .eq("albumid", reviewData.albumid)
-        .single();
-
-      if (albumError || reviewError) {
-        console.error("Error loading data:", albumError || reviewError);
-        return;
-      }
-
-      const combinedData = {
-        ...albumData,
-        date: reviewData.date,
-        starrating: reviewData.starrating,
-        reviewtitle: reviewData.reviewtitle,
-        reviewbody: reviewData.reviewbody,
-        username: reviewData.username,
-        albumreviewid: reviewData.albumreviewid,
+      const flattened = {
+        ...reviewData,
+        ...(reviewData.music || {}),
       };
+      delete flattened.music;
 
-      setReviewInfo(combinedData);
-      setEditedStars(combinedData.starrating);
+      setReviewInfo(flattened);
+      setEditedStars(flattened.starrating);
     };
 
     fetchUserAndAlbumInfo();
@@ -90,8 +72,6 @@ function UserRating() {
         console.error("artist fetch error", error);
       } else {
         setArtistInfo(data);
-        console.log("data");
-        console.log(data);
       }
     };
 

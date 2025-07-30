@@ -1,13 +1,13 @@
 import "../../styles/HomePage/ReviewBox.css";
 import CancelButton from "../../assets/icons/cancel-button.svg";
-import { useAuth0 } from "@auth0/auth0-react";
 import StarRating from "../StarRating/StarRating";
-
 import { useState, useEffect } from "react";
 import React from "react";
 import supabase from "../../supabase/supabaseClient";
 import { useClickContext } from "../../misc/ClickContext";
 import { useUser } from "../../misc/UserContext";
+import useUpdateReviews from "../../hooks/useUpdateReviews";
+import useInsertReviews from "../../hooks/useInsertReviews";
 
 function ReviewBox({
   result,
@@ -15,9 +15,12 @@ function ReviewBox({
   starrating = 0,
   currentTitle = "",
   reviewbody = "",
-  reviewId = -1,
+  reviewId = -1, //-1 = new review
   setEditedStars,
 }) {
+  const updateReviews = useUpdateReviews();
+  const insertReviews = useInsertReviews();
+
   const isEditing = !!(currentTitle || reviewbody || starrating);
   const userInfo = useUser();
   const { handleClick } = useClickContext();
@@ -26,14 +29,23 @@ function ReviewBox({
   const [review, setReview] = useState(reviewbody || "");
   const [title, setTitle] = useState(currentTitle || "");
   const [artistInfo, setArtistInfo] = useState(null);
-  console.log("userInfo");
-
-  console.log(userInfo);
-
-  const { user, isAuthenticated } = useAuth0();
 
   const getReviewInput = (event) => setReview(event.target.value);
   const getTitleInput = (event) => setTitle(event.target.value);
+
+  useEffect(() => {
+    if (result) {
+      setOverlayVisiablity(true);
+    }
+  }, [result]);
+
+  const closeOverlay = () => {
+    setOverlayVisiablity(false);
+    setRating(0);
+    if (typeof toggleVisiablity === "function") {
+      toggleVisiablity();
+    }
+  };
 
   useEffect(() => {
     const getArtistInfo = async () => {
@@ -56,27 +68,6 @@ function ReviewBox({
     getArtistInfo();
   }, [result]);
 
-  useEffect(() => {
-    if (result) {
-      setOverlayVisiablity(true);
-    }
-  }, [result]);
-
-  // Resync state if props change (useful when switching to "edit mode")
-  useEffect(() => {
-    setRating(starrating || 0);
-    setTitle(currentTitle || "");
-    setReview(reviewbody || "");
-  }, [starrating, currentTitle, reviewbody]);
-
-  const closeOverlay = () => {
-    setOverlayVisiablity(false);
-    setRating(0);
-    if (typeof toggleVisiablity === "function") {
-      toggleVisiablity();
-    }
-  };
-
   const submitReview = async () => {
     const hasRating = rating !== null && rating !== 0;
     const hasTitle = title.trim().length !== 0;
@@ -93,26 +84,22 @@ function ReviewBox({
     }
 
     if (reviewId !== -1) {
+      //edit review
       setEditedStars(rating);
-      const { error: updateError } = await supabase
-        .from("musicreviews")
-        .update({
+      try {
+        await updateReviews(reviewId, {
+          starrating: rating,
           reviewbody: review,
           reviewtitle: title,
-          starrating: rating,
           date: new Date().toISOString(),
-        })
-        .eq("albumreviewid", reviewId);
-
-      if (updateError) {
-        console.error("Error updating review:", updateError);
-        return;
+        });
+      } catch (err) {
+        console.error("Failed to update review:", err.message);
       }
     } else {
       // Insert new review
-      const { error: insertError } = await supabase
-        .from("musicreviews")
-        .insert({
+      try {
+        await insertReviews({
           username: userInfo.userInfo.username,
           albumid: result.albumid,
           reviewbody: review,
@@ -121,14 +108,13 @@ function ReviewBox({
           starrating: rating,
           userid: userInfo.userInfo.auth0id,
         });
-
-      if (insertError) {
-        console.error("Error inserting review:", insertError);
-        return;
+      } catch (err) {
+        console.error("Failed to insert review:", err);
       }
     }
-
     closeOverlay();
+    setTitle(""); //clears title box so box clean for next use
+    setReview(""); //clears review box so box clean for next use
     handleClick(false);
   };
 

@@ -3,7 +3,6 @@ import "../../styles/Album page/AlbumMetaInfo.css";
 function AlbumMetaInfo({ type, year, trackCount }) {
   return (
     <>
-
       <p className="album-info-text">{type}</p>
       <p className="album-info-text-point"> • </p>
       <p className="album-info-text">{year}</p>

@@ -5,6 +5,9 @@ import { useState, useEffect, setError } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useClickContext } from "../misc/ClickContext";
+import useFetchUser from "../hooks/useFetchUser";
+import useInsertUser from "../hooks/useInsertUser";
+import checkUsernameAvailable from "../misc/checkUsernameAvailable";
 
 function SetupProfile() {
   const [file, setFile] = useState(null);
@@ -15,6 +18,9 @@ function SetupProfile() {
   const navigate = useNavigate();
   const { user } = useAuth0();
   const { handleClick } = useClickContext();
+
+  const insertUser = useInsertUser();
+  const fetchUser = useFetchUser();
 
   const handleUsername = (event) => {
     setUsername(event.target.value);
@@ -27,29 +33,17 @@ function SetupProfile() {
     }
 
     const normalizedUsername = username.toLowerCase().trim();
-
-    const { data: existing } = await supabase
-      .from("users")
-      .select("userid")
-      .eq("username", normalizedUsername)
-      .single();
-
-    if (existing) {
+    
+    const isAvailable = await checkUsernameAvailable(normalizedUsername);
+    if (!isAvailable) {
       setError("Username already taken");
       return;
     }
 
-    const { error: insertError } = await supabase.from("users").insert([
-      {
-        userid: user.sub,
-        username: normalizedUsername,
-        numberofrating: 0,
-        numberofreviews: 0,
-      },
-    ]);
-
-    if (insertError) {
-      console.error("Insert failed", insertError);
+    try {
+      await insertUser(user.sub, normalizedUsername);
+    } catch (error) {
+      console.error("Insert failed", error);
       return;
     }
 

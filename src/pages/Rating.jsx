@@ -22,7 +22,6 @@ function Rating() {
     }
 
     const fetchAllUserReviews = async () => {
-      console.log("aasds");
       const { data, error } = await supabase
         .from("musicreviews")
         .select(

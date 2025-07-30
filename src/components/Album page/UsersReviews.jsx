@@ -37,9 +37,6 @@ function UsersReviews({ limit, albumId, setDisplayedReviews, updatedReview }) {
         return;
       }
 
-      // console.log("reviews");
-      // console.log(reviews);
-
       const enrichedReviews = await Promise.all(
         (reviews ?? []).map(async (review) => {
           const { data: user, error: userError } = await supabase

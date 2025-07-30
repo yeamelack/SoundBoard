@@ -16,7 +16,7 @@ function IndividualReview({
 }) {
   const { clicked } = useClickContext();
   useEffect(() => {
-    console.log("clicked indiv");
+    console.log("clicked individual review");
   }, [clicked]);
 
   if (amountOfReviews === 0) {
@@ -26,9 +26,6 @@ function IndividualReview({
       </div>
     );
   }
-  console.log(" ");
-
-  console.log(profilePic);
 
   return (
     <div className="reviews-background">
@@ -79,7 +76,6 @@ function IndividualReview({
             {review && (
               <div className="text-Review">
                 <p className="user-review">{review}</p>
-
               </div>
             )}
           </div>

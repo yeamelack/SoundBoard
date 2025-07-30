@@ -14,8 +14,11 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import supabase from "../supabase/supabaseClient";
-
+import useFetchArtist from "../hooks/useFetchArtist";
+import useInsertArtist from "../hooks/useInsertArtist";
 import { useClickContext } from "../misc/ClickContext";
+import useFetchMusic from "../hooks/useFetchMusic";
+import useInsertMusic from "../hooks/useInsertMusic";
 
 function AlbumPage() {
   const { user } = useAuth0();
@@ -27,17 +30,79 @@ function AlbumPage() {
   const [showReviews, setShowReviews] = useState(false);
   const [updatedReview, setUpdatedReview] = useState([]);
   const [displayedReview, setDisplayedReviews] = useState([]); //ArtistRating to see albums displayed
+  const insertArtist = useInsertArtist();
+  const insertMusic = useInsertMusic();
+  const fetchArtist = useFetchArtist();
+  const fetchMusic = useFetchMusic();
+
+  useEffect(() => {
+    if (!artistId) return;
+    const fetchAndHandleArtist = async () => {
+      setArtistInfo(null);
+
+      try {
+        const artistData = await fetchArtist(artistId);
+        console.log("artist data 44", artistData);
+        setArtistInfo(artistData);
+      } catch (error) {
+        console.log("artistData:", error.message);
+
+        try {
+          const insertedArtist = await insertArtist(artistId);
+          const artistData = await fetchArtist(artistId);
+          setArtistInfo(artistData);
+          console.log("Artist inserted after fetch error");
+          console.log("artistInfo has been set", artistInfo);
+        } catch (err) {
+          console.error("Insert artist failed:", err.message);
+        }
+      }
+    };
+
+    fetchAndHandleArtist();
+  }, [artistId, albumId]);
+
+  useEffect(() => {
+    setAlbumInfo(null);
+
+    if (!albumId) return;
+
+    const fetchAndHandleMusic = async () => {
+      try {
+        const musicData = await fetchMusic(albumId);
+        console.log("musicData", musicData);
+
+        if (!musicData || musicData.length === 0) {
+          console.log("No music data found, inserting music...");
+
+          const insertedMusic = await insertMusic(albumId);
+          const musicData = await fetchMusic(albumId);
+
+          console.log("Inserted music:", insertedMusic);
+
+          setAlbumInfo(musicData[0]);
+          return;
+        }
+
+        setAlbumInfo(musicData[0]);
+      } catch (error) {
+        console.error("fetchMusic error:", error.message);
+      }
+    };
+
+    fetchAndHandleMusic();
+  }, [albumId, artistId]);
 
   useEffect(() => {
     setFadeIn(false); // Reset fade
     const timer = setTimeout(() => setFadeIn(true), 450);
-    console.log("Current fade state:", fadeIn);
     return () => clearTimeout(timer);
   }, [albumId]);
 
   useEffect(() => {
     const url = `http://localhost:8484/albums?q=${artistId}`;
     async function fetchAlbums() {
+      setArtistAlbums([]);
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -52,176 +117,128 @@ function AlbumPage() {
     fetchAlbums();
   }, [artistId]);
 
-  useEffect(() => {
-    const getArtistInfo = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("artists")
-          .select("*")
-          .eq("artistid", artistId)
-          .single();
+  // //album info
+  // useEffect(() => {
+  //   const fetchAndMaybeInsertAlbum = async () => {
+  //     try {
+  //       // Check if album exists in DB
+  //       const { data, error } = await supabase
+  //         .from("music")
+  //         .select("*")
+  //         .eq("albumid", albumId)
+  //         .single();
 
-        if (data) {
-          setArtistInfo({
-            artistName: data.artistName,
-            artistid: data.artistid,
-            profilepic: data.profilepic,
-          });
-        } else if (!data) {
-          const response = await fetch(
-            `http://localhost:8484/artist?q=${artistId}`
-          );
+  //       if (data) {
+  //         setAlbumInfo({
+  //           albumid: data.albumid,
+  //           title: data.title,
+  //           releasedate: data.releasedate,
+  //           spotifylink: data.spotifylink,
+  //           coverart: data.coverart,
+  //           artistid: data.artistid,
+  //           tracks: data.tracks,
+  //           type: data.type,
+  //         });
+  //         // console.log(`data FAMIA: ${data}`);
+  //         return;
+  //       }
 
-          if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-          }
-          const json = await response.json();
-          setArtistInfo({
-            artistid: json.id,
-            artistName: json.name,
-            profilepic: json.images[0].url,
-          });
+  //       //Fetch from external API if not in DB
+  //       const response = await fetch(
+  //         `http://localhost:8484/getAlbumInfo?q=${albumId}`
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error(`Response status: ${response.status}`);
+  //       }
 
-          const { error: insertError } = await supabase.from("artists").insert([
-            {
-              artistid: json.id,
-              artistName: json.name,
-              profilepic: json.images[0].url,
-            },
-          ]);
-          if (insertError) {
-            console.error("Error inserting artist:", insertError.message);
-          }
-        }
-      } catch (error) {
-        console.error("Error in getArtistInfo:", error.message);
-      }
-    };
-    getArtistInfo();
-  }, [artistId]);
+  //       const json = await response.json();
 
-  //album info
-  useEffect(() => {
-    const fetchAndMaybeInsertAlbum = async () => {
-      try {
-        // Check if album exists in DB
-        const { data, error } = await supabase
-          .from("music")
-          .select("*")
-          .eq("albumid", albumId)
-          .single();
+  //       let normalizedReleaseDate = json.release_date;
 
-        if (data) {
-          setAlbumInfo({
-            albumid: data.albumid,
-            title: data.title,
-            releasedate: data.releasedate,
-            spotifylink: data.spotifylink,
-            coverart: data.coverart,
-            artistid: data.artistid,
-            tracks: data.tracks,
-            type: data.type,
-          });
-          // console.log(`data FAMIA: ${data}`);
-          return;
-        }
+  //       // Normalize if only year or year-month are provided
+  //       if (/^\d{4}$/.test(normalizedReleaseDate)) {
+  //         normalizedReleaseDate += "-01-01";
+  //       } else if (/^\d{4}-\d{2}$/.test(normalizedReleaseDate)) {
+  //         normalizedReleaseDate += "-01";
+  //       }
 
-        //Fetch from external API if not in DB
-        const response = await fetch(
-          `http://localhost:8484/getAlbumInfo?q=${albumId}`
-        );
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-        }
+  //       setAlbumInfo({
+  //         albumid: json.id,
+  //         artistid: json.artists[0].id,
+  //         title: json.name,
+  //         spotifylink: json.external_urls.spotify,
+  //         coverart: json.images[0].url,
+  //         releasedate: normalizedReleaseDate,
+  //         tracks: json.tracks,
+  //         type: json.album_type,
+  //       });
 
-        const json = await response.json();
+  //       //if theres more than one artist add the other artist to the db
+  //       if (json.artists.length > 1) {
+  //         await Promise.all(
+  //           json.artists.map(async (artistInfo) => {
+  //             try {
+  //               const response = await fetch(
+  //                 `http://localhost:8484/artist?q=${artistInfo.id}`
+  //               );
 
-        let normalizedReleaseDate = json.release_date;
+  //               if (!response.ok) {
+  //                 throw new Error(`Fetch failed: ${response.status}`);
+  //               }
 
-        // Normalize if only year or year-month are provided
-        if (/^\d{4}$/.test(normalizedReleaseDate)) {
-          normalizedReleaseDate += "-01-01";
-        } else if (/^\d{4}-\d{2}$/.test(normalizedReleaseDate)) {
-          normalizedReleaseDate += "-01";
-        }
+  //               const artistJson = await response.json();
 
-        setAlbumInfo({
-          albumid: json.id,
-          artistid: json.artists[0].id,
-          title: json.name,
-          spotifylink: json.external_urls.spotify,
-          coverart: json.images[0].url,
-          releasedate: normalizedReleaseDate,
-          tracks: json.tracks,
-          type: json.album_type,
-        });
+  //               const { error } = await supabase.from("artists").upsert(
+  //                 {
+  //                   artistid: artistJson.id,
+  //                   artistName: artistJson.name,
+  //                   profilepic: artistJson.images?.[0]?.url ?? null,
+  //                 },
+  //                 { onConflict: "artistid" }
+  //               );
 
-        //if theres more than one artist add the other artist to the db
-        if (json.artists.length > 1) {
-          await Promise.all(
-            json.artists.map(async (artistInfo) => {
-              try {
-                const response = await fetch(
-                  `http://localhost:8484/artist?q=${artistInfo.id}`
-                );
+  //               if (error) {
+  //                 console.error(
+  //                   `Supabase insert error for ${artistJson.name}:`,
+  //                   error
+  //                 );
+  //               }
+  //             } catch (err) {
+  //               console.error(`Failed to insert artist ${artistInfo.id}:`, err);
+  //             }
+  //           })
+  //         );
+  //       }
 
-                if (!response.ok) {
-                  throw new Error(`Fetch failed: ${response.status}`);
-                }
+  //       const { error: insertError } = await supabase.from("music").insert([
+  //         {
+  //           albumid: json.id,
+  //           artistid: json.artists[0].id,
+  //           title: json.name,
+  //           spotifylink: json.external_urls.spotify,
+  //           coverart: json.images[0].url,
+  //           releasedate: new Date(normalizedReleaseDate).toISOString(), // always valid timestamp
+  //           tracks: json.tracks,
+  //           type: json.album_type,
+  //         },
+  //       ]);
 
-                const artistJson = await response.json();
+  //       if (insertError) {
+  //         console.error("Error inserting album:", insertError.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error in fetchAndMaybeInsertAlbum:", error.message);
+  //     }
+  //   };
+  //   fetchAndMaybeInsertAlbum();
+  // }, [albumId]);
 
-                const { error } = await supabase.from("artists").upsert(
-                  {
-                    artistid: artistJson.id,
-                    artistName: artistJson.name,
-                    profilepic: artistJson.images?.[0]?.url ?? null,
-                  },
-                  { onConflict: "artistid" }
-                );
-
-                if (error) {
-                  console.error(
-                    `Supabase insert error for ${artistJson.name}:`,
-                    error
-                  );
-                }
-              } catch (err) {
-                console.error(`Failed to insert artist ${artistInfo.id}:`, err);
-              }
-            })
-          );
-        }
-
-        const { error: insertError } = await supabase.from("music").insert([
-          {
-            albumid: json.id,
-            artistid: json.artists[0].id,
-            title: json.name,
-            spotifylink: json.external_urls.spotify,
-            coverart: json.images[0].url,
-            releasedate: new Date(normalizedReleaseDate).toISOString(), // always valid timestamp
-            tracks: json.tracks,
-            type: json.album_type,
-          },
-        ]);
-
-        if (insertError) {
-          console.error("Error inserting album:", insertError.message);
-        }
-      } catch (error) {
-        console.error("Error in fetchAndMaybeInsertAlbum:", error.message);
-      }
-    };
-    fetchAndMaybeInsertAlbum();
-  }, [albumId]);
-
-  console.log(albumInfo);
   if (
     !albumInfo ||
     !albumInfo.coverart ||
     !artistInfo ||
-    !artistInfo.artistid
+    !artistInfo.artistid ||
+    !displayedReview
   ) {
     return <div className="loading-message">Loading...</div>;
   }

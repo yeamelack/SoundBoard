@@ -10,10 +10,6 @@ function UserButton() {
   const { isAuthenticated } = useAuth0();
   const { userInfo, refreshUserInfo } = useUser();
 
-  console.log("userInfo")
-
-  console.log(userInfo)
-
   useEffect(() => {
     if (!userInfo && isAuthenticated) {
       refreshUserInfo();
