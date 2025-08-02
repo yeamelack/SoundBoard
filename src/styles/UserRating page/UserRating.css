@@ -1,0 +1,142 @@
+.UserRating-page-grid {
+  background-color: rgb(24, 26, 28);
+  display: grid;
+  grid-template-rows: 57px 1.5fr 2fr;
+  width: 100%;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.album-meta-data-container {
+  width: 100%;
+  background-color: rgb(24, 26, 28);
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+}
+
+.img-container {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+.user-rating-album-img {
+  height: 220px;
+  border-radius: 10px;
+}
+
+.user-rating-album-meta-data {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.user-rating-album-title-container {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-rating-user-review-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  height: auto;
+}
+
+.user-rating-review {
+  height: 100%;
+  background-color: rgb(24, 26, 28);
+  margin-top: 20px;
+}
+.artist-button-in-user-rating {
+  border-bottom: 2px solid rgb(39, 38, 38);
+}
+
+.user-rating-bottom-right {
+  background-color: rgb(24, 26, 28);
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.delete-review-button {
+  height: 40px;
+  width: 70%;
+  background-color: rgb(43, 45, 46);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  margin: 0;
+
+  transition: background-color 0.2s, opacity 0.2s;
+
+  cursor: pointer;
+}
+
+.edit-review-button {
+  height: 40px;
+  width: 70%;
+  background-color: rgb(43, 45, 46);
+  border-top: 2px solid rgb(39, 38, 38);
+  border-bottom: 2px solid rgb(39, 38, 38);
+  border-left: none;
+  border-right: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  margin: 0;
+
+  transition: background-color 0.2s, opacity 0.2s;
+
+  cursor: pointer;
+}
+
+.rate-this-album-button {
+  height: 40px;
+  width: 70%;
+  background-color: rgb(43, 45, 46);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  margin: 0;
+
+  transition: background-color 0.2s, opacity 0.2s;
+
+  cursor: pointer;
+}
+
+.rate-this-album-button:hover,
+.edit-review-button:hover,
+.delete-review-button:hover {
+  background-color: rgb(62, 64, 66);
+}
+
+.rate-this-album-button:active,
+.edit-review-button:active,
+.delete-review-button:active {
+  opacity: 0.5;
+}

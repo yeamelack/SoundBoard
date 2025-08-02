@@ -1,0 +1,33 @@
+.homepage-grid {
+  display: grid;
+  grid-template-rows: 57px 200px 1fr;
+}
+
+.review-charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.popular-this-week-title {
+  color: rgb(207, 207, 207);
+  font-family: "DM Sans", sans-serif;
+  font-size: 50px;
+  margin-bottom: 100px;
+}
+.popular-this-week-title-container {
+  margin-top: 100px;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.quick-search-homepage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}

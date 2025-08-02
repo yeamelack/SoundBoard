@@ -1,0 +1,26 @@
+import "../../styles/UserProfile/RecentActivityAlbums.css";
+import StaticStarRating from "../../components/StarRating/StaticStarRating";
+
+function RecentActivityAlbums({ imgLink, title, rating }) {
+  return (
+    <div className="indv-recent-activity">
+      <div className="recent-activity-img-container">
+        <img
+          className="recent-activity-img"
+          src={imgLink}
+          alt={`${title} album cover.`}
+        />
+      </div>
+      <div className="recent-activity-album-name-container">
+        <span className="recent-activity-album-name">{title}</span>
+      </div>
+      <div className="recent-activity-user-rating-container">
+        <span className="recent-activity-user-rating">
+          <StaticStarRating rating={rating} />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default RecentActivityAlbums;

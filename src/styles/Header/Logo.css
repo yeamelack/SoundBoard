@@ -1,0 +1,12 @@
+.logo-container {
+  display: grid;
+  align-items: center;
+  min-width: 147px;
+  /* justify-content: center; */
+}
+.logo {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-style: bold;
+  color: rgb(207, 207, 207);
+}
