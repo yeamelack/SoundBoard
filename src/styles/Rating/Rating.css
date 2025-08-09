@@ -1,0 +1,19 @@
+.rating-page-grid {
+  display: grid;
+  grid-template-rows: 100px 1fr;
+
+}
+
+.rated-albums-container {
+  /* background-color: aqua; */
+  display: flex;
+  justify-content: center;
+
+}
+
+.rated-albums-flex {
+  display: flex;
+  flex-direction: column;
+  width: 804px;
+
+}

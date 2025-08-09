@@ -3,24 +3,32 @@ import React, { useEffect, useState } from "react";
 import HomePage from "./pages/HomePage";
 import AlbumPage from "./pages/AlbumPage";
 import UserPage from "./pages/UserProfile";
-import ResultsPage from "./pages/ResultsPage";
 import UserRating from "./pages/UserRating";
 import EditProfile from "./pages/EditProfile";
+import Header from "./components/Header/Header";
 import ScrollToTop from "./misc/ScrollToTop";
-import ArtistProfile from "./pages/ArtistProfile";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import SetupProfile from "./pages/SetupProfile";
+import { ClickProvider } from "./misc/ClickContext"; // or wherever your ClickContext is
+import { UserProvider } from "./misc/UserContext";
+import UserReviews from "./pages/UserReview";
+
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { createBrowserRouter, RouterProvider, useParams } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import supabase from "./supabase/supabaseClient";
+import Rating from "./pages/Rating";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const [dbError, setDbError] = useState(null);
 
   useEffect(() => {
-    const insertUser = async () => {
+    const checkUser = async () => {
       if (!isAuthenticated || !user) return;
+
+      // Skip check if already on setup page
+      if (window.location.pathname === "/setup") return;
 
       const { data, error } = await supabase
         .from("users")
@@ -28,33 +36,19 @@ function App() {
         .eq("userid", user.sub)
         .single();
 
-      if (error) {
-        console.error("Error checking for user:", error.message);
+      if (error && error.code !== "PGRST116") {
+        console.error("Error checking user:", error.message);
         setDbError(error);
         return;
       }
 
       if (!data) {
-        const { error: insertError } = await supabase.from("users").insert([
-          {
-            userid: user.sub,
-            numberofrating: 0,
-            numberofreviews: 0,
-          },
-        ]);
-
-        if (insertError) {
-          console.error("Error inserting user:", insertError.message);
-          setDbError(insertError);
-        } else {
-          setDbError(null);
-        }
-      } else {
-        setDbError(null);
+        // Redirect new users to setup page
+        window.location.href = "/setup";
       }
     };
 
-    insertUser();
+    checkUser();
   }, [isAuthenticated, user]);
 
   const router = createBrowserRouter([
@@ -67,37 +61,30 @@ function App() {
           element: <HomePage />,
         },
         {
-          path: "/artist/:artistId",
-          element: (
-              <ArtistProfile/>
-          ),
-        },
-        {
           path: ":artistId/album/:albumId",
           element: <AlbumPage />,
         },
         {
           path: ":username",
-          element: (
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>
-          ),
+          element: <UserPage />,
         },
         {
-          path: ":username/:ratingid",
-          element: (
-            <ProtectedRoute>
-              <UserRating />
-            </ProtectedRoute>
-          ),
+          path: ":username/rating/",
+          element: <Rating />,
         },
-        
         {
-          path: "/results",
+          path: ":username/rating/:reviewId",
+          element: <UserRating />,
+        },
+        {
+          path: "/:username/reviews/",
+          element: <UserReviews />,
+        },
+        {
+          path: "/setup",
           element: (
             <ProtectedRoute>
-              <ResultsPage/>
+              <SetupProfile />
             </ProtectedRoute>
           ),
         },
@@ -115,7 +102,13 @@ function App() {
 
   if (isLoading) return <div>Loading...</div>;
 
-  return <RouterProvider router={router} />;
+  return (
+    <ClickProvider>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </ClickProvider>
+  );
 }
 
 export default App;

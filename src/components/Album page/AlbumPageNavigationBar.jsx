@@ -1,6 +1,15 @@
 import "../../styles/Album page/AlbumPageNavigationBar.css";
+import { useClickContext } from "../../misc/ClickContext";
 
 function AlbumPageNavigationBar({ setShowReviews, showReviews }) {
+  const { setClickInfo } = useClickContext();
+
+  const handleReviewClick = () => {
+    setClickInfo({ clicked: false });
+    setShowReviews(true);
+    setClickInfo({ clicked: true, source: "review-nav-button" });
+  };
+
   return (
     <div className="artist-page-navbar">
       <div className="home-button-grid">
@@ -20,7 +29,7 @@ function AlbumPageNavigationBar({ setShowReviews, showReviews }) {
           <div className="home-nav-button-container">
             <button
               className={`review-nav-button ${showReviews ? "active-tab" : ""}`}
-              onClick={() => setShowReviews(true)}
+              onClick={handleReviewClick}
             >
               Reviews
             </button>

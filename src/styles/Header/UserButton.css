@@ -48,9 +48,7 @@
 .user-icon-default-user-icon {
   width: 30px;
   height: 20px;
-  background-color: aqua;
 }
 .user-icon-default-user-icon {
-  border: 2px dashed gray;
   opacity: 0.6;
 }

@@ -1,0 +1,32 @@
+.user-reviews-grid {
+  display: flex;
+  flex-direction: column;
+  height: fit-content; /* key line */
+  background-color: transparent;
+  padding-top: 70px; /* or however tall your header is */
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-reviews-bottom-grid {
+  display: flex; /* make it a flex container */
+  flex-direction: column; /* stack children vertically */
+  gap: 10px; /* adds space between children */
+  background-color: transparent;
+  width: 800px;
+}
+
+.review-by-title-container {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  font-family: "DM Sans", sans-serif;
+  color: rgb(207, 207, 207);
+  font-weight: 550;
+  font-size: 20px;
+}
+
+.review-by-title:hover {
+  color: rgb(0, 153, 245);
+}

@@ -1,4 +1,10 @@
-.img{
-    height: 300px;
-    border-radius: 10px;
+.album-img-container {
+  padding-bottom: 50px;
+  display: flex;
+  justify-content: flex-start;     /* horizontal alignment: left */
+  align-items: flex-end;    
+}
+.img {
+  height: 300px;
+  border-radius: 10px;
 }
