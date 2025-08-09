@@ -65,6 +65,12 @@ function App() {
           element: <AlbumPage />,
         },
         {
+          path: "/artist/:artistId",
+          element: (
+              <ArtistProfile/>
+          ),
+        },
+        {
           path: ":username",
           element: <UserPage />,
         },

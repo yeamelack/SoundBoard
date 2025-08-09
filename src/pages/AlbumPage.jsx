@@ -117,6 +117,12 @@ function AlbumPage() {
     fetchAlbums();
   }, [artistId]);
 
+  const navigate = useNavigate();
+  const goToArtistProfile = () => {
+    console.log("Navigating to:", `/artist/${artistInfo.artistid}`);
+    navigate(`/artist/${artistInfo.artistid}`);
+  };
+
   // //album info
   // useEffect(() => {
   //   const fetchAndMaybeInsertAlbum = async () => {
@@ -274,6 +280,7 @@ function AlbumPage() {
                   <ArtistButton
                     artistPicture={artistInfo.profilepic}
                     artistName={artistInfo.artistName}
+                    onClick={goToArtistProfile}
                   />
                 </div>
               </div>
